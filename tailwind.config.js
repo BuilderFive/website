@@ -22,7 +22,8 @@ module.exports = {
           300: "hsl(var(--primary-background-3))",
         },
         text: {
-          100: "hsl(var(--text-1))"
+          100: "hsl(var(--text-1))",
+          200: "hsl(var(--text-2))"
         },
         activity: {
           "online": "hsl(var(--activity-online))",

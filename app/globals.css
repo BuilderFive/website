@@ -15,7 +15,8 @@
     
     --activity-online: 104, 50%, 60%;
     
-    --text-1: 0, 100%, 100%;
+    --text-1: 0, 0%, 98%;
+    --text-2: 216, 26%, 47%;
   }
 
   @media (prefers-color-scheme: dark) {

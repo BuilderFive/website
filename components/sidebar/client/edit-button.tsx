@@ -6,5 +6,5 @@ export default function EditButton() {
         //allow user to edit description and displayname
         console.log('Clicked on Edit Mode')
     }
-    return <MdEdit className="cursor-pointer" onClick={handleClick}/>
+    return <MdEdit className="cursor-pointer" color="hsl(var(--text-1))" onClick={handleClick}/>
 }
