@@ -1,27 +1,15 @@
 "use client"
 
+import { useSession } from "@/utils/hooks/SessionContext";
 import { useRef } from "react";
-
-export default function Search() {
-    function search(formData: { get: (arg0: string) => any; }) {
-      const query = formData.get("query");
-      alert(`You searched for '${query}'`);
-    }
-    return (
-      <form action={search}>
-        <input name="query" />
-        <button type="submit">Search</button>
-      </form>
-    );
-  }
 
 export const CreateProject = () => {
 
     const ref = useRef<HTMLFormElement | null>(null)
+    const session = useSession()
 
     function submit(formData: { get: (arg0: string) => any; }) {
-        const query = formData.get("query");
-        alert(`You added '${query}'`);
+        console.log(`Hello ${session.user?.['id']}`)
         ref.current?.reset()
         //add project to database and update cache
     }
