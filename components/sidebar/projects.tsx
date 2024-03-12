@@ -3,9 +3,9 @@ import React, { MouseEventHandler, useState } from "react";
 import { createClient } from "@/utils/supabase/server";
 import { MdEdit } from "react-icons/md";
 import { UUID } from "crypto";
-import EditButton from "./edit-button";
-import { ProjectCard } from "./view-project-button";
-import { CreateProject } from "./create-project-button";
+import EditButton from "./client/edit-button";
+import { ProjectCard } from "./client/view-project-button";
+import { CreateProject } from "./client/create-project-button";
 
 export default function Projects(){
     const user_uuid = 'f0dc83ac-50c7-48d4-9f01-276a4c10947f' //example

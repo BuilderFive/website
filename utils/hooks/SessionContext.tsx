@@ -63,7 +63,6 @@ export const SessionProvider = ({ children, supabase }: any) => {
         supabase,
     };
     return (<SessionContext.Provider value={contextObject}>
-        {session && `${user.id}`}
         {!loading ? children : null}
     </SessionContext.Provider>);
 };

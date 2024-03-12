@@ -2,7 +2,7 @@ import { GeistSans } from "geist/font/sans";
 import "./globals.css";
 import { SessionProvider } from "@/utils/hooks/SessionContext";
 import { createClient } from "@/utils/supabase/client";
-import Provider from "@/utils/hooks/Provider";
+import Provider from "@/app/Providers";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`

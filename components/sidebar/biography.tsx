@@ -3,7 +3,7 @@ import React from "react";
 import { createClient } from "@/utils/supabase/server";
 import { MdEdit } from "react-icons/md";
 import { UUID } from "crypto";
-import EditButton from "./edit-button";
+import EditButton from "./client/edit-button";
 
 export default function Biography(){
     const user_uuid = 'f0dc83ac-50c7-48d4-9f01-276a4c10947f' //example
