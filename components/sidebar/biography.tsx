@@ -36,7 +36,7 @@ export default function Biography(){
     const Header = () => {
         return <div className="flex flex-col pb-3 border-b border-solid border-primary-300">
             <div className="flex justify-between font-extrabold">
-                <div className="flex-auto text-lg">{display_name}</div>
+                <div className="flex-auto self-start text-xl">{display_name}</div>
                 <EditButton/>
                
             </div>
@@ -55,7 +55,7 @@ export default function Biography(){
             <span className="text-xxs font-light">March 10, 2024</span>
         </div>
     }
-    return(<section className="flex flex-col px-2 py-2 mt-20 w-full text-white bg-primary-200 rounded-lg max-w-[180px]">
+    return(<section className="flex flex-col px-2 py-2 w-full text-white bg-primary-200 rounded-lg max-w-[180px]">
         <Header/>
         <Description/>
         <Details/>

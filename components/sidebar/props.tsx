@@ -1,23 +1,7 @@
 import React from "react";
 import Biography from "./biography";
 import { SideBarProfileTemplate } from "./sidebars";
-
-interface ProjectCardProps {
-  imgSrc: string;
-  altText: string;
-  title: string;
-  updates: number;
-}
-
-const ProjectCard = ({ imgSrc, altText, title, updates }: ProjectCardProps) => (
-  <div className="flex gap-1 py-2.5 pr-14 mt-2 whitespace-nowrap bg-primary-100 rounded-lg shadow-sm">
-    <img loading="lazy" src={imgSrc} alt={altText} className="shrink-0 my-auto w-4 aspect-square" />
-    <div className="flex flex-col flex-1 justify-center">
-      <div className="text-xs font-semibold">{title}</div>
-      <div className="mt-1 text-xs">Updated {updates} times</div>
-    </div>
-  </div>
-);
+import Projects from "./projects";
 
 const UserProfile = () => {
   const projects = [
@@ -29,16 +13,7 @@ const UserProfile = () => {
   return (
     <SideBarProfileTemplate>
       <Biography/>
-      <section className="flex flex-col px-1.5 pt-4 pb-2 mt-5 w-full bg-primary-200 rounded-lg max-w-[180px] text-slate-500">
-        <div className="self-start text-base font-extrabold text-white whitespace-nowrap"> Projects & Ideas </div>
-        <div className="self-start mt-1 text-xs text-white">Active: {projects.length}</div>
-        {projects.map((project, index) => (
-          <ProjectCard key={index} {...project} />
-        ))}
-        <div className="justify-center px-5 py-5 mt-1 text-xs font-medium whitespace-nowrap bg-primary-100 rounded-lg shadow-sm">
-          Type here to create...
-        </div>
-      </section>
+      <Projects/>
       <section className="flex flex-col px-2 pt-4 pb-2 mt-5 w-full text-white whitespace-nowrap bg-primary-200 rounded-lg max-w-[180px]">
         <div className="text-base font-extrabold">Options</div>
         <div className="flex gap-1 py-1 mt-2 text-xs font-semibold rounded-lg shadow-sm">
