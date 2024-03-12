@@ -46,7 +46,7 @@ export default function Options(){
             <OptionsButton/>
             <div className="flex gap-1 self-start">
                 <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/c1e971a656a8cb5bc9190e79073d09f45b51ead171fc7c877f3df9046a91f6f9?apiKey=2f9dd5fc40c1433bb238bffdc3e08217&" />
-                <div className="flex-auto text-text-200">Online</div>
+                <div className="flex-auto text-text-100">Online</div>
             </div>
         </div>
     }

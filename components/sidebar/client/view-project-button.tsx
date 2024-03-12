@@ -1,5 +1,6 @@
 "use client"
 import { MouseEventHandler, useState } from "react";
+import { IoIosArrowBack } from "react-icons/io";
 
 interface ProjectCardProps {
     imgSrc: string;
@@ -18,7 +19,7 @@ export const ProjectCard = ({ imgSrc, altText, title, updates }: ProjectCardProp
     }
     
     return (<div onClick={handleClick} onMouseOver={()=>setHovering(true)} onMouseLeave={()=>setHovering(false)} className={`flex gap-1 mb-[4px] py-2.5 pr-14 whitespace-nowrap box-content bg-primary-100 rounded-lg ${isHovering && 'shadow-lg'} cursor-pointer`}>
-        <img loading="lazy" src={imgSrc} alt={altText} className="shrink-0 my-auto w-4 aspect-square" />
+        <IoIosArrowBack className="shrink-0 my-auto w-4 aspect-square" color="hsl(var(--text-2))"/>
         <div className="flex flex-col flex-1 justify-center">
         <div className="text-xs font-semibold">{title}</div>
         <div className="mt-1 text-xs">Updated {updates} times</div>

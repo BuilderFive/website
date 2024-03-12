@@ -6,5 +6,5 @@ export default function OptionsButton() {
         //allow user to edit description and displayname
         console.log('Clicked on Options')
     }
-    return<IoIosArrowBack onClick={handleClick} className="self-center cursor-pointer" color="hsl(var(--text-2))"/>
+    return <IoIosArrowBack onClick={handleClick} className="cursor-pointer shrink-0 my-auto w-4 aspect-square" color="hsl(var(--text-2))"/>
 }
