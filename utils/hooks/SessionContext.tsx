@@ -8,7 +8,7 @@ import { redirect, useRouter } from 'next/navigation';
 import { Tables } from '../supabase/database.types';
 
 interface ProfileContextProps {
-    account: Tables<'account'> | any[];
+    account: Tables<'account'>;
     saveAccount: (account: any) => void;
     //project
     //sessions
@@ -24,7 +24,7 @@ interface SessionContextProps {
     login: (email: any, password: any) => void;
     signup: (email: any, password: any) => void;
     logout: () => void;
-    profile: ProfileContextProps | {};
+    profile: ProfileContextProps;
 }
 
 
@@ -33,19 +33,27 @@ const SessionContext = createContext<SessionContextProps>({
     session: null,
     supabase: createClient(),
     isLoading: true,
-    login: () => {}, signup: () => {}, logout: () => {},
-    profile: {}
+    login: () => {}, 
+    signup: () => {}, 
+    logout: () => {},
+    profile: {  account: {
+        bio: '',
+        created_at: '',
+        display_name: '',
+        last_joined: '',
+        username: '',
+        uuid: '',
+    }, saveAccount: () => {} } // Fix: Update the account property to null
 });
 
 export const SessionProvider = ({ children }: any) => {
     const [user, setUser] = useState<any>();
     const [session, setSession] = useState<any>();
     const [isLoading, setLoading] = useState(true);
-    const [account, setAccount] = useState<ProfileContextProps["account"]>();
+    const [account, setAccount] = useState<ProfileContextProps["account"] | any>();
 
     const supabase = useContext(SessionContext).supabase;
     const router = useRouter()
-    console.log('1')
     /**
      * To prevent updating duplicate sessions
      * @param callback 
@@ -93,12 +101,12 @@ export const SessionProvider = ({ children }: any) => {
         const requestAccount = async () => {
             if (!user) return;
 
-            const { data, error } = await supabase.from('account').select('*').eq('uuid', user.id).limit(1); //because of RLS, should only return the user's row
+            const { data, error } = await supabase.from('account').select('*').eq('uuid', user.id).single(); //because of RLS, should only return the user's row
             if (error) throw error;
             setAccount(data);
         }
         requestAccount()
-    }, [account]);
+    }, [user]);
 
     /**
      * For any consumer profile to make a change to the profiles in the database
@@ -106,12 +114,13 @@ export const SessionProvider = ({ children }: any) => {
      */
     const saveAccount = async (accountData: ProfileContextProps['account']) => {
         if (!user) return redirect("/login") //unauthenticated can not access save account
-        
-        const { error } = await supabase.from('account').upsert(accountData);
+
+        const newData = { ...account, ...accountData }
+        const { error } = await supabase.from('account').update(newData).eq('uuid', newData.uuid);
         if (error) {
             throw error;
         }
-        setAccount(accountData);
+        setAccount(newData);
     }
 
     const login = async (email: any, password: any) => {
@@ -157,10 +166,7 @@ export const SessionProvider = ({ children }: any) => {
         supabase,
         isLoading,
         login, signup, logout,
-        profile: { 
-            account, 
-            saveAccount 
-        }
+        profile: { account, saveAccount}
     };
     return (<SessionContext.Provider value={contextObject}>
         {children}

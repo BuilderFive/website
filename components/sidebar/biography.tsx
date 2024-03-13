@@ -1,3 +1,5 @@
+"use client"
+
 
 import React, { use } from "react";
 import { createClient } from "@/utils/supabase/server";
@@ -5,11 +7,8 @@ import { EditDescription } from "./client/edit-biography";
 import { useSession } from "@/utils/hooks/SessionContext";
 
 export default function Biography(){
-    const user_uuid = 'f0dc83ac-50c7-48d4-9f01-276a4c10947f' //example
-    const display_name = 'Wrys'
-    const username = 'My Phung'
-    const description = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-    
+    const { uuid, display_name, username, bio } = useSession().profile.account
+
     //compare user id to user
     
     //to check if this is another person's profile you're viewing (to know whether to put edit button in)
@@ -17,7 +16,7 @@ export default function Biography(){
         "use client"
         const { user } = useSession()
 
-        return user?.id == user_uuid
+        return user?.id == uuid
     }
     
     const Header = () => {
@@ -30,7 +29,7 @@ export default function Biography(){
     }
     const Description = () => {
         return <div className="mt-2 font-light text-xs text-text-100">
-            <EditDescription description={description}/>
+            <EditDescription bio={bio}/>
         </div>
     }
 
