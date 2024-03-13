@@ -10,21 +10,8 @@ import { useEffect, useState } from "react";
  * @returns Viewable UI
  */
 export default function Providers({children}: any) {
-    const supabase = createClient()
-
-    const [signedIn, setSignedIn] = useState(false);
-    const [supabaseClient, setSupabaseClient] = useState(supabase);
-
-    useEffect(()=>{
-      const fetchUser = async () => {
-        const { data: { user }, } = await supabase.auth.getUser();
-        setSignedIn(user ? true : false)
-        setSupabaseClient(supabase)
-      }
-      fetchUser()
-    },[signedIn, supabaseClient])
-
-    return (signedIn ? <SessionProvider supabase={supabase}>
+    const supabase = createClient();
+    return <SessionProvider supabase={supabase}>
         {children}
-    </SessionProvider> : <>{children}</>)
+    </SessionProvider>
 }

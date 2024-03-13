@@ -2,6 +2,7 @@
 
 import { useContext, useState, useEffect, createContext } from 'react';
 import { AuthChangeEvent, Session, SupabaseClient, User } from '@supabase/supabase-js';
+import { createClient } from '../supabase/client';
 
 interface SessionContextProps {
     user: User | null;
@@ -43,15 +44,17 @@ export const SessionProvider = ({ children, supabase }: any) => {
                 setSession(session);
                 setUser(session?.user);
                 setLoading(false);
+                console.log(session)
             }
         };
         const { data: listener } = onAuthStateChange(async(event : any, newSession: any) => {
             console.log(event)
-            if (session) {
+            if (newSession) {
                 //useMemo to compare old and new Data to avoid unecessary loading
                 setSession(newSession);
                 setUser(newSession?.user);            
                 setLoading(false);
+                console.log(session)
             }
         });
         requestSession();
