@@ -50,7 +50,6 @@ export const SessionProvider = ({ children, supabase }: any) => {
         });
 
         requestSession();
-
         return () => {
             listener?.subscription.unsubscribe();
         };
@@ -62,7 +61,7 @@ export const SessionProvider = ({ children, supabase }: any) => {
         supabase,
     };
     return (<SessionContext.Provider value={contextObject}>
-        {!loading ? children : null}
+        {children}
     </SessionContext.Provider>);
 };
 
