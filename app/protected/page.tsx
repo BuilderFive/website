@@ -4,6 +4,7 @@ import { createClient } from "@/utils/supabase/server";
 import FetchDataSteps from "@/components/tutorial/FetchDataSteps";
 import Header from "@/components/Header";
 import { redirect } from "next/navigation";
+import { UserNotFoundModal } from "@/components/UserNotFoundModal";
 
 export default async function ProtectedPage() {
   const supabase = createClient();
@@ -52,6 +53,7 @@ export default async function ProtectedPage() {
           </a>
         </p>
       </footer>
+      <UserNotFoundModal />
     </div>
   );
 }
