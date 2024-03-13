@@ -36,6 +36,7 @@ interface RootProps {
     children?: ReactNode
     // any props that come into the component for future
 }
+
 export const SideBarRoot = ({children, ...props}: RootProps) => {
     return (
         <div className="z-10 flex flex-col items-center pb-20 bg-primary-300 w-fit h-full min-h-screen" {...props}>

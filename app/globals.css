@@ -51,5 +51,8 @@
 }
 
 #create-project::placeholder {
-  color: theme('colors.primary.300');
+  color: theme('colors.text.200');
+}
+#edit-desc::placeholder {
+  color: theme('colors.text.100');
 }

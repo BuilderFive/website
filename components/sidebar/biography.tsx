@@ -1,9 +1,7 @@
 
 import React from "react";
 import { createClient } from "@/utils/supabase/server";
-import { MdEdit } from "react-icons/md";
-import { UUID } from "crypto";
-import EditButton from "./client/edit-button";
+import { EditDescription } from "./client/edit-biography";
 
 export default function Biography(){
     const user_uuid = 'f0dc83ac-50c7-48d4-9f01-276a4c10947f' //example
@@ -35,17 +33,15 @@ export default function Biography(){
     
     const Header = () => {
         return <div className="flex flex-col pb-3 border-b border-solid border-primary-300">
-            <div className="flex justify-between font-extrabold text-text-100">
-                <div className="flex-auto self-start text-xl">{display_name}</div>
-                <EditButton/>
-               
+            <div className="flex self-start font-extrabold text-text-100">
+                <div className="flex-auto self-start text-xl">{display_name}</div>               
             </div>
             <div className="mt-1 text-xs font-regular text-text-100">{username}</div>
         </div>
     }
     const Description = () => {
         return <div className="mt-2 font-light text-xs text-text-100">
-            {description}
+            <EditDescription description={description}/>
         </div>
     }
 

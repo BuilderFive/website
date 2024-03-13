@@ -3,7 +3,6 @@ import React, { MouseEventHandler, useState } from "react";
 import { createClient } from "@/utils/supabase/server";
 import { MdEdit } from "react-icons/md";
 import { UUID } from "crypto";
-import EditButton from "./client/edit-button";
 import { ProjectCard } from "./client/view-project-button";
 import { CreateProject } from "./client/create-project-button";
 
