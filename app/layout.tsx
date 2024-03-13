@@ -1,8 +1,6 @@
 import { GeistSans } from "geist/font/sans";
 import "./globals.css";
-import Provider from "@/app/Providers";
-import { createClient } from "@/utils/supabase/client";
-import { useEffect, useState } from "react";
+import { SessionProvider } from "@/utils/hooks/SessionContext";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -24,7 +22,7 @@ export default function RootLayout({
     <html lang="en" className={GeistSans.className}>
       <body className="bg-background text-foreground">
         <main className="min-h-screen flex flex-col items-center">
-            <Provider> {children} </Provider>
+            <SessionProvider>{children}</SessionProvider>
         </main>
       </body>
     </html>

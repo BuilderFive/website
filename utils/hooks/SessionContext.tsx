@@ -3,23 +3,33 @@
 import { useContext, useState, useEffect, createContext } from 'react';
 import { AuthChangeEvent, Session, SupabaseClient, User } from '@supabase/supabase-js';
 import { createClient } from '../supabase/client';
+import Index from '@/app/page';
+import { redirect, useRouter } from 'next/navigation';
 
 interface SessionContextProps {
     user: User | null;
     session: Session | null;
-    supabase: SupabaseClient | null;
+    supabase: SupabaseClient
+    isLoading: boolean;
+    login: (email: any, password: any) => void;
+    signup: (email: any, password: any) => void;
+    logout: () => void;
 }
 
 const SessionContext = createContext<SessionContextProps>({
-  user: null,
-  session: null,
-  supabase: null,
+    user: null,
+    session: null,
+    supabase: createClient(),
+    isLoading: true,
+    login: () => {}, signup: () => {}, logout: () => {}
 });
 
-export const SessionProvider = ({ children, supabase }: any) => {
+export const SessionProvider = ({ children }: any) => {
     const [user, setUser] = useState<any>();
     const [session, setSession] = useState<any>();
-    const [loading, setLoading] = useState(true);
+    const [isLoading, setLoading] = useState(true);
+    const supabase = useContext(SessionContext).supabase;
+    const router = useRouter()
 
     /**
      * To prevent updating duplicate sessions
@@ -44,7 +54,6 @@ export const SessionProvider = ({ children, supabase }: any) => {
                 setSession(session);
                 setUser(session?.user);
                 setLoading(false);
-                console.log(session)
             }
         };
         const { data: listener } = onAuthStateChange(async(event : any, newSession: any) => {
@@ -54,20 +63,60 @@ export const SessionProvider = ({ children, supabase }: any) => {
                 setSession(newSession);
                 setUser(newSession?.user);            
                 setLoading(false);
-                console.log(session)
             }
         });
         requestSession();
         return () => {
             listener?.subscription.unsubscribe();
         };
-    }, [supabase]);
+    }, []);
+
+
+    const login = async (email: any, password: any) => {
+        const { data, error } = await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
+        if (error) {
+          return redirect("/login?message=Could not authenticate user");
+        }
+        if (data.user?.id) {
+            setUser(data.user);
+            setSession(data.session);
+        }
+
+        return redirect("/");
+    };
+    
+    const signup = async (email: any, password: any) => {
+        const { data, error } = await supabase.auth.signUp({
+            email,
+            password,
+            options: {
+            emailRedirectTo: `/auth/callback`,
+            },
+        });
+        if (error) {
+            return redirect("/login?message=Could not authenticate user");
+        }
+        return redirect("/login?message=Check email to continue sign in process");
+    };
+
+    const logout = () => {
+        supabase.auth.signOut()
+        setSession(null);
+        setUser(null);
+        router.push("/login");
+    }
 
     const contextObject = {
         user,
         session,
         supabase,
+        isLoading,
+        login, signup, logout
     };
+    //replace null with loading skeleton
     return (<SessionContext.Provider value={contextObject}>
         {children}
     </SessionContext.Provider>);
