@@ -1,13 +1,19 @@
 "use client"
 
 import { useContext, useState, useEffect, createContext } from 'react';
-import { AuthChangeEvent, Session, User } from '@supabase/supabase-js';
+import { AuthChangeEvent, Session, SupabaseClient, User } from '@supabase/supabase-js';
 import { createClient } from '../supabase/client';
 
-const SessionContext = createContext({
+interface SessionContextProps {
+    user: User | null;
+    session: Session | null;
+    supabase: SupabaseClient | null;
+}
+
+const SessionContext = createContext<SessionContextProps>({
   user: null,
   session: null,
-  supabase: {},
+  supabase: null,
 });
 
 export const SessionProvider = ({ children, supabase }: any) => {
@@ -38,22 +44,24 @@ export const SessionProvider = ({ children, supabase }: any) => {
                 setSession(session);
                 setUser(session?.user);
                 setLoading(false);
+                console.log(session)
             }
         };
         const { data: listener } = onAuthStateChange(async(event : any, newSession: any) => {
-            if (session) {
+            console.log(event)
+            if (newSession) {
                 //useMemo to compare old and new Data to avoid unecessary loading
                 setSession(newSession);
                 setUser(newSession?.user);            
                 setLoading(false);
+                console.log(session)
             }
         });
-
         requestSession();
         return () => {
             listener?.subscription.unsubscribe();
         };
-    }, []);
+    }, [supabase]);
 
     const contextObject = {
         user,
