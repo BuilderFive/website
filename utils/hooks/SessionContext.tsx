@@ -5,6 +5,7 @@ import { AuthChangeEvent, Session, SupabaseClient, User } from '@supabase/supaba
 import { createClient } from '../supabase/client';
 import Index from '@/app/page';
 import { redirect, useRouter } from 'next/navigation';
+import { Tables } from '../supabase/database.types';
 
 interface SessionContextProps {
     user: User | null;
@@ -14,6 +15,10 @@ interface SessionContextProps {
     login: (email: any, password: any) => void;
     signup: (email: any, password: any) => void;
     logout: () => void;
+}
+interface ProfileContextProps {
+    account: Tables<'account'>;
+
 }
 
 const SessionContext = createContext<SessionContextProps>({
@@ -116,7 +121,6 @@ export const SessionProvider = ({ children }: any) => {
         isLoading,
         login, signup, logout
     };
-    //replace null with loading skeleton
     return (<SessionContext.Provider value={contextObject}>
         {children}
     </SessionContext.Provider>);

@@ -3,11 +3,12 @@
  */
 
 import { UUID } from "crypto";
-import { ReactNode } from "react";
+import { ReactNode, createContext } from "react";
 import { JsxElement } from "typescript";
 import Biography from "./biography";
 import Projects from "./projects";
 import Options from "./options";
+import { Database, Tables } from "@/utils/supabase/database.types";
 
 
 export const SideBarProfile = () => {
@@ -37,7 +38,9 @@ interface RootProps {
     // any props that come into the component for future
 }
 
+//create a context api for the sidebar
 export const SideBarRoot = ({children, ...props}: RootProps) => {
+
     return (
         <div className="z-10 flex flex-col items-center pb-20 bg-primary-300 w-fit h-full min-h-screen" {...props}>
             {children}

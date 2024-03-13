@@ -1,34 +1,23 @@
 
-import React from "react";
+import React, { use } from "react";
 import { createClient } from "@/utils/supabase/server";
 import { EditDescription } from "./client/edit-biography";
+import { useSession } from "@/utils/hooks/SessionContext";
 
 export default function Biography(){
     const user_uuid = 'f0dc83ac-50c7-48d4-9f01-276a4c10947f' //example
     const display_name = 'Wrys'
     const username = 'My Phung'
     const description = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-
+    
     //compare user id to user
-
-    //this needs to be replaced with a useContext at protected route, 
-    //so supabase API calls don't need to be async
-    const supabase = createClient();
     
     //to check if this is another person's profile you're viewing (to know whether to put edit button in)
     const isViewingOther = async() => {
-        const { data, error } = await supabase
-        .from('account')
-        .select('*')
-        .eq('uuid', user_uuid).limit(1).single()
-            
-        if (error) {
-            console.log(error)
-            return error
-        }
-        console.log(data?.username)
-        
-        //return user_uuid == data?.wusername
+        "use client"
+        const { user } = useSession()
+
+        return user?.id == user_uuid
     }
     
     const Header = () => {
