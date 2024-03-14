@@ -2,8 +2,7 @@
 
 import { useSession } from "@/utils/hooks/SessionContext";
 import { useEffect, useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 
 export const UserNotFoundModal = () => {
   const session_info: { user: any; session: any; supabase: any } = useSession();
@@ -89,7 +88,6 @@ export const UserNotFoundModal = () => {
           </div>
         </div>
       )}
-      <ToastContainer />
     </div>
   );
 };
