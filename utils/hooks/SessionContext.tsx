@@ -12,6 +12,7 @@ interface ProfileContextProps {
     saveAccount: (account: any) => void;
     projects: Tables<'project'>[];
     saveProject: (project: any) => void;
+    createProject: (name: string) => void;
     //project
     //sessions
     //notes
@@ -56,6 +57,7 @@ const SessionContext = createContext<SessionContextProps>({
             uuid: '',
         }],
         saveProject: () => {},
+        createProject: () => {},
         //saveProject: () => {},
     } // Fix: Update the account property to null
 });
@@ -165,6 +167,7 @@ export const SessionProvider = ({ children }: any) => {
     }
 
 
+    //for editing projects
     const saveProject = async (projectData: ProfileContextProps['projects']) => {
         if (!user) return redirect("/login") //unauthenticated can not access save account
 
@@ -176,6 +179,38 @@ export const SessionProvider = ({ children }: any) => {
             throw error;
         }
         setProjects(newData);
+    }
+
+    const createProject = async (name: string) => {
+        if (!user) return redirect("/login") //unauthenticated can not access save account
+
+        const insertProject = async(name: string) => {
+            //can add more fields to insert query later
+            const { data, error } = await supabase.from('project').insert({ name }).select().single();
+            if (error) {
+                throw error;
+            }
+            return data;
+        }
+        const insertTeammates = async(project_uuid: string) => {
+            //can add more fields to insert query later
+            const { data, error } = await supabase.from('teammates').insert({ project_uuid, account_uuid: user.id });
+            if (error) {
+                throw error;
+            }
+            return data
+        }
+        const newProject = () => insertProject(name)
+            .then((data) => {
+                console.log(data)
+                if (data) {
+                    insertTeammates(data.uuid)
+                    setProjects([...projects, data]);
+                } else {
+                    console.log('wah wah')
+                }
+            })
+        newProject()
     }
 
     const login = async (email: any, password: any) => {
@@ -221,7 +256,7 @@ export const SessionProvider = ({ children }: any) => {
         supabase,
         isLoading,
         login, signup, logout,
-        profile: { account, saveAccount, projects, saveProject}
+        profile: { account, saveAccount, projects, saveProject, createProject}
     };
     return (<SessionContext.Provider value={contextObject}>
         {children}
