@@ -1,7 +1,8 @@
 import { SideBarProfile } from "@/components/sidebar/sidebars";
-import { useSession, useSupabaseClient } from "@/utils/hooks/SessionContext";
+// import { useSession, useSupabaseClient } from "@/utils/hooks/SessionContext";
 import AuthProvider from "../auth/auth-provider";
 import Map from "../../components/Map";
+// import isMobile from "../utils/hooks/Helper";
 
 export default function Test() {
   return (
