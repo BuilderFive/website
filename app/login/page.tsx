@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import Link from "next/link";
 import { headers } from "next/headers";
@@ -6,25 +6,26 @@ import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { SubmitButton } from "./submit-button";
 import { useSession } from "@/utils/hooks/SessionContext";
+import SignInGoogle from "./signInGoogle";
 
 export default function Login({
   searchParams,
 }: {
   searchParams: { message: string };
 }) {
-  const session = useSession()
+  const session = useSession();
 
   const handleLogin = async (formData: any) => {
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
     await session.login(email, password);
-  }
+  };
 
   const handleSignup = async (formData: any) => {
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
     await session.signup(email, password);
-  }
+  };
 
   return (
     <div className="flex-1 flex flex-col w-full px-8 sm:max-w-md justify-center gap-2">
@@ -88,6 +89,11 @@ export default function Login({
             {searchParams.message}
           </p>
         )}
+
+        <br />
+        <br />
+
+        <SignInGoogle />
       </form>
     </div>
   );
