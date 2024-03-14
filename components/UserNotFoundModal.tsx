@@ -5,9 +5,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 export const UserNotFoundModal = () => {
-  const session_info: { user: any; session: any; supabase: any } = useSession();
-
-  const { user, session, supabase } = session_info;
+  const { user, session, supabase } = useSession();
 
   const [accountExists, setAccountExists] = useState(true);
   const [username, setUsername] = useState("");
@@ -19,9 +17,10 @@ export const UserNotFoundModal = () => {
       // insert the account into supabase
       const { data, error } = await supabase
         .from("account")
-        .insert([{ username, uuid: user.id }]);
+        .insert([{ username, uuid: user?.id }]); 
 
       if (error) {
+        console.log(error)
         toast("Only lowercase alphanumeric or username already exists");
       } else {
         toast("Account created successfully");
