@@ -13,7 +13,7 @@ export type Database = {
         Row: {
           bio: string | null
           created_at: string
-          display_name: string
+          display_name: string | null
           last_joined: string
           username: string
           uuid: string
@@ -21,15 +21,15 @@ export type Database = {
         Insert: {
           bio?: string | null
           created_at?: string
-          display_name: string
+          display_name?: string | null
           last_joined?: string
-          username: string
+          username?: string
           uuid?: string
         }
         Update: {
           bio?: string | null
           created_at?: string
-          display_name?: string
+          display_name?: string | null
           last_joined?: string
           username?: string
           uuid?: string
@@ -44,23 +44,47 @@ export type Database = {
           }
         ]
       }
-      ideas: {
+      location: {
         Row: {
+          coordinates: string
+          id: string
+          map: string
           name: string
+        }
+        Insert: {
+          coordinates: string
+          id?: string
+          map?: string
+          name: string
+        }
+        Update: {
+          coordinates?: string
+          id?: string
+          map?: string
+          name?: string
+        }
+        Relationships: []
+      }
+      notes: {
+        Row: {
+          created_at: string | null
           project_uuid: string
           thought: string
+          title: string
           uuid: string
         }
         Insert: {
-          name: string
+          created_at?: string | null
           project_uuid: string
           thought: string
+          title: string
           uuid?: string
         }
         Update: {
-          name?: string
+          created_at?: string | null
           project_uuid?: string
           thought?: string
+          title?: string
           uuid?: string
         }
         Relationships: [
@@ -73,25 +97,31 @@ export type Database = {
           }
         ]
       }
-      location: {
+      project: {
         Row: {
-          coordinates: string
-          id: string
+          created_at: string
+          image: string
+          is_public: boolean
           name: string
+          uuid: string
         }
         Insert: {
-          coordinates: string
-          id?: string
+          created_at?: string
+          image: string
+          is_public?: boolean
           name: string
+          uuid?: string
         }
         Update: {
-          coordinates?: string
-          id?: string
+          created_at?: string
+          image?: string
+          is_public?: boolean
           name?: string
+          uuid?: string
         }
         Relationships: []
       }
-      meeting: {
+      sessions: {
         Row: {
           duration: unknown
           goal: string
@@ -129,30 +159,6 @@ export type Database = {
             referencedColumns: ["uuid"]
           }
         ]
-      }
-      project: {
-        Row: {
-          created_at: string
-          image: string
-          is_public: boolean
-          name: string
-          uuid: string
-        }
-        Insert: {
-          created_at?: string
-          image: string
-          is_public?: boolean
-          name: string
-          uuid?: string
-        }
-        Update: {
-          created_at?: string
-          image?: string
-          is_public?: boolean
-          name?: string
-          uuid?: string
-        }
-        Relationships: []
       }
       teammates: {
         Row: {
