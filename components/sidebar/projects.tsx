@@ -1,4 +1,4 @@
-
+"use client"
 import React, { MouseEventHandler, useState } from "react";
 import { createClient } from "@/utils/supabase/server";
 import { MdEdit } from "react-icons/md";
@@ -16,23 +16,6 @@ export default function Projects(){
 
     //this needs to be replaced with a useContext at protected route, 
     //so supabase API calls don't need to be async
-    const supabase = createClient();
-    
-    //to check if this is another person's profile you're viewing (to know whether to put edit button in)
-    const isViewingOther = async() => {
-        const { data, error } = await supabase
-        .from('account')
-        .select('*')
-        .eq('uuid', user_uuid).limit(1).single()
-            
-        if (error) {
-            console.log(error)
-            return error
-        }
-        console.log(data?.username)
-        
-        //return user_uuid == data?.wusername
-    }
 
     const projects = [
         { imgSrc: "https://cdn.builder.io/api/v1/image/assets/TEMP/598177ccaf8683fb4afec7ade358481407f58390dec016067eb6b3341f227ed9?apiKey=2f9dd5fc40c1433bb238bffdc3e08217&", title: "Campus Project", updates: 12, altText: "Project Thumbnail" },

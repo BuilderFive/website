@@ -11,25 +11,25 @@ export type Database = {
     Tables: {
       account: {
         Row: {
-          bio: string | null
+          bio: string
           created_at: string
-          display_name: string | null
+          display_name: string
           last_joined: string
           username: string
           uuid: string
         }
         Insert: {
-          bio?: string | null
+          bio?: string
           created_at?: string
-          display_name?: string | null
+          display_name?: string
           last_joined?: string
           username?: string
           uuid?: string
         }
         Update: {
-          bio?: string | null
+          bio?: string
           created_at?: string
-          display_name?: string | null
+          display_name?: string
           last_joined?: string
           username?: string
           uuid?: string

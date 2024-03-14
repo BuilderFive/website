@@ -1,23 +1,13 @@
 "use client"
 
 
-import React, { use } from "react";
+import React, { Dispatch, SetStateAction, use, useState } from "react";
 import { createClient } from "@/utils/supabase/server";
 import { EditDescription } from "./client/edit-biography";
 import { useSession } from "@/utils/hooks/SessionContext";
 
-export default function Biography(){
+export default function Biography() {
     const { uuid, display_name, username, bio } = useSession().profile.account
-
-    //compare user id to user
-    
-    //to check if this is another person's profile you're viewing (to know whether to put edit button in)
-    const isViewingOther = async() => {
-        "use client"
-        const { user } = useSession()
-
-        return user?.id == uuid
-    }
     
     const Header = () => {
         return <div className="flex flex-col pb-3 border-b border-solid border-primary-300">
