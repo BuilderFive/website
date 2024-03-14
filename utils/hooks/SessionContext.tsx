@@ -10,6 +10,8 @@ import { Tables } from '../supabase/database.types';
 interface ProfileContextProps {
     account: Tables<'account'>;
     saveAccount: (account: any) => void;
+    projects: Tables<'project'>[];
+    saveProject: (project: any) => void;
     //project
     //sessions
     //notes
@@ -36,14 +38,26 @@ const SessionContext = createContext<SessionContextProps>({
     login: () => {}, 
     signup: () => {}, 
     logout: () => {},
-    profile: {  account: {
-        bio: '',
-        created_at: '',
-        display_name: '',
-        last_joined: '',
-        username: '',
-        uuid: '',
-    }, saveAccount: () => {} } // Fix: Update the account property to null
+    profile: {  
+        account: {
+            bio: '',
+            created_at: '',
+            display_name: '',
+            last_joined: '',
+            username: '',
+            uuid: '',
+        }, 
+        saveAccount: () => {},
+        projects: [{
+            created_at: '',
+            is_public: true,
+            name: '',
+            image: '',
+            uuid: '',
+        }],
+        saveProject: () => {},
+        //saveProject: () => {},
+    } // Fix: Update the account property to null
 });
 
 export const SessionProvider = ({ children }: any) => {
@@ -51,6 +65,7 @@ export const SessionProvider = ({ children }: any) => {
     const [session, setSession] = useState<any>();
     const [isLoading, setLoading] = useState(true);
     const [account, setAccount] = useState<ProfileContextProps["account"] | any>();
+    const [projects, setProjects] = useState<ProfileContextProps["projects"] | any>();
 
     const supabase = useContext(SessionContext).supabase;
     const router = useRouter()
@@ -105,7 +120,33 @@ export const SessionProvider = ({ children }: any) => {
             if (error) throw error;
             setAccount(data);
         }
+        //go to teammates table, query all project uuid with matching account
+        // uuid, get all projects from project table
+        const requestProject = async () => {
+            if (!user) return;
+
+            const fetchProject_UUIDS = async () => {
+                const { data, error } = await supabase
+                    .from('teammates')
+                    .select('project_uuid')
+                    .eq('account_uuid', user.id);
+                if (error) throw error;
+                return data;
+            }
+            const fetchProject = async () => {
+                const uuids = await fetchProject_UUIDS();
+                const { data, error } = await supabase
+                    .from('project')
+                    .select('*')
+                    .in('uuid', uuids.map((uuid: any) => uuid.project_uuid));
+                if (error) throw error;
+                setProjects(data);
+            }
+            fetchProject()
+            //setAccount(data);
+        }
         requestAccount()
+        requestProject()
     }, [user]);
 
     /**
@@ -121,6 +162,20 @@ export const SessionProvider = ({ children }: any) => {
             throw error;
         }
         setAccount(newData);
+    }
+
+
+    const saveProject = async (projectData: ProfileContextProps['projects']) => {
+        if (!user) return redirect("/login") //unauthenticated can not access save account
+
+        //this needs some work
+        //project is not a single object, it is an array of objects
+        const newData = { ...projects, ...projectData }
+        const { error } = await supabase.from('project').update(newData);
+        if (error) {
+            throw error;
+        }
+        setProjects(newData);
     }
 
     const login = async (email: any, password: any) => {
@@ -166,7 +221,7 @@ export const SessionProvider = ({ children }: any) => {
         supabase,
         isLoading,
         login, signup, logout,
-        profile: { account, saveAccount}
+        profile: { account, saveAccount, projects, saveProject}
     };
     return (<SessionContext.Provider value={contextObject}>
         {children}
