@@ -1,25 +1,36 @@
 /**
  * This file contains all of the sidebars (components on the right of the screen)
  */
-
+"use client"
 import { UUID } from "crypto";
-import { ReactNode, createContext } from "react";
-import { JsxElement } from "typescript";
+import { ReactNode, createContext, useEffect, useState } from "react";
 import Biography from "./biography";
 import Projects from "./projects";
 import Options from "./options";
-import { Database, Tables } from "@/utils/supabase/database.types";
+import { useSession } from "@/utils/hooks/SessionContext";
 
 
 export const SideBarProfile = () => {
-    return (
-        <SideBarProfileTemplate>
-          <Biography/>
-          <Projects/>
-          <Options/>
-        </SideBarProfileTemplate>
-      );
+
+    //account is loading
+    const { account } = useSession().profile;
+
+    //in the future create a global promise that will be resolved when all of it's data is loaded
+    
+    /*const promise = new Promise((resolve, reject) => {
+        if(account) resolve(account);
+        else reject("Account not loaded");
+    })*/
+    //getGlobalPromise().then((account) => {
+
+    return account ? <SideBarProfileTemplate>
+        <Biography/>
+        <Projects/>
+    </SideBarProfileTemplate> : null
+       //should be a skeleton sidebar instead
 }
+//<Projects/>
+          //<Options/>
 
 export const profile_other = () => {
 

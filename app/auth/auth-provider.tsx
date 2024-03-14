@@ -10,5 +10,5 @@ export default function AuthProvider({children}: { children: React.ReactNode }) 
         return redirect("/login?message=Denied access, please login");
     }
 
-    return user ? children : null; 
+    return user ? children : <div>Waiting for authentication...</div>; 
 }
