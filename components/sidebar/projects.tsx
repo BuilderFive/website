@@ -10,7 +10,7 @@ import { useSession } from "@/utils/hooks/SessionContext";
 export default function Projects(){
     const { projects } = useSession().profile
     const isEmpty = (projects == undefined || projects.length == 0)
-    
+
     const Header = () => {
         return <div className="flex flex-col pb-3 border-b border-solid border-primary-300 text-text-100">
             <div className="self-start text-base font-extrabold whitespace-nowrap"> Projects & Ideas </div>

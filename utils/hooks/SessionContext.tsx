@@ -202,7 +202,6 @@ export const SessionProvider = ({ children }: any) => {
         }
         const newProject = () => insertProject(name)
             .then((data) => {
-                console.log(data)
                 if (data) {
                     insertTeammates(data.uuid)
                     setProjects([...projects, data]);
