@@ -21,9 +21,9 @@ export const UserNotFoundModal = () => {
 
       if (error) {
         console.log(error)
-        toast("Only lowercase alphanumeric or username already exists");
+        toast.error("Only lowercase alphanumeric or username already exists");
       } else {
-        toast("Account created successfully");
+        toast.success("Account created successfully");
         setAccountExists(true);
       }
     } catch (error) {
