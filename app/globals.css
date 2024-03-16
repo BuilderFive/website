@@ -14,9 +14,14 @@
     --primary-background-3: 216, 26%, 47%;
     
     --activity-online: 104, 50%, 60%;
+
+    --success-1: 116, 53%, 37%;
+    --error-1: 1, 53%, 47%;
+
     
     --text-1: 0, 0%, 98%;
     --text-2: 216, 26%, 47%;
+    --text-3: 216, 0%, 50%;
   }
 
   @media (prefers-color-scheme: dark) {
@@ -51,6 +56,12 @@
 }
 
 #create-project::placeholder {
+  color: theme('colors.text.200');
+}
+#create-note-title::placeholder {
+  color: theme('colors.text.200');
+}
+#create-note-thought::placeholder {
   color: theme('colors.text.200');
 }
 #edit-desc::placeholder {

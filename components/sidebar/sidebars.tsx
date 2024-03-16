@@ -36,14 +36,6 @@ export const profile_other = () => {
 
 }
 
-export const logger = (viewingWork?: UUID, currentWork?: UUID) => {
-
-}
-
-export const logger_other = (viewingWork?: UUID) => {
-
-}
-
 interface RootProps {
     children?: ReactNode
     // any props that come into the component for future
@@ -65,7 +57,7 @@ export const SideBarProfileTemplate = ({children, ...props}: RootProps) => {
             <header className="self-stretch w-full bg-neutral-300 h-[150px]"/>
 
             {/**This needs to be replaced with an actual avatar icon, not an image */}
-            <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/8c81bfa4d44eebdf16d353193e4476403a48eedc520f2194ae32665b6b7948fa?apiKey=2f9dd5fc40c1433bb238bffdc3e08217&" alt="User Avatar" className="absolute z-10 mt-[48px] aspect-square w-[150px]" />
+            <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/8c81bfa4d44eebdf16d353193e4476403a48eedc520f2194ae32665b6b7948fa?apiKey=2f9dd5fc40c1433bb238bffdc3e08217&" alt="User Avatar" className="absolute mt-[48px] aspect-square w-[150px]" />
             
             <div className="p-[12px] items-center flex flex-col space-y-[18px] mt-[54px]" {...props}>
                 <div className="min-w-[180px]">

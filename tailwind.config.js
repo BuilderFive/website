@@ -23,7 +23,14 @@ module.exports = {
         },
         text: {
           100: "hsl(var(--text-1))",
-          200: "hsl(var(--text-2))"
+          200: "hsl(var(--text-2))",
+          300: "hsl(var(--text-3))"
+        },
+        success: {
+          100: "hsl(var(--success-1))",
+        },
+        error: {
+          100: "hsl(var(--error-1))",
         },
         activity: {
           "online": "hsl(var(--activity-online))",
