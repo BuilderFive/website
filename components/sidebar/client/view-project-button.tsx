@@ -3,7 +3,7 @@ import Modal from "@/components/modal/modals";
 import { MouseEventHandler, useEffect, useState } from "react";
 import { IoIosArrowBack, IoMdClose } from "react-icons/io";
 import Switch from "react-switch";
-import { FaLock, FaLockOpen } from "react-icons/fa";
+import { FaLock, FaLockOpen, FaTrash } from "react-icons/fa";
 import { IoIosInformationCircleOutline } from "react-icons/io";
 import { Tooltip } from 'react-tooltip'
 import { CreateNote } from "./create-note-button";
@@ -32,7 +32,7 @@ export const ProjectCard = ({ uuid, created_at, name, image, is_public, notes }:
     const [isHovering, setHovering] = useState<boolean>(false)
     const [isOpen, setIsOpen] = useState(false);
     const [isPublic, setPublic] = useState(is_public);
-    const { updatePackagedProjects, getProject } = useSession().profile //get from the context API
+    const { updatePackagedProjects, getProject, deleteProject } = useSession().profile //get from the context API
     const [cachedNotes, setCachedNotes] = useState<Tables<'notes'>[]>([])
     const [hasChanged, setHasChanged] = useState(false)
 
@@ -68,10 +68,28 @@ export const ProjectCard = ({ uuid, created_at, name, image, is_public, notes }:
 
         setHasChanged(true)
     }
-    const SaveButton = () => {
-        return <div onClick={closeModal} className="absolute bottom-2 right-2 cursor-pointer gap-4 p-[8px] rounded-md bg-primary-100">
-            <FaSave id="save" color='hsl(var(--success-1))' className="w-6 h-6" />
-            <Tooltip anchorSelect="#save" content="Save recent changes"/>
+    const Options = () => {
+        const SaveButton = () => {
+            return <div onClick={closeModal} className="cursor-pointer gap-4 p-[8px] rounded-md w-fit h-fit">
+                <FaSave id="save" color='hsl(var(--success-1))' className="w-6 h-6" />
+                <Tooltip anchorSelect="#save" content="Save recent changes"/>
+            </div>
+        }
+        const TrashButton = () => {
+
+            return (
+                <div onClick={()=>deleteProject(uuid)} className="cursor-pointer gap-4 p-[8px] rounded-md w-fit h-fit">
+                    <FaTrash id="trash" color="hsl(var(--error-1))" className="w-6 h-6" />
+                    <Tooltip anchorSelect="#trash" content="Delete project" />
+                </div>
+            );
+        };
+
+        <TrashButton />
+
+        return <div className="justify-between flex flex-row bg-primary-200">
+            <TrashButton/>
+            {hasChanged && <SaveButton/>}
         </div>
     }
 
@@ -123,10 +141,11 @@ export const ProjectCard = ({ uuid, created_at, name, image, is_public, notes }:
                 <div className="modal-content space-y-[8px]">
                     <div className="p-4 bg-primary-200 rounded-md justify-between flex flex-row">
                         <div className="flex flex-col">
-                            <h1 className="text-2xl text-text-100 font-bold flex flex-row">
-                                {name} <div className="text-text-200">&nbsp;[{notes.length}]</div>
-                            </h1>
-                            <h6 className="text-[14px] text-text-200 font-regular">
+                            <div className="flex text-2xl text-text-100 font-bold overflow-auto">
+                                <div className="overflow-hidden text-ellipsis">{name}</div>
+                            </div>
+                            <h6 className="text-[14px] text-text-200 font-regular flex flex-row">
+                                <div className="text-text-200">[{notes.length}]&nbsp;</div>
                                 Created {new Date(created_at).toDateString()}
                             </h6>
                         </div>
@@ -151,15 +170,16 @@ export const ProjectCard = ({ uuid, created_at, name, image, is_public, notes }:
                         {/* Display notes here */}
                         <NotesList/>
                     </div>
+                    <Options/>
                 </div>
-                {hasChanged && <SaveButton/>}
+               
             </Modal>
 
 
-            <div onClick={handleClick} onMouseOver={()=>setHovering(true)} onMouseLeave={()=>setHovering(false)} className={`flex gap-1 mb-[4px] py-2.5 pr-14 whitespace-nowrap box-content bg-primary-100 rounded-lg ${isHovering && 'shadow-lg'} cursor-pointer`}>
+            <div onClick={handleClick} onMouseOver={()=>setHovering(true)} onMouseLeave={()=>setHovering(false)} className={`flex gap-1 mb-[4px] py-2.5 whitespace-nowrap box-content bg-primary-100 rounded-lg ${isHovering && 'shadow-lg'} cursor-pointer `}>
                 <IoIosArrowBack className="shrink-0 my-auto w-4 aspect-square" color="hsl(var(--text-2))"/>
-                <div className="flex flex-col flex-1 justify-center">
-                    <div className="text-xs font-semibold">{name}</div>
+                <div className="flex flex-col justify-center w-full overflow-auto border border-[4px] mr-[10px]">
+                    <div className="text-xs font-semibold overflow-hidden text-ellipsis">{name}</div>
                     <div className="mt-1 text-xs">Updated X times</div>
                 </div>
             </div>

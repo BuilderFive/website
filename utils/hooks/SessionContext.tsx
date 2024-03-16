@@ -18,6 +18,7 @@ interface ProfileContextProps {
     createNote: (title: string, thought: string, project_uuid: string) => void;
     getProject: (uuid: string) => PackagedProjectProps;
     updatePackagedProjects: (projectData: PackagedProjectProps) => void;
+    deleteProject: (uuid: string) => void;
     //sessions
     //location
     //teammates
@@ -86,6 +87,7 @@ const SessionContext = createContext<SessionContextProps>({
             }
         },
         updatePackagedProjects: () => {},
+        deleteProject: () => {},
 
     }
 });
@@ -323,6 +325,20 @@ export const SessionProvider = ({ children }: any) => {
         newProject()
     }
 
+    const deleteProject = async (uuid: string) => {
+        if (!user) return redirect("/login"); // unauthenticated can not access delete project
+
+        // Delete project from the database
+        const { data, error } = await supabase.from('project').delete().eq('uuid', uuid).select();
+        if (error) {
+            throw error;
+        }
+
+        // Remove project from the projects state
+        const updatedProjects = projects.filter((project: any) => project.uuid !== uuid);
+        setProjects(updatedProjects);
+    };
+
     const createNote = async (title: string, thought: string, project_uuid: string) => {
         if (!user) return redirect("/login") //unauthenticated can not access save account
 
@@ -386,7 +402,7 @@ export const SessionProvider = ({ children }: any) => {
         supabase,
         isLoading,
         login, signup, logout,
-        profile: { account, saveAccount, projects, saveProject, createProject, createNote, getProject, updatePackagedProjects }
+        profile: { account, saveAccount, projects, saveProject, deleteProject, createProject, createNote, getProject, updatePackagedProjects }
     };
     return (<SessionContext.Provider value={contextObject}>
         {children}
