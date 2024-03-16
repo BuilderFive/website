@@ -16,7 +16,7 @@ const Modal: React.FC<ModalProps> = ({ onClose, children, isOpen }) => {
 
     return ( <> {isOpen && (
         <div id="modal-overlay" className="fixed inset-0 bg-gray-600 bg-opacity-70 overflow-y-auto h-full w-full flex items-center justify-center">
-            <div id="modal-content" className="p-8 relative h-[50%] w-[50%] min-w-[300px] max-w-[720px] max-h-[640px] shadow-lg rounded-lg bg-primary-300">
+            <div id="modal-content" className="p-8 relative min-h-[50%] w-[50%] min-w-[300px] max-w-[720px] max-h-[640px] shadow-lg rounded-lg bg-primary-300">
                 {children}
                 <CloseButton/>
             </div>

@@ -1,21 +1,24 @@
 "use client"
 
-import { useContext, useState, useEffect, createContext } from 'react';
+import { useContext, useState, useEffect, createContext, useRef } from 'react';
 import { AuthChangeEvent, Session, SupabaseClient, User } from '@supabase/supabase-js';
 import { createClient } from '../supabase/client';
 import Index from '@/app/page';
 import { redirect, useRouter } from 'next/navigation';
 import { Tables } from '../supabase/database.types';
 
+type PackagedProjectProps = Tables<'project'> & { notes: Tables<'notes'>[] };
+
 interface ProfileContextProps {
     account: Tables<'account'>;
     saveAccount: (account: any) => void;
-    projects: Tables<'project'>[];
+    projects: PackagedProjectProps[]
     saveProject: (project: any) => void;
     createProject: (name: string) => void;
-    //project
+    createNote: (title: string, thought: string, project_uuid: string) => void;
+    getProject: (uuid: string) => PackagedProjectProps;
+    updatePackagedProjects: (projectData: PackagedProjectProps) => void;
     //sessions
-    //notes
     //location
     //teammates
 }
@@ -55,11 +58,36 @@ const SessionContext = createContext<SessionContextProps>({
             name: '',
             image: '',
             uuid: '',
+            notes: [{
+                created_at: '',
+                project_uuid: '',
+                thought: '',
+                title: '',
+                uuid: '',
+            }],
         }],
         saveProject: () => {},
         createProject: () => {},
-        //saveProject: () => {},
-    } // Fix: Update the account property to null
+        createNote: () => {},
+        getProject: () => {
+            return {
+                created_at: '',
+                is_public: true,
+                name: '',
+                image: '',
+                uuid: '',
+                notes: [{
+                    created_at: '',
+                    project_uuid: '',
+                    thought: '',
+                    title: '',
+                    uuid: '',
+                }],
+            }
+        },
+        updatePackagedProjects: () => {},
+
+    }
 });
 
 export const SessionProvider = ({ children }: any) => {
@@ -124,7 +152,7 @@ export const SessionProvider = ({ children }: any) => {
         }
         //go to teammates table, query all project uuid with matching account
         // uuid, get all projects from project table
-        const requestProject = async () => {
+        const requestProjects = async () => {
             if (!user) return;
 
             const fetchProject_UUIDS = async () => {
@@ -135,20 +163,58 @@ export const SessionProvider = ({ children }: any) => {
                 if (error) throw error;
                 return data;
             }
-            const fetchProject = async () => {
-                const uuids = await fetchProject_UUIDS();
+
+            /**
+             * 
+             * @param uuids 
+             * @returns all projects owned by user
+             */
+            const fetchProject = async (uuids: { project_uuid: any; }[]) => {
                 const { data, error } = await supabase
                     .from('project')
                     .select('*')
                     .in('uuid', uuids.map((uuid: any) => uuid.project_uuid));
                 if (error) throw error;
-                setProjects(data);
+                return data;
             }
-            fetchProject()
-            //setAccount(data);
+
+            /**
+             * 
+             * @param uuids 
+             * @returns all notes owned by user
+             */
+            const fetchNotes = async (uuids: { project_uuid: any; }[]) => {
+                const { data, error } = await supabase
+                    .from('notes')
+                    .select('*')
+                    .in('project_uuid', uuids.map((uuid: any) => uuid.project_uuid));
+                if (error) throw error;
+                return data;
+            }
+            
+            //create helper function to package notes as an object under project objects
+            const packageNotes = (projects: any, notes: any) => {
+                const packagedProjects = projects.map((project: { uuid: string; }) => {
+                    const projectNotes = notes.filter((note: { project_uuid: string; }) => note.project_uuid === project.uuid);
+                    return {
+                        ...project,
+                        notes: projectNotes,
+                    };
+                });
+                return packagedProjects;
+            };
+
+            const uuids = await fetchProject_UUIDS();
+
+            //fetch data for all user's projects and notes
+            const projects = await fetchProject(uuids);
+            const notes = await fetchNotes(uuids);
+            //package them into an array of objects
+            const packagedProjects = packageNotes(projects, notes);
+            setProjects(packagedProjects);
         }
         requestAccount()
-        requestProject()
+        requestProjects()
     }, [user]);
 
     /**
@@ -166,20 +232,59 @@ export const SessionProvider = ({ children }: any) => {
         setAccount(newData);
     }
 
+    /**
+     * This function is to package the projects and notes objects into one object
+     * @param projectData 
+     */
+    const updatePackagedProjects = async (projectData: PackagedProjectProps) => {
+
+        const updatedProjects = projects.map((project: any) => {
+            if (project.uuid === projectData.uuid) {
+                
+                return {
+                    ...project,
+                    ...projectData
+                };
+            }
+            return project;
+        });
+        setProjects(updatedProjects);
+    };
 
     //for editing projects
-    const saveProject = async (projectData: ProfileContextProps['projects']) => {
-        if (!user) return redirect("/login") //unauthenticated can not access save account
+    const saveProject = async (projectData: PackagedProjectProps) => {
+        if (!user) return redirect("/login"); // unauthenticated can not access save account
+        //removes the notes objects in order to save the project
+        const updatedProject = (project: PackagedProjectProps) => {
+            const { notes, ...restProject } = project;
+            console.log(restProject) // Remove the spread operator before restProject
+            return restProject;
+        }
+        
+        /* removes all notes from all projects
+        const updatedProjects = projects.map((project: any) => {
+            const { notes, ...restProject } = project;
 
-        //this needs some work
-        //project is not a single object, it is an array of objects
-        const newData = { ...projects, ...projectData }
-        const { error } = await supabase.from('project').update(newData);
+            if (project.uuid === projectData.uuid) {
+                const { notes: projectDataNotes, ...restProjectData } = projectData; // Optionally remove notes from projectData if it exists
+                return {
+                    ...restProject,
+                    ...restProjectData
+                };
+            }
+            return project;
+        });*/
+        const input = updatedProject(projectData)
+        const { data, error } = await supabase.from('project').update(input).eq('uuid', input.uuid).select();
         if (error) {
             throw error;
         }
-        setProjects(newData);
-    }
+        return data
+    };
+
+    const getProject = (uuid: string) => {
+        return projects.find((project: any) => project.uuid === uuid);
+    };
 
     const createProject = async (name: string) => {
         if (!user) return redirect("/login") //unauthenticated can not access save account
@@ -204,13 +309,39 @@ export const SessionProvider = ({ children }: any) => {
             .then((data) => {
                 if (data) {
                     insertTeammates(data.uuid)
-                    setProjects([...projects, data]);
+
+                    //so to add the notes object to the new project object
+                    const addedNotesObj = {
+                        ...data,
+                        notes: []
+                    };
+                    setProjects([...projects, addedNotesObj]);
                 } else {
                     console.log('wah wah')
                 }
             })
         newProject()
     }
+
+    const createNote = async (title: string, thought: string, project_uuid: string) => {
+        if (!user) return redirect("/login") //unauthenticated can not access save account
+
+        //can add more fields to insert query later
+        const { data, error } = await supabase.from('notes').insert({ title, thought, project_uuid }).select().single();
+        if (error) {
+            throw error;
+        }
+        //need to add a part to save the new project data to the state
+        const currentProject = getProject(project_uuid)
+        const newData: PackagedProjectProps = {
+            ...currentProject,
+            notes: [...currentProject.notes, data]
+        };
+
+        //updatePackagedProjects(newData); //this updates projects when a new note is made
+        //^ bad if we don't want to rerender child components dependent on a parent who uses projects
+        return data as Tables<'notes'>;
+    };
 
     const login = async (email: any, password: any) => {
         const { data, error } = await supabase.auth.signInWithPassword({
@@ -255,7 +386,7 @@ export const SessionProvider = ({ children }: any) => {
         supabase,
         isLoading,
         login, signup, logout,
-        profile: { account, saveAccount, projects, saveProject, createProject}
+        profile: { account, saveAccount, projects, saveProject, createProject, createNote, getProject, updatePackagedProjects }
     };
     return (<SessionContext.Provider value={contextObject}>
         {children}

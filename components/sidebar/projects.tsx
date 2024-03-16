@@ -1,5 +1,5 @@
 "use client"
-import React, { MouseEventHandler, useState } from "react";
+import React, { MouseEventHandler, useEffect, useState } from "react";
 import { createClient } from "@/utils/supabase/server";
 import { MdEdit } from "react-icons/md";
 import { UUID } from "crypto";
@@ -11,6 +11,8 @@ export default function Projects(){
     const { projects } = useSession().profile
     const isEmpty = (projects == undefined || projects.length == 0)
 
+    //problem is everytime a new note is made, the projects variable changes because we packaged both note and project into one variable
+    //so when we only want to see updated notes, we can't because everything re-renders
     const Header = () => {
         return <div className="flex flex-col pb-3 border-b border-solid border-primary-300 text-text-100">
             <div className="self-start text-base font-extrabold whitespace-nowrap"> Projects & Ideas </div>
