@@ -7,7 +7,7 @@ import Index from '@/app/page';
 import { redirect, useRouter } from 'next/navigation';
 import { Tables } from '../supabase/database.types';
 
-type PackagedProjectProps = Tables<'project'> & { notes: Tables<'notes'>[] };
+export type PackagedProjectProps = Tables<'project'> & { notes: Tables<'notes'>[] };
 
 interface ProfileContextProps {
     account: Tables<'account'>;

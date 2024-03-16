@@ -67,21 +67,21 @@ export type Database = {
       }
       notes: {
         Row: {
-          created_at: string | null
+          created_at: string
           project_uuid: string
           thought: string
           title: string
           uuid: string
         }
         Insert: {
-          created_at?: string | null
+          created_at?: string
           project_uuid: string
           thought: string
           title: string
           uuid?: string
         }
         Update: {
-          created_at?: string | null
+          created_at?: string
           project_uuid?: string
           thought?: string
           title?: string
@@ -100,21 +100,21 @@ export type Database = {
       project: {
         Row: {
           created_at: string
-          image: string
+          image: string | null
           is_public: boolean
           name: string
           uuid: string
         }
         Insert: {
           created_at?: string
-          image: string
+          image?: string | null
           is_public?: boolean
-          name: string
+          name?: string
           uuid?: string
         }
         Update: {
           created_at?: string
-          image?: string
+          image?: string | null
           is_public?: boolean
           name?: string
           uuid?: string
@@ -169,7 +169,7 @@ export type Database = {
         Insert: {
           account_uuid: string
           project_uuid: string
-          role: string
+          role?: string
         }
         Update: {
           account_uuid?: string
