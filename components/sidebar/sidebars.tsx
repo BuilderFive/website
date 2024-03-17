@@ -50,21 +50,23 @@ interface RootProps {
 export const SideBarRoot = ({children, ...props}: RootProps) => {
 
     return (
-        <div className="z-10 flex flex-col items-center pb-20 bg-primary-300 w-fit h-full min-h-screen" {...props}>
+        <div className="relative overflow-y-scroll z-1 flex flex-col items-center pb-20 bg-primary-300 w-fit h-screen" {...props}>
             {children}
         </div>
       );
 }
 
+//prevent overscrolling on the y axis
+
 export const SideBarProfileTemplate = ({children, ...props}: RootProps) => {
     return (
         <SideBarRoot>
-            <header className="self-stretch w-full bg-neutral-300 h-[150px]"/>
-
-            {/**This needs to be replaced with an actual avatar icon, not an image */}
-            <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/8c81bfa4d44eebdf16d353193e4476403a48eedc520f2194ae32665b6b7948fa?apiKey=2f9dd5fc40c1433bb238bffdc3e08217&" alt="User Avatar" className="absolute mt-[48px] aspect-square w-[150px]" />
+            <div className="relative w-full bg-neutral-300 min-h-[180px] justify-center flex">
+                {/**This needs to be replaced with an actual avatar icon, not an image */}
+                <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/8c81bfa4d44eebdf16d353193e4476403a48eedc520f2194ae32665b6b7948fa?apiKey=2f9dd5fc40c1433bb238bffdc3e08217&" alt="User Avatar" className="absolute top-[80px] aspect-square w-[150px]" />
+            </div>
             
-            <div className="p-[12px] items-center flex flex-col mt-[54px]" {...props}>
+            <div className="p-[12px] items-center mt-[54px]" {...props}>
                 <div className="min-w-[180px] space-y-[12px]">
                     {children}
                 </div>
