@@ -5,11 +5,10 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 export const UserNotFoundModal = () => {
-  const { user, session, supabase } = useSession();
-
-  const [accountExists, setAccountExists] = useState(true);
+  const { profile, supabase, user } = useSession();
   const [username, setUsername] = useState("");
 
+  //this should be a session context method!!!
   async function createAccount() {
     try {
       // grab the username from the modal
@@ -17,54 +16,22 @@ export const UserNotFoundModal = () => {
       // insert the account into supabase
       const { data, error } = await supabase
         .from("account")
-        .insert([{ username, uuid: user?.id }]); 
+        .insert([{ username, uuid: user?.id }]).select("*"). single(); 
 
       if (error) {
-        console.log(error)
         toast.error("Only lowercase alphanumeric or username already exists");
       } else {
         toast.success("Account created successfully");
-        setAccountExists(true);
+        profile.saveAccount(data)
       }
     } catch (error) {
       console.error(error);
     }
   }
 
-  useEffect(() => {
-    const fetchAccount = async () => {
-      try {
-        // wait for the user to load
-        if (!user) {
-          return;
-        }
-
-        // get the information for the user
-        const { data: account, error } = await supabase
-          .from("account")
-          .select("*")
-          .eq("uuid", user.id);
-
-        if (error) {
-          throw new Error(error.message);
-        }
-
-        console.log(account);
-
-        if (!account || account.length === 0) {
-          setAccountExists(false);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    fetchAccount();
-  }, [supabase, user]);
-
   return (
     <div>
-      {accountExists ? null : (
+      {profile.account ? null : (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center">
           <div className="p-8 border w-96 shadow-lg rounded-md bg-white">
             <div className="flex flex-col items-center justify-center h-full text-black">

@@ -96,7 +96,7 @@ export const SessionProvider = ({ children }: any) => {
     const [user, setUser] = useState<any>();
     const [session, setSession] = useState<any>();
     const [isLoading, setLoading] = useState(true);
-    const [account, setAccount] = useState<ProfileContextProps["account"] | any>();
+    const [account, setAccount] = useState<ProfileContextProps["account"] | any>(undefined);
     const [projects, setProjects] = useState<ProfileContextProps["projects"] | any>();
 
     const supabase = useContext(SessionContext).supabase;
@@ -148,9 +148,16 @@ export const SessionProvider = ({ children }: any) => {
         const requestAccount = async () => {
             if (!user) return;
 
-            const { data, error } = await supabase.from('account').select('*').eq('uuid', user.id).single(); //because of RLS, should only return the user's row
-            if (error) throw error;
-            setAccount(data);
+            try {
+                const { data, error } = await supabase.from('account').select('*').eq('uuid', user.id).single(); //because of RLS, should only return the user's row
+                if (error) {
+                    throw error;
+                } else {
+                    setAccount(data);
+                }
+            } catch (error) {
+                
+            }
         }
         //go to teammates table, query all project uuid with matching account
         // uuid, get all projects from project table
