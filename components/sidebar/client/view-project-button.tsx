@@ -1,5 +1,5 @@
 "use client"
-import Modal from "@/components/modal/modals";
+import Modal from "@/components/modals/project-modal";
 import { MouseEventHandler, useEffect, useState } from "react";
 import { IoIosArrowBack, IoMdClose } from "react-icons/io";
 import Switch from "react-switch";
@@ -152,7 +152,7 @@ export const ProjectCard = ({ uuid, created_at, name, image, is_public, notes }:
                         
                         <div className="flex flex-col space-y-[2px] items-center justify-center">
                             <label>
-                            <Switch className="border" height={24} width={48} onChange={handleChange}
+                            <Switch height={24} width={48} onChange={handleChange}
                                 uncheckedHandleIcon={<div className="h-full w-full flex items-center justify-center"><FaLock color={'hsl(var(--text-2))'} className="h-[40%] w-[40%]" /></div>}
                                 checkedHandleIcon={<div className="h-full w-full flex items-center justify-center"><FaLockOpen color={'hsl(var(--text-2))'} className="h-[40%] w-[40%]" /></div>}
                                 checked={isPublic}/>
