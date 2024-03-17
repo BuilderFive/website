@@ -5,7 +5,7 @@ import { useSession } from "@/utils/hooks/SessionContext";
 import { redirect } from "next/navigation";
 
 export default function AuthProvider({children}: { children: React.ReactNode }) {
-    const { user } = useSession();
+    const { user } = useSession()
 
     const failedAuth = () => {
         return redirect("/login?message=Denied access, please login");
@@ -13,7 +13,15 @@ export default function AuthProvider({children}: { children: React.ReactNode }) 
 
     //send to failedAuth if takes longer than 10 seconds to load in
 
-    //use account-complete-modal to check if the user has an account
+    //Open UserNotFoundModal after 2 seconds 
+    // not the best approach, should logically figure out 
+    //if user needs to see modal or not
 
-    return user ? <>{children} <UserNotFoundModal/></> : <div>Waiting for authentication...</div>; 
+    return user ? 
+    <>
+        {children} 
+        {setTimeout(() => {
+            <UserNotFoundModal/>
+        }, 2000)}
+    </> : <div>Waiting for authentication...</div>; 
 }

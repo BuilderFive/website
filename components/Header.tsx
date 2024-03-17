@@ -7,3 +7,11 @@
     *    and toggle overlay to see live updates
     * 3. Create chat message input
     */
+
+export const Header = () => {
+    return (
+        <div className="h-[48px] w-screen bg-text-200">
+            hi
+        </div>
+    )
+}
