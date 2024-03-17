@@ -10,5 +10,7 @@ export default function AuthProvider({children}: { children: React.ReactNode }) 
         return redirect("/login?message=Denied access, please login");
     }
 
+    //send to failedAuth if takes longer than 10 seconds to load in
+
     return user ? children : <div>Waiting for authentication...</div>; 
 }

@@ -3,7 +3,7 @@
 
 import React, { MouseEventHandler, useState } from "react";
 import { createClient } from "@/utils/supabase/server";
-import OptionsButton from "./client/toggle-activity-button";
+import OptionsButton from "./toggle-activity-button";
 
 export default function Options(){ 
     const Header = () => {

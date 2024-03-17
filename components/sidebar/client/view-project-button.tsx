@@ -87,7 +87,7 @@ export const ProjectCard = ({ uuid, created_at, name, image, is_public, notes }:
 
         <TrashButton />
 
-        return <div className="justify-between flex flex-row bg-primary-200">
+        return <div className="justify-between flex flex-row bg-primary-200 rounded-md p-[4px]">
             <TrashButton/>
             {hasChanged && <SaveButton/>}
         </div>
@@ -176,11 +176,11 @@ export const ProjectCard = ({ uuid, created_at, name, image, is_public, notes }:
             </Modal>
 
 
-            <div onClick={handleClick} onMouseOver={()=>setHovering(true)} onMouseLeave={()=>setHovering(false)} className={`flex gap-1 mb-[4px] py-2.5 whitespace-nowrap box-content bg-primary-100 rounded-lg ${isHovering && 'shadow-lg'} cursor-pointer `}>
+            <div onClick={handleClick} onMouseOver={()=>setHovering(true)} onMouseLeave={()=>setHovering(false)} className={`flex mt-[4px] py-2.5 whitespace-nowrap box-content bg-primary-100 rounded-lg ${isHovering && 'shadow-lg'} cursor-pointer `}>
                 <IoIosArrowBack className="shrink-0 my-auto w-4 aspect-square" color="hsl(var(--text-2))"/>
-                <div className="flex flex-col justify-center w-full overflow-auto border border-[4px] mr-[10px]">
+                <div className="flex flex-col justify-center w-full overflow-auto mr-[10px]">
                     <div className="text-xs font-semibold overflow-hidden text-ellipsis">{name}</div>
-                    <div className="mt-1 text-xs">Updated X times</div>
+                    <div className="mt-1 text-xs">Updated {notes.length} times</div>
                 </div>
             </div>
         </div>

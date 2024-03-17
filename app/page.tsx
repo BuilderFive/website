@@ -6,9 +6,9 @@ import Link from "next/link";
 
 export default function Index() {
 
-  const { isLoading, supabase, logout} = useSession()
+  const { user, supabase, logout} = useSession()
 
-  return (!isLoading ? 
+  return (user ? 
     <div>
       <div>Signed in</div>
         <button

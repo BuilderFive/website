@@ -6,8 +6,9 @@ import { UUID } from "crypto";
 import { ReactNode, createContext, useEffect, useState } from "react";
 import Biography from "./biography";
 import Projects from "./projects";
-import Options from "./options";
+import Options from "./client/options";
 import { useSession } from "@/utils/hooks/SessionContext";
+import { LogOutButton } from "./client/logout-button";
 
 
 export const SideBarProfile = () => {
@@ -26,6 +27,10 @@ export const SideBarProfile = () => {
     return account && projects ? <SideBarProfileTemplate>
         <Biography/>
         <Projects/>
+        <div className="flex justify-end">
+            <LogOutButton/>
+        </div>
+        
     </SideBarProfileTemplate> : <SideBarProfileTemplate>
         <></>
     </SideBarProfileTemplate>
@@ -59,8 +64,8 @@ export const SideBarProfileTemplate = ({children, ...props}: RootProps) => {
             {/**This needs to be replaced with an actual avatar icon, not an image */}
             <img loading="lazy" src="https://cdn.builder.io/api/v1/image/assets/TEMP/8c81bfa4d44eebdf16d353193e4476403a48eedc520f2194ae32665b6b7948fa?apiKey=2f9dd5fc40c1433bb238bffdc3e08217&" alt="User Avatar" className="absolute mt-[48px] aspect-square w-[150px]" />
             
-            <div className="p-[12px] items-center flex flex-col space-y-[18px] mt-[54px]" {...props}>
-                <div className="min-w-[180px]">
+            <div className="p-[12px] items-center flex flex-col mt-[54px]" {...props}>
+                <div className="min-w-[180px] space-y-[12px]">
                     {children}
                 </div>
             </div>

@@ -26,7 +26,7 @@ export default function Projects(){
             ))}
         </div>
     }
-    return(<section className="flex flex-col px-1.5 pt-4 pb-2 mt-5 w-full bg-primary-200 rounded-lg max-w-[180px] text-text-200">
+    return(<section className="flex flex-col px-1.5 pt-4 pb-2 w-full bg-primary-200 rounded-lg max-w-[180px] text-text-200">
         <Header/>
         {!isEmpty && <DisplayProject/>}
         <CreateProject/>
