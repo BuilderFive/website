@@ -72,7 +72,7 @@ const Header = () => {
       <div>
         {/* Signed Out */}
         <Link href="/login"
-          className="text-sm text-primary-100 top-8 py-2 px-4 justify-center rounded-md no-underline bg-primary-300 border border-white border-[2px] hover:border-primary-200">
+          className="text-sm text-primary-100 top-8 py-2 px-4 justify-center rounded-md no-underline bg-primary-300 border border-primary-100 border-[2px] hover:border-primary-200">
           Login
         </Link>
       </div>
@@ -82,7 +82,7 @@ const Header = () => {
   
   return <div className={`w-full fixed top-0 z-10 ${isTop ? "transparent" : "bg-primary-300 shadow-lg"} h-[64px] flex flex-col justify-center`}>
     <div className="flex flex-row justify-between mx-[24px] items-center">
-      <h1 className={`text-3xl font-bold ${isTop ? "text-primary-200" : "text-primary-100"}`}>Innov8rs.io</h1>
+      <h1 className={`text-3xl font-bold ${isTop ? "text-text-100" : "text-primary-100"}`}>Innov8rs.io</h1>
       <AccountComponent/>
     </div>
     
@@ -115,15 +115,15 @@ const Hero = () => {
   };
 
   return (
-    <div className="bg-black bg-opacity-50 min-h-screen flex justify-center items-center">
-      <div className="text-center text-white flex flex-col items-center">
-        <h1 className="text-6xl font-bold mb-4">Innov8rs.io</h1>
-        <p className="text-2xl mb-8 max-w-[70%]">
-          Pioneering the way for the next generation of innovators
+    <div className="bg-black bg-opacity-70 min-h-screen flex justify-center items-center">
+      <div className="text-center text-white flex flex-col items-center mt-[4rem]">
+        <h1 className="text-[3rem] font-bold max-w-[70%] mb-4 leading-[4rem]">For the next generation of innovators</h1>
+        <p className="text-[2rem] max-w-[480px] mb-8">
+          Discover impactful on-campus resources and peers for your projects
         </p>
-        <div className="mb-4 flex flex-col gap-[8px]">
+        <div className="mb-4 flex flex-col gap-[8px] mx-[24px]">
           <div className="p-[12px] rounded-md bg-white">
-            <p className="self-start flex text-lg font-black text-primary-200">
+            <p className="self-start flex text-lg font-black text-primary-300">
               * Invites limited to first 100 emails
             </p>
             <form action={handleInsert}>
