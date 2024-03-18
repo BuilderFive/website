@@ -124,7 +124,7 @@ const Hero = () => {
         <div className="mb-4 flex flex-col gap-[8px] mx-[24px]">
           <div className="p-[12px] rounded-md bg-white">
             <p className="self-start flex text-lg font-black text-primary-300">
-              * Invites limited to first 100 emails
+              * First 100 emails get invited
             </p>
             <form action={handleInsert}>
               <input value={email} onChange={(e) => setEmail(e.target.value)} autoFocus
