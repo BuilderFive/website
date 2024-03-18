@@ -71,15 +71,17 @@ export const ProjectCard = ({ uuid, created_at, name, image, is_public, notes }:
     const Options = () => {
         const SaveButton = () => {
             return <div onClick={closeModal} className="cursor-pointer gap-4 p-[8px] rounded-md w-fit h-fit">
-                <FaSave id="save" color='hsl(var(--success-1))' className="w-6 h-6" />
+                <FaSave id="save" color='hsl(var(--success-1))' className="w-6 h-6 focus:outline-none" />
                 <Tooltip anchorSelect="#save" content="Save recent changes"/>
             </div>
         }
         const TrashButton = () => {
-
+            const [clicked, setClicked] = useState(false)
             return (
-                <div onClick={()=>deleteProject(uuid)} className="cursor-pointer gap-4 p-[8px] rounded-md w-fit h-fit">
-                    <FaTrash id="trash" color="hsl(var(--error-1))" className="w-6 h-6" />
+                <div onClick={()=>setClicked(!clicked)} className="cursor-pointer gap-4 p-[8px] rounded-md w-fit h-fit flex flex-row gap-[12px]">
+                    <FaTrash id="trash" color="hsl(var(--error-1))" className="w-6 h-6 focus:outline-none" />
+                    {clicked && <button onClick={()=>deleteProject(uuid)} className="text-md border text-error-100 p-[2px] px-[4px] border-error-100 rounded-md">Confirm</button>}
+                    {clicked && <button onClick={()=>setClicked(false)} className="text-md text-text-100 p-[2px] px-[4px] bg-success-100 rounded-md">Cancel</button>}
                     <Tooltip anchorSelect="#trash" content="Delete project" />
                 </div>
             );
