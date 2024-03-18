@@ -8,7 +8,7 @@ import { Header } from "@/components/Header";
 export default function Test() {
   return (
     <AuthProvider>
-      <div className="flex-1 w-full flex flex-col gap-20 items-center">
+      <div className="flex-1 w-screen flex flex-col gap-20 items-center">
         {/**
          *  <div className="fixed z-10">
               <Header />

@@ -22,10 +22,10 @@ export default function AuthProvider({children}: { children: React.ReactNode }) 
         checkAccount()
 
         if (user) {
-            return <>
+            return <div>
                 {children}
                 {accountShown && <UserNotFoundModal/>}
-            </>
+            </div>
         } else {
             return <LoadingScreen/>
         }
