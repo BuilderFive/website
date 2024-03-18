@@ -3,25 +3,44 @@
 import { UserNotFoundModal } from "@/components/modals/account-complete-modal";
 import { useSession } from "@/utils/hooks/SessionContext";
 import { redirect } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function AuthProvider({children}: { children: React.ReactNode }) {
-    const { user } = useSession()
+    const { account, user } = useSession().isLoading
+    const [accountShown, setAccountShown] = useState(false)
+
+    //super scuffed, should delete some day and make better
+    const LoadedComponent = () => {
+        const checkAccount = () => {
+            setTimeout(() => {
+                console.log(account)
+                if (!account) {
+                    setAccountShown(true)
+                }
+            }, 2000)
+        }
+        checkAccount()
+
+        if (user) {
+            return <>
+                {children}
+                {accountShown && <UserNotFoundModal/>}
+            </>
+        } else {
+            return <LoadingScreen/>
+        }
+    }
 
     const failedAuth = () => {
         return redirect("/login?message=Denied access, please login");
     }
 
-    //send to failedAuth if takes longer than 10 seconds to load in
+    const LoadingScreen = () => {
+        return <div className="min-h-screen min-w-screen items-center justify-center">
+            <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-gray-900"></div>
+            Loading
+        </div>
+    }
 
-    //Open UserNotFoundModal after 2 seconds 
-    // not the best approach, should logically figure out 
-    //if user needs to see modal or not
-
-    return user ? 
-    <>
-        {children} 
-        {setTimeout(() => {
-            <UserNotFoundModal/>
-        }, 2000)}
-    </> : <div>Waiting for authentication...</div>; 
+    return <LoadedComponent/>
 }

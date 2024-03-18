@@ -27,7 +27,7 @@ interface SessionContextProps {
     user: User | null;
     session: Session | null;
     supabase: SupabaseClient
-    isLoading: boolean;
+    isLoading: { user: boolean, account: boolean };
     login: (email: any, password: any) => void;
     signup: (email: any, password: any) => void;
     logout: () => void;
@@ -39,7 +39,7 @@ const SessionContext = createContext<SessionContextProps>({
     user: null,
     session: null,
     supabase: createClient(),
-    isLoading: true,
+    isLoading: { user: false, account: false},
     login: () => {}, 
     signup: () => {}, 
     logout: () => {},
@@ -91,16 +91,21 @@ const SessionContext = createContext<SessionContextProps>({
 
     }
 });
-
+//TO DO LATER: Create a promise state that handles the loading of the user, account, and projects. When finished should be used
 export const SessionProvider = ({ children }: any) => {
     const [user, setUser] = useState<any>();
     const [session, setSession] = useState<any>();
-    const [isLoading, setLoading] = useState(true);
     const [account, setAccount] = useState<ProfileContextProps["account"] | any>(undefined);
     const [projects, setProjects] = useState<ProfileContextProps["projects"] | any>();
+    const isLoading = useRef({
+        user: false,
+        account: false,
+        projects: false
+    });
 
     const supabase = useContext(SessionContext).supabase;
     const router = useRouter()
+
     /**
      * To prevent updating duplicate sessions
      * @param callback 
@@ -124,7 +129,7 @@ export const SessionProvider = ({ children }: any) => {
             if(session) {
                 setSession(session);
                 setUser(session?.user);
-                setLoading(false);
+                isLoading.current.user = true;
             }
         };
         const { data: listener } = onAuthStateChange(async(event : any, newSession: any) => {
@@ -133,7 +138,7 @@ export const SessionProvider = ({ children }: any) => {
                 //useMemo to compare old and new Data to avoid unecessary loading
                 setSession(newSession);
                 setUser(newSession?.user);            
-                setLoading(false);
+                isLoading.current.user = true;
             }
         });
 
@@ -148,16 +153,14 @@ export const SessionProvider = ({ children }: any) => {
         const requestAccount = async () => {
             if (!user) return;
 
-            try {
-                const { data, error } = await supabase.from('account').select('*').eq('uuid', user.id).single(); //because of RLS, should only return the user's row
-                if (error) {
-                    throw error;
-                } else {
-                    setAccount(data);
-                }
-            } catch (error) {
-                
+            const { data, error } = await supabase.from('account').select('*').eq('uuid', user.id); //because of RLS, should only return the user's row
+            
+            if (error) {
+                throw error;
+            } else {
+                setAccount(data);
             }
+            isLoading.current.account = data.length > 0 ? true : false;
         }
         //go to teammates table, query all project uuid with matching account
         // uuid, get all projects from project table
@@ -221,6 +224,7 @@ export const SessionProvider = ({ children }: any) => {
             //package them into an array of objects
             const packagedProjects = packageNotes(projects, notes);
             setProjects(packagedProjects);
+            isLoading.current.projects = true;
         }
         requestAccount()
         requestProjects()
@@ -407,7 +411,7 @@ export const SessionProvider = ({ children }: any) => {
         user,
         session,
         supabase,
-        isLoading,
+        isLoading: isLoading.current,
         login, signup, logout,
         profile: { account, saveAccount, projects, saveProject, deleteProject, createProject, createNote, getProject, updatePackagedProjects }
     };

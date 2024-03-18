@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 export const UserNotFoundModal = () => {
-  const { profile, supabase, user } = useSession();
+  const { profile, supabase, user, isLoading } = useSession();
   const [username, setUsername] = useState("");
   const [display_name, setDisplayName] = useState("");
 
@@ -33,7 +33,7 @@ export const UserNotFoundModal = () => {
 
   return (
     <div>
-      {!profile.account ? (
+      {!isLoading.account ? (
         <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex items-center justify-center">
           <div className="p-8 border w-96 shadow-lg rounded-md bg-white">
             <div className="flex flex-col items-center justify-center h-full text-black">
