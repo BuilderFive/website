@@ -6,6 +6,7 @@ export default function UConnMap() {
   return (
     <>
       <img src="map.jpg" alt="Workplace" useMap="#workmap" />
+      
     </>
   );
 }
