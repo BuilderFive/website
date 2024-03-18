@@ -8,30 +8,6 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 export default function Index() {
-  const { supabase } = useSession();
-  const [email, setEmail] = useState("");
-
-  const handleInsert = async () => {
-    const verifyEmail = () => {
-      if (email === "") {
-        toast.error("Email cannot be empty!");
-        return false;
-      }
-      return true;
-    }
-    if (!verifyEmail()) return;
-    try {
-      const { data, error } = await supabase.from("rsvp").insert([{ email }]);
-      if (error) {
-        toast.error("Already registered!");
-      } else {
-        toast.success("Registered!");
-      }
-    } catch (error) {
-      toast.error("Error registering!");
-    }
-  };
-
   return (
     <div className="size-full relative flex flex-col">
       {/* Header */}
@@ -114,6 +90,30 @@ const Header = () => {
 }
 
 const Hero = () => {
+  const { supabase } = useSession();
+  const [email, setEmail] = useState("");
+
+  const handleInsert = async () => {
+    const verifyEmail = () => {
+      if (email === "") {
+        toast.error("Email cannot be empty!");
+        return false;
+      }
+      return true;
+    }
+    if (!verifyEmail()) return;
+    try {
+      const { data, error } = await supabase.from("rsvp").insert([{ email }]);
+      if (error) {
+        toast.error("Already registered!");
+      } else {
+        toast.success("Registered!");
+      }
+    } catch (error) {
+      toast.error("Error registering!");
+    }
+  };
+
   return (
     <div className="bg-black bg-opacity-50 min-h-screen flex justify-center items-center">
       <div className="text-center text-white flex flex-col items-center">
@@ -121,19 +121,36 @@ const Hero = () => {
         <p className="text-2xl mb-8 max-w-[70%]">
           Pioneering the way for the next generation of innovators
         </p>
-        <div className="mb-4">
-          <input
-            type="email"
-            className="py-2 px-3 shadow-lg text-black w-64 rounded-s-md focus:outline-none focus:ring-2 focus:ring-primary-500"
-            placeholder="Enter your email"
-          />
-          <button className="bg-primary-300 hover:text-primary-200 rounded-e-md text-white font-bold py-2 px-5 shadow-lg">
-            SIGN UP
-          </button>
+        <div className="mb-4 flex flex-col gap-[8px]">
+          <div className="p-[12px] rounded-md bg-white">
+            <p className="self-start flex text-lg font-black text-primary-200">
+              * Invites limited to first 100 emails
+            </p>
+            <form action={handleInsert}>
+              <input value={email} onChange={(e) => setEmail(e.target.value)} autoFocus
+                type="email"
+                className="py-2 px-3 shadow-lg text-black w-64 rounded-s-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+                placeholder="Enter your email" required/>
+              <button type="submit" className="bg-primary-300 hover:text-primary-200 rounded-e-md text-white font-bold py-2 px-5 shadow-lg">
+                SIGN UP
+              </button>
+            </form>
+            
+          </div>
+
+          <div className="mt-[12px]">
+            <p className='text-bold'>Got invited?</p>
+            <input
+              type="email"
+              className="py-2 px-3 shadow-lg text-black w-64 rounded-s-md focus:outline-none focus:ring-2 focus:ring-primary-500"
+              placeholder="Enter your access code"
+            />
+            <button className="bg-primary-200 hover:text-primary-100 rounded-e-md text-white font-bold py-2 px-5 shadow-lg">
+              SUBMIT
+            </button>
+          </div>
+          
         </div>
-        <p className="text-2xl font-black text-primary-100">
-          * FIRST 100 EMAILS GET ACCESS
-        </p>
       </div>
     </div>
   );
