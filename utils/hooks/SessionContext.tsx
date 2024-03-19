@@ -51,6 +51,12 @@ const SessionContext = createContext<SessionContextProps>({
             last_joined: '',
             username: '',
             uuid: '',
+            avatar_url: null,
+            email: null,
+            first_name: null,
+            has_set_password: false,
+            last_name: null,
+            updated_at: null
         }, 
         saveAccount: () => {},
         projects: [{
@@ -65,6 +71,7 @@ const SessionContext = createContext<SessionContextProps>({
                 thought: '',
                 title: '',
                 uuid: '',
+                location_uuid: '',
             }],
         }],
         saveProject: () => {},
@@ -83,6 +90,7 @@ const SessionContext = createContext<SessionContextProps>({
                     thought: '',
                     title: '',
                     uuid: '',
+                    location_uuid: '',
                 }],
             }
         },

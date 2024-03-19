@@ -53,7 +53,6 @@ const Header = () => {
    */
   const AccountComponent = () => {
     return user ? (
-      <AuthProvider>
         <div className="flex flex-row gap-[12px]">
           {/* Signed in */}
           <Link
@@ -67,7 +66,6 @@ const Header = () => {
             Logout
           </button>
         </div>
-      </AuthProvider>
     ) : (
       <div>
         {/* Signed Out */}
@@ -92,6 +90,7 @@ const Header = () => {
 const Hero = () => {
   const { supabase } = useSession();
   const [email, setEmail] = useState("");
+  const [count, setRealCount] = useState(0)
 
   const handleInsert = async () => {
     const verifyEmail = () => {
@@ -114,6 +113,16 @@ const Hero = () => {
     }
   };
 
+  const fetchRSVPCount = async () => {
+    const { error, count } = await supabase.from("rsvp").select('*', { count: 'exact' });
+    if (error) {
+      return
+    } else {
+      if (count != null) setRealCount(100-count)
+    }
+  }
+  fetchRSVPCount()
+
   return (
     <div className="bg-black bg-opacity-70 min-h-screen flex justify-center items-center">
       <div className="text-center text-white flex flex-col items-center mt-[4rem]">
@@ -124,7 +133,7 @@ const Hero = () => {
         <div className="mb-4 flex flex-col gap-[8px] mx-[24px]">
           <div className="p-[12px] rounded-md bg-white">
             <p className="self-start flex text-lg font-black text-primary-300">
-              * First 100 emails get invited
+              * Only {count} spots left
             </p>
             <form action={handleInsert}>
               <input value={email} onChange={(e) => setEmail(e.target.value)} autoFocus

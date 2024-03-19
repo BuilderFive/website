@@ -11,26 +11,44 @@ export type Database = {
     Tables: {
       account: {
         Row: {
+          avatar_url: string | null
           bio: string
           created_at: string
           display_name: string
+          email: string | null
+          first_name: string | null
+          has_set_password: boolean
           last_joined: string
+          last_name: string | null
+          updated_at: string | null
           username: string
           uuid: string
         }
         Insert: {
+          avatar_url?: string | null
           bio?: string
           created_at?: string
           display_name?: string
+          email?: string | null
+          first_name?: string | null
+          has_set_password?: boolean
           last_joined?: string
+          last_name?: string | null
+          updated_at?: string | null
           username?: string
           uuid?: string
         }
         Update: {
+          avatar_url?: string | null
           bio?: string
           created_at?: string
           display_name?: string
+          email?: string | null
+          first_name?: string | null
+          has_set_password?: boolean
           last_joined?: string
+          last_name?: string | null
+          updated_at?: string | null
           username?: string
           uuid?: string
         }
@@ -68,6 +86,7 @@ export type Database = {
       notes: {
         Row: {
           created_at: string
+          location_uuid: string | null
           project_uuid: string
           thought: string
           title: string
@@ -75,6 +94,7 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          location_uuid?: string | null
           project_uuid: string
           thought: string
           title: string
@@ -82,6 +102,7 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          location_uuid?: string | null
           project_uuid?: string
           thought?: string
           title?: string
@@ -94,6 +115,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "project"
             referencedColumns: ["uuid"]
+          },
+          {
+            foreignKeyName: "public_notes_location_uuid_fkey"
+            columns: ["location_uuid"]
+            isOneToOne: false
+            referencedRelation: "location"
+            referencedColumns: ["id"]
           }
         ]
       }
@@ -118,6 +146,21 @@ export type Database = {
           is_public?: boolean
           name?: string
           uuid?: string
+        }
+        Relationships: []
+      }
+      rsvp: {
+        Row: {
+          created_at: string
+          email: string
+        }
+        Insert: {
+          created_at?: string
+          email: string
+        }
+        Update: {
+          created_at?: string
+          email?: string
         }
         Relationships: []
       }
@@ -163,16 +206,19 @@ export type Database = {
       teammates: {
         Row: {
           account_uuid: string
+          id: number
           project_uuid: string
           role: string
         }
         Insert: {
           account_uuid: string
+          id?: number
           project_uuid: string
           role?: string
         }
         Update: {
           account_uuid?: string
+          id?: number
           project_uuid?: string
           role?: string
         }

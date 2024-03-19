@@ -35,6 +35,7 @@ export const ProjectCard = ({ uuid, created_at, name, image, is_public, notes }:
     const { updatePackagedProjects, getProject, deleteProject } = useSession().profile //get from the context API
     const [cachedNotes, setCachedNotes] = useState<Tables<'notes'>[]>([])
     const [hasChanged, setHasChanged] = useState(false)
+    const [currentLocation, setCurrentLocation] = useState("");
 
     const handleClick = (event: React.MouseEvent) => {
         event.preventDefault()
@@ -68,6 +69,40 @@ export const ProjectCard = ({ uuid, created_at, name, image, is_public, notes }:
 
         setHasChanged(true)
     }
+    /**
+     * Allows users to pick where they are working out of a drop down list, and then all notes made will be from that location
+     * @returns 
+     */
+    const CurrentLocationsDropdown = () => {
+
+        //fetch the list of all locations, show them by name
+        
+
+        const handleLocationChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+            setCurrentLocation(event.target.value);
+        };
+
+        return (
+            <div className="flex flex-col space-y-2">
+                <label htmlFor="current-location" className="text-sm font-medium text-text-200">
+                    Current Location
+                </label>
+                <select
+                    id="current-location"
+                    className="border border-primary-300 rounded-md p-2"
+                    value={currentLocation}
+                    onChange={handleLocationChange}
+                >
+                    <option value="">Select a location</option>
+                    <option value="New York">New York</option>
+                    <option value="London">London</option>
+                    <option value="Tokyo">Tokyo</option>
+                    <option value="Sydney">Sydney</option>
+                </select>
+            </div>
+        );
+    };
+
     const Options = () => {
         const SaveButton = () => {
             return <div onClick={closeModal} className="cursor-pointer gap-4 p-[8px] rounded-md w-fit h-fit">
@@ -153,6 +188,7 @@ export const ProjectCard = ({ uuid, created_at, name, image, is_public, notes }:
                         </div>
                         
                         <div className="flex flex-col space-y-[2px] items-center justify-center">
+                            
                             <label>
                             <Switch height={24} width={48} onChange={handleChange}
                                 uncheckedHandleIcon={<div className="h-full w-full flex items-center justify-center"><FaLock color={'hsl(var(--text-2))'} className="h-[40%] w-[40%]" /></div>}
