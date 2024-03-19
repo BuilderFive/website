@@ -1,27 +1,51 @@
 "use client";
 
-import React, { Dispatch, SetStateAction, use, useState } from "react";
+import React, { useState } from "react";
 import { createClient } from "@/utils/supabase/server";
 import { EditDescription } from "./client/edit-biography";
 import { useSession } from "@/utils/hooks/SessionContext";
 import Avatar from "react-avatar";
 
+interface Person {
+  avatar_url: string | null;
+  bio: string;
+  created_at: string;
+  display_name: string;
+  email: string | null;
+  first_name: string | null;
+  last_joined: string;
+  last_name: string | null;
+  updated_at: string | null;
+  username: string;
+  uuid: string;
+}
+
 export default function Biography() {
-  const { uuid, display_name, username, bio } = useSession().profile.account;
+  const [person, setPerson] = useState(
+    useSession().profile.account as unknown as Person[]
+  );
+
+  console.log(person);
 
   const Header = () => {
     return (
-      <div className="flex flex-row pb-3 border-b border-solid border-primary-300 font-extrabold">
+      <div className="flex flex-row font-extrabold">
         <div className="flex self-start">
-          <Avatar name={username} googleId="118096717852922241760" size="50" />
-          <div className="m-1">{display_name}</div>
+          <Avatar
+            name={person[0].username}
+            src={person[0].avatar_url || ""}
+            size="50"
+          />
         </div>
-        <div className="mt-1 text-xs font-regular text-text-100">
-          {username}
-          <div className="justify-end text-xs">
-            <span className="text-xxs font-medium">Member Since </span> <br />
-            <span className="text-xxs font-light">March 10, 2024</span>
+        <div className="mt-1 text-xxs font-regular text-text-100 px-2">
+          {person[0].username}
+          <div className="">
+            {person[0].first_name + " " + person[0].last_name}
           </div>
+          {/* <div className="justify-end text-xs">
+            <span className="text-xxxs font-medium">Member Since </span> <br />
+            <span className="text-xxs font-light">March 10, 2024</span>
+          </div> */}
         </div>
       </div>
     );
@@ -29,7 +53,7 @@ export default function Biography() {
   const Description = () => {
     return (
       <div className="mt-2 font-light text-xs text-text-100">
-        <EditDescription bio={bio} />
+        <EditDescription bio={person[0].bio} />
       </div>
     );
   };
