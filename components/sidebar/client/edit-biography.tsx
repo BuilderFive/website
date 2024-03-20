@@ -20,7 +20,7 @@ export const EditDescription = (initDesc: any) => {
             clearTimeout(cachedTimeout.current)
         }
         cachedTimeout.current = setTimeout(function() {
-            console.log(new_desc)
+            // console.log(new_desc)
             //update the description in the database
             profile.saveAccount({bio: new_desc})
         }, 2000)
