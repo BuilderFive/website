@@ -20,7 +20,7 @@ export default function MyFunction() {
 
   return (
     <iframe
-      src="https://docs.google.com/forms/d/e/1FAIpQLScm0YYfHM4Qi1Ig-V31YSRJIOAXVWQRz30KwSwLshVn-zZO1A/viewform?embedded=true"
+      src="https://docs.google.com/forms/d/e/1FAIpQLSes4HpmjGoCTdmsWZy7wr9eXONTTftLcdnQK2npUUr5tHLAGQ/viewform?embedded=true"
       width={width}
       height={height}
       frameBorder="0"
