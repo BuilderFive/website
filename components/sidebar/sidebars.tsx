@@ -3,7 +3,7 @@
  */
 "use client";
 import { UUID } from "crypto";
-import { ReactNode, createContext, useEffect, useState } from "react";
+import { ReactNode, createContext, use, useEffect, useState } from "react";
 import Biography from "./biography";
 import Projects from "./projects";
 import Options from "./client/options";
