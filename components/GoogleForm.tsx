@@ -20,12 +20,12 @@ export default function MyFunction() {
 
   return (
     <iframe
-      src="https://docs.google.com/forms/d/e/1FAIpQLSes4HpmjGoCTdmsWZy7wr9eXONTTftLcdnQK2npUUr5tHLAGQ/viewform?embedded=true"
+      src="https://docs.google.com/forms/d/e/1FAIpQLSeSTAoiEjIi2eBhMZfsMTdSTQoj8xQmI0FsqWCX-0gpW29Ixw/viewform?embedded=true"
       width={width}
       height={height}
       frameBorder="0"
     >
       Loading…
     </iframe>
-  );
+  );  
 }

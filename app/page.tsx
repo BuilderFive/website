@@ -24,7 +24,6 @@ export default function Index() {
       <RevealOnScroll>
         <GoogleForm />
       </RevealOnScroll>
-      
     </div>
   );
 }
@@ -98,7 +97,6 @@ const Header = () => {
         >
           Innov8rs.io
         </h1>
-        
       </div>
     </div>
   );
@@ -124,7 +122,7 @@ const Hero = () => {
         toast.error("Already registered!");
       } else {
         toast.success("Registered!");
-        setEmail("")
+        setEmail("");
       }
     } catch (error) {
       toast.error("Error registering!");
@@ -152,7 +150,9 @@ const Hero = () => {
     <div className="bg-black bg-opacity-70 min-h-screen flex justify-center items-center">
       <div className="text-center text-white flex flex-col items-center mt-[4rem]">
         <h1 className="text-[3rem] font-bold mb-4">
-          Share Projects <br/>Meet Innovators <br/>Join the Community
+          Share Projects <br />
+          Meet Innovators <br />
+          Join the Community
         </h1>
         <p className="text-[2rem] max-w-[480px] mb-8">
           Meet with local like-minded innovators on your campus in person
@@ -231,34 +231,32 @@ const Detials = () => {
   );
 };
 
-
-const RevealOnScroll = ({ children }: {children: ReactNode}) => {
+const RevealOnScroll = ({ children }: { children: ReactNode }) => {
   const [isVisible, setIsVisible] = useState(false);
-  const ref = useRef<HTMLDivElement|null>(null);
+  const ref = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-      const onWindScroll = () => {
-          const element = ref.current;
-          if (element) {
-              const { top } = element.getBoundingClientRect();
-              const isVisible = top < window.innerHeight;
-              setIsVisible(isVisible);
-          }
-      };
+    const onWindScroll = () => {
+      const element = ref.current;
+      if (element) {
+        const { top } = element.getBoundingClientRect();
+        const isVisible = top < window.innerHeight;
+        setIsVisible(isVisible);
+      }
+    };
 
-      window.addEventListener("scroll", onWindScroll);
-      return () => {
-          window.removeEventListener("scroll", onWindScroll);
-      };
+    window.addEventListener("scroll", onWindScroll);
+    return () => {
+      window.removeEventListener("scroll", onWindScroll);
+    };
   }, []);
 
   const classes = `transition-opacity duration-1000
-      ${isVisible ? "opacity-100" : "opacity-0"
-      }`;
+      ${isVisible ? "opacity-100" : "opacity-0"}`;
 
   return (
-      <div ref={ref} className={classes}>
-          {children}
-      </div>
+    <div ref={ref} className={classes}>
+      {children}
+    </div>
   );
 };
