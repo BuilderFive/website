@@ -7,6 +7,7 @@ import AuthProvider from "./auth/auth-provider";
 import { ReactNode, useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import GoogleForm from "@/components/GoogleForm";
+import Pricing from "@/components/Pricing";
 
 export default function Index() {
   return (
@@ -157,7 +158,7 @@ const Hero = () => {
         <p className="text-[2rem] max-w-[480px] mb-8">
           Meet with local like-minded innovators on your campus in person
         </p>
-        <div className="mb-4 flex flex-col gap-[8px] mx-[24px]">
+        {/* <div className="mb-4 flex flex-col gap-[8px] mx-[24px]">
           <div className="p-[12px] rounded-md bg-white">
             <p className="self-start flex text-lg font-black text-primary-300">
               * {count == 0 ? "loading" : count}/200 spots left
@@ -179,9 +180,9 @@ const Hero = () => {
                 SIGN UP
               </button>
             </form>
-          </div>
+          </div> */}
 
-          {/* <div className="mt-[12px]">
+        {/* <div className="mt-[12px]">
             <p className="text-bold">Got invited?</p>
             <input
               type="email"
@@ -192,43 +193,14 @@ const Hero = () => {
               SUBMIT
             </button>
           </div> */}
-        </div>
+        {/* </div> */}
       </div>
     </div>
   );
 };
 
 const Detials = () => {
-  return (
-    <div id="details-root" className="w-full px-[128px] py-[64px]">
-      <div id="details-container" className="mx-auto border">
-        <div id="details-students" className=""></div>
-        <div className="grid grid-cols-2 gap-8">
-          {/* Students */}
-          <div>
-            <h2 className="text-2xl font-bold mb-4">Students</h2>
-            <ul>
-              <li>Student 1</li>
-              <li>Student 2</li>
-              <li>Student 3</li>
-              {/* Add more students here */}
-            </ul>
-          </div>
-
-          {/* Departments */}
-          <div>
-            <h2 className="text-2xl font-bold mb-4">Departments</h2>
-            <ul>
-              <li>Department 1</li>
-              <li>Department 2</li>
-              <li>Department 3</li>
-              {/* Add more departments here */}
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+  return <Pricing />;
 };
 
 const RevealOnScroll = ({ children }: { children: ReactNode }) => {
