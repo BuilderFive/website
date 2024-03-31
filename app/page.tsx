@@ -4,7 +4,7 @@ import { useSession } from "@/utils/hooks/SessionContext";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import AuthProvider from "./auth/auth-provider";
-import { useEffect, useState } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import GoogleForm from "@/components/GoogleForm";
 
@@ -21,7 +21,10 @@ export default function Index() {
       </div>
 
       <Detials />
-      <GoogleForm />
+      <RevealOnScroll>
+        <GoogleForm />
+      </RevealOnScroll>
+      
     </div>
   );
 }
@@ -95,7 +98,7 @@ const Header = () => {
         >
           Innov8rs.io
         </h1>
-        <AccountComponent />
+        
       </div>
     </div>
   );
@@ -121,6 +124,7 @@ const Hero = () => {
         toast.error("Already registered!");
       } else {
         toast.success("Registered!");
+        setEmail("")
       }
     } catch (error) {
       toast.error("Error registering!");
@@ -147,11 +151,11 @@ const Hero = () => {
   return (
     <div className="bg-black bg-opacity-70 min-h-screen flex justify-center items-center">
       <div className="text-center text-white flex flex-col items-center mt-[4rem]">
-        <h1 className="text-[3rem] font-bold max-w-[70%] mb-4 leading-[4rem]">
-          For the next generation of innovators
+        <h1 className="text-[3rem] font-bold mb-4">
+          Share Projects <br/>Meet Innovators <br/>Join the Community
         </h1>
         <p className="text-[2rem] max-w-[480px] mb-8">
-          Discover impactful on-campus resources and peers for your projects
+          Meet with local like-minded innovators on your campus in person
         </p>
         <div className="mb-4 flex flex-col gap-[8px] mx-[24px]">
           <div className="p-[12px] rounded-md bg-white">
@@ -224,5 +228,37 @@ const Detials = () => {
         </div>
       </div>
     </div>
+  );
+};
+
+
+const RevealOnScroll = ({ children }: {children: ReactNode}) => {
+  const [isVisible, setIsVisible] = useState(false);
+  const ref = useRef<HTMLDivElement|null>(null);
+
+  useEffect(() => {
+      const onWindScroll = () => {
+          const element = ref.current;
+          if (element) {
+              const { top } = element.getBoundingClientRect();
+              const isVisible = top < window.innerHeight;
+              setIsVisible(isVisible);
+          }
+      };
+
+      window.addEventListener("scroll", onWindScroll);
+      return () => {
+          window.removeEventListener("scroll", onWindScroll);
+      };
+  }, []);
+
+  const classes = `transition-opacity duration-1000
+      ${isVisible ? "opacity-100" : "opacity-0"
+      }`;
+
+  return (
+      <div ref={ref} className={classes}>
+          {children}
+      </div>
   );
 };
