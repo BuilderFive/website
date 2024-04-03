@@ -19,13 +19,15 @@ export default function MyFunction() {
   }, []);
 
   return (
-    <iframe
-      src="https://docs.google.com/forms/d/e/1FAIpQLSeSTAoiEjIi2eBhMZfsMTdSTQoj8xQmI0FsqWCX-0gpW29Ixw/viewform?embedded=true"
-      width={width}
-      height={height}
-      frameBorder="0"
-    >
-      Loading…
-    </iframe>
-  );  
+    <div style={{paddingTop: 50, backgroundColor: "white"}}>
+      <iframe
+        src="https://docs.google.com/forms/d/e/1FAIpQLSeSTAoiEjIi2eBhMZfsMTdSTQoj8xQmI0FsqWCX-0gpW29Ixw/viewform?embedded=true"
+        width={width}
+        height={height}
+        frameBorder="0"
+      >
+        Loading…
+      </iframe>
+    </div>
+  );
 }
