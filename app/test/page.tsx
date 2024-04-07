@@ -1,7 +1,7 @@
 import { SideBarProfile } from "@/components/sidebar/sidebars";
 // import { useSession, useSupabaseClient } from "@/utils/hooks/SessionContext";
 import AuthProvider from "../auth/auth-provider";
-import UConnMap from "../../components/Map";
+// import UConnMap from "../../components/Map";
 import { Header } from "@/components/Header";
 // import isMobile from "../utils/hooks/Helper";
 
@@ -15,7 +15,7 @@ export default function Test() {
             </div>
          */}
        
-        <UConnMap />
+        {/* <UConnMap /> */}
         <div className="fixed self-end">
           <SideBarProfile />
         </div>
