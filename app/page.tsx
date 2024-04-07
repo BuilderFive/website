@@ -21,9 +21,9 @@ export default function Index() {
         <Hero />
       </div>
 
-      <Detials />
       <RevealOnScroll>
-        <GoogleForm />
+      <Detials />
+        {/* <GoogleForm /> */}
       </RevealOnScroll>
     </div>
   );

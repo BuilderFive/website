@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Pricing() {
   return (
     <section className="bg-white dark:bg-gray-900">
@@ -97,12 +99,12 @@ export default function Pricing() {
                 <span>Weekly Groupings based on Updates</span>
               </li>
             </ul>
-            <a
-              href="#"
+            <Link
+              href="/free"
               className="text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:ring-primary-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:text-white  dark:focus:ring-primary-900"
             >
               Get started
-            </a>
+            </Link>
           </div>
 
           <div className="flex flex-col p-6 mx-auto max-w-lg text-center text-gray-900 bg-white rounded-lg border border-gray-100 shadow dark:border-gray-600 xl:p-8 dark:bg-gray-800 dark:text-white">
@@ -116,7 +118,7 @@ export default function Pricing() {
               <span className="text-gray-500 dark:text-gray-400">/month</span>
             </div>
             <ul role="list" className="mb-8 space-y-4 text-left">
-              <li className="flex items-center space-x-3">
+              {/* <li className="flex items-center space-x-3">
                 <svg
                   className="flex-shrink-0 w-5 h-5 text-green-500 dark:text-green-400"
                   fill="currentColor"
@@ -130,7 +132,7 @@ export default function Pricing() {
                   ></path>
                 </svg>
                 <span>Everything in Free Plan</span>
-              </li>
+              </li> */}
               <li className="flex items-center space-x-3">
                 <svg
                   className="flex-shrink-0 w-5 h-5 text-green-500 dark:text-green-400"
@@ -160,7 +162,8 @@ export default function Pricing() {
                   ></path>
                 </svg>
                 <span>
-                  Recruiters can have access to your profile and projects
+                  Recruiters can help fund your projects <br />
+                  (this could pay off the service by itself)
                 </span>
               </li>
               <li className="flex items-center space-x-3">
@@ -176,9 +179,7 @@ export default function Pricing() {
                     clip-rule="evenodd"
                   ></path>
                 </svg>
-                <span>
-                  Guest Speakers and Special Events
-                </span>
+                <span>Guest Speakers and Special Events</span>
               </li>
               <li className="flex items-center space-x-3">
                 <svg
@@ -193,17 +194,15 @@ export default function Pricing() {
                     clip-rule="evenodd"
                   ></path>
                 </svg>
-                <span>
-                  Access to Every Weekly Groupings
-                </span>
+                <span>Access to Every Weekly Groupings</span>
               </li>
             </ul>
-            <a
-              href="#"
+            <Link
+              href="/premium"
               className="text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:ring-primary-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:text-white  dark:focus:ring-primary-900"
             >
               Get started
-            </a>
+            </Link>
           </div>
         </div>
       </div>

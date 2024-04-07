@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 
-export default function MyFunction() {
+export default function GoogleForm(googleLink: string | undefined) {
   const [width, setWidth] = useState(700);
   const [height, setHeight] = useState(520);
 
@@ -23,7 +23,7 @@ export default function MyFunction() {
   return (
     <div style={{paddingTop: 50, backgroundColor: "white"}}>
       <iframe
-        src="https://docs.google.com/forms/d/e/1FAIpQLSeSTAoiEjIi2eBhMZfsMTdSTQoj8xQmI0FsqWCX-0gpW29Ixw/viewform?embedded=true"
+        src={googleLink}
         width={width}
         height={height}
         frameBorder="0"
