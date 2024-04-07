@@ -13,7 +13,7 @@
 
 import React, { useState, useEffect } from "react";
 
-export default function GoogleForm(googleLink: string | undefined) {
+export default function GoogleForm() {
   const [width, setWidth] = useState(700);
   const [height, setHeight] = useState(520);
 
