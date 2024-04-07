@@ -4,10 +4,11 @@ module.exports = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  plugins: [require("daisyui")],
   theme: {
     extend: {
       fontSize: {
-        "xxs": '10px'
+        xxs: "10px",
       },
       colors: {
         background: "hsl(var(--background))",
@@ -24,7 +25,7 @@ module.exports = {
         text: {
           100: "hsl(var(--text-1))",
           200: "hsl(var(--text-2))",
-          300: "hsl(var(--text-3))"
+          300: "hsl(var(--text-3))",
         },
         success: {
           100: "hsl(var(--success-1))",
@@ -33,17 +34,17 @@ module.exports = {
           100: "hsl(var(--error-1))",
         },
         activity: {
-          "online": "hsl(var(--activity-online))",
+          online: "hsl(var(--activity-online))",
           //idle, do not disturb
-        }
+        },
       },
       borderRadius: {
-        'xs': '2px',
-        'sm': '4px',
-        'md': '8px',
-        'lg': '12px',
-      }
+        xs: "2px",
+        sm: "4px",
+        md: "8px",
+        lg: "12px",
+      },
     },
   },
-  plugins: [],
+  // plugins: [],
 };
