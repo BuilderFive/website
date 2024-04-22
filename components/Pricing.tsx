@@ -1,6 +1,36 @@
 import Link from "next/link";
+import { useState, useEffect } from "react";
 
 export default function Pricing() {
+  const [countdown, setCountdown] = useState<string>("");
+
+  useEffect(() => {
+    const targetDate = new Date("May 10, 2024").getTime();
+
+    const interval = setInterval(() => {
+      console.log(targetDate);
+    }, 1000);
+
+    const formatCountdown = () => {
+      const now = new Date().getTime();
+      const distance = targetDate - now;
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor(
+        (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+      );
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      console.log(`${days} days, ${hours} hours, ${minutes} minutes`);
+
+      return `${days} days, ${hours} hours, ${minutes} minutes`;
+    };
+
+    setCountdown(formatCountdown());
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <section className="bg-white dark:bg-gray-900">
       <div className="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6">
@@ -36,7 +66,7 @@ export default function Pricing() {
                     clip-rule="evenodd"
                   ></path>
                 </svg>
-                <span>Community where you can upload progress every week</span>
+                <span>App where you can upload progress every week</span>
               </li>
               <li className="flex items-center space-x-3">
                 <svg
@@ -66,6 +96,21 @@ export default function Pricing() {
                     clip-rule="evenodd"
                   ></path>
                 </svg>
+                <span>Chance for invitations to Hackathons</span>
+              </li>
+              <li className="flex items-center space-x-3">
+                <svg
+                  className="flex-shrink-0 w-5 h-5 text-green-500 dark:text-green-400"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
                 <span>Weekly Highlights</span>
               </li>
               <li className="flex items-center space-x-3">
@@ -81,22 +126,7 @@ export default function Pricing() {
                     clip-rule="evenodd"
                   ></path>
                 </svg>
-                <span>Google Spaces</span>
-              </li>
-              <li className="flex items-center space-x-3">
-                <svg
-                  className="flex-shrink-0 w-5 h-5 text-green-500 dark:text-green-400"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                    clip-rule="evenodd"
-                  ></path>
-                </svg>
-                <span>Weekly Groupings based on Updates</span>
+                <span>Groupings based on Updates</span>
               </li>
             </ul>
             <Link
@@ -108,7 +138,10 @@ export default function Pricing() {
           </div>
 
           <div className="flex flex-col p-6 mx-auto max-w-lg text-center text-gray-900 bg-white rounded-lg border border-gray-100 shadow dark:border-gray-600 xl:p-8 dark:bg-gray-800 dark:text-white">
-            <h3 className="mb-4 text-2xl font-semibold">Innov8rs</h3>
+            <h3 className="mb-4 text-2xl font-semibold">
+              Innov8rs{" "}
+              <p className="text-sm">next cohort accepted in {countdown}</p>
+            </h3>
             <p className="font-light text-gray-500 sm:text-lg dark:text-gray-400">
               Relevant for job opportunities, Premium Networking Events,
               Financial Support, and Resources.
@@ -179,7 +212,7 @@ export default function Pricing() {
                     clip-rule="evenodd"
                   ></path>
                 </svg>
-                <span>Guest Speakers and Special Events</span>
+                <span>Guest Speakers, Special Events, and Community</span>
               </li>
               <li className="flex items-center space-x-3">
                 <svg
