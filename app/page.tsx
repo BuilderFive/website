@@ -8,13 +8,16 @@ import { ReactNode, useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import GoogleForm from "@/components/GoogleForm";
 import Pricing from "@/components/Pricing";
+import Gallery from "@/components/Gallery";
+import SocialButtons from "@/components/SocialButtons";
 
 export default function Index() {
   return (
-    <div className="size-full relative flex flex-col overflow-x-hidden">
+    <div className="size-full relative flex flex-col overflow-x-hidden overflow-y-hidden">
       {/* Header */}
-      <Header />
-
+      <div style={{ zIndex: 1000 }}>
+        <Header />
+      </div>
       {/* Background */}
       <div className="bg-cover" style={{ backgroundImage: 'url("/map.jpg")' }}>
         {/* Hero */}
@@ -22,9 +25,23 @@ export default function Index() {
       </div>
 
       <RevealOnScroll>
-      <Detials />
+        <Detials />
         {/* <GoogleForm /> */}
       </RevealOnScroll>
+      <Gallery />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <SocialButtons />
+      <br />
+      <br />
+      <br />
     </div>
   );
 }
@@ -96,8 +113,15 @@ const Header = () => {
             isTop ? "text-text-100" : "text-primary-100"
           }`}
         >
-          Innov8rs.io
+          {/* Innov8rs.io */} BuilderFive
         </h1>
+
+        {/* Spacer */}
+        <div className="flex-grow"></div>
+        {/* Button */}
+        <a href="/newsletter">
+        <button className="text-sm text-primary-100 py-2 px-4 justify-center rounded-md no-underline bg-primary-300 hover:text-primary-200 font-bold">Newsletter</button>
+        </a>
       </div>
     </div>
   );
