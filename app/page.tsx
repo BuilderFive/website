@@ -3,11 +3,8 @@
 import { useSession } from "@/utils/hooks/SessionContext";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import AuthProvider from "./auth/auth-provider";
 import { ReactNode, useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
-import GoogleForm from "@/components/GoogleForm";
-import Pricing from "@/components/Pricing";
 import Gallery from "@/components/Gallery";
 import SocialButtons from "@/components/SocialButtons";
 
@@ -224,7 +221,7 @@ const Hero = () => {
 };
 
 const Detials = () => {
-  return <Pricing />;
+  return <></>;
 };
 
 const RevealOnScroll = ({ children }: { children: ReactNode }) => {
