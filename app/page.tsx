@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { ReactNode, useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
-import Gallery from "@/components/Gallery";
 import SocialButtons from "@/components/SocialButtons";
 
 export default function Index() {
@@ -20,25 +19,7 @@ export default function Index() {
         {/* Hero */}
         <Hero />
       </div>
-
-      <RevealOnScroll>
-        <Detials />
-        {/* <GoogleForm /> */}
-      </RevealOnScroll>
-      <Gallery />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
-      <br />
       <SocialButtons />
-      <br />
-      <br />
-      <br />
     </div>
   );
 }
@@ -53,8 +34,7 @@ const Header = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollTop =
-        window.pageYOffset || document.documentElement.scrollTop;
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
       setIsTop(scrollTop === 0);
     };
 
@@ -63,40 +43,6 @@ const Header = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
-
-  /**
-   * Logic for what to display in the header
-   * @returns
-   */
-  const AccountComponent = () => {
-    return user ? (
-      <div className="flex flex-row gap-[12px]">
-        {/* Signed in */}
-        <Link
-          href="/test"
-          className="text-sm text-primary-200 py-2 px-4 justify-center rounded-md no-underline bg-transparent border-primary-200 border hover:text-primary-100"
-        >
-          Dashboard
-        </Link>
-        <button
-          onClick={logout}
-          className="text-sm text-primary-300 py-2 px-4 justify-center rounded-md no-underline bg-primary-200 hover:text-primary-100"
-        >
-          Logout
-        </button>
-      </div>
-    ) : (
-      <div>
-        {/* Signed Out */}
-        <Link
-          href="/login"
-          className="text-sm text-primary-100 top-8 py-2 px-4 justify-center rounded-md no-underline bg-primary-300 border border-primary-100 border-[2px] hover:border-primary-200"
-        >
-          Login
-        </Link>
-      </div>
-    );
-  };
 
   return (
     <div
@@ -218,10 +164,6 @@ const Hero = () => {
       </div>
     </div>
   );
-};
-
-const Detials = () => {
-  return <></>;
 };
 
 const RevealOnScroll = ({ children }: { children: ReactNode }) => {

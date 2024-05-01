@@ -13,8 +13,8 @@ const defaultUrl = process.env.VERCEL_URL
 
 export const metadata = {
   metadataBase: new URL(defaultUrl),
-  title: "Innov8rs",
-  description: "The place where innovators collaborate in real-time",
+  title: "BuilderFive",
+  description: "Where builders connect and collaborate offline",
   favicon: "/favicon.ico",
 };
 
@@ -43,7 +43,7 @@ export default function RootLayout({
       <html lang="en" className={GeistSans.className}>
         <Head>
           <link
-            rel="Innov8rs Icon"
+            rel="BuilderFive Icon"
             href="./public/innov8rs-icon-logo-white.png"
           />
         </Head>
