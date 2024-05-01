@@ -71,48 +71,8 @@ const Header = () => {
 };
 
 const Hero = () => {
-  const { supabase } = useSession();
+  const { supabase, rsvpCount, insertRSVP } = useSession();
   const [email, setEmail] = useState("");
-  const [count, setRealCount] = useState(0);
-
-  const handleInsert = async () => {
-    const verifyEmail = () => {
-      if (email === "") {
-        toast.error("Email cannot be empty!");
-        return false;
-      }
-      return true;
-    };
-    if (!verifyEmail()) return;
-    try {
-      const { data, error } = await supabase.from("rsvp").insert([{ email }]);
-      if (error) {
-        toast.error("Already registered!");
-      } else {
-        toast.success("Registered!");
-        setEmail("");
-      }
-    } catch (error) {
-      toast.error("Error registering!");
-    }
-  };
-
-  const fetchRSVPCount = async () => {
-    const { error, count } = await supabase
-      .from("rsvp")
-      .select("*", { count: "exact" });
-    if (error) {
-      return;
-    } else {
-      if (count != null) {
-        if (count >= 100) {
-          setRealCount(0);
-        }
-        setRealCount(100 - count);
-      }
-    }
-  };
-  fetchRSVPCount();
 
   return (
     <div className="bg-black bg-opacity-70 min-h-screen flex justify-center items-center">
