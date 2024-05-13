@@ -44,10 +44,10 @@ export default function RootLayout({
         <Head>
           <link
             rel="BuilderFive Icon"
-            href="./public/innov8rs-icon-logo-white.png"
+            href="./public/BuilderFive_Logo_Icon.png"
           />
         </Head>
-        <link rel="icon" type="image" href="../innov8rs-icon-logo-white.png" />
+        <link rel="icon" type="image" href="../BuilderFive_Logo_Icon.png" />
         <body className="bg-background text-foreground">
           <main className="min-h-screen flex flex-col items-center">
             <SessionProvider>{children}</SessionProvider>
