@@ -1,60 +1,46 @@
-import { GeistSans } from "geist/font/sans";
-import "./globals.css";
-import { SessionProvider } from "@/utils/hooks/SessionContext";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import img from "../public/innov8rs-icon-logo-white.png";
-import Head from "next/head";
-import Script from "next/script";
+import { css } from '~/util';
+import type { Metadata } from 'next';
+import { Header } from '~/components/global/Header';
+import { Footer } from '~/components/global/Footer';
+import { Inter, Roboto_Mono } from 'next/font/google';
+import { ThemeProvider } from '~/components/ui/theme-provider';
 
-const defaultUrl = process.env.VERCEL_URL
-  ? `https://${process.env.VERCEL_URL}`
-  : "http://localhost:3000";
+import "~/styles/globals.css";
 
-export const metadata = {
-  metadataBase: new URL(defaultUrl),
-  title: "BuilderFive",
-  description: "Where builders connect and collaborate offline",
-  favicon: "/favicon.ico",
+const sans = Inter({ subsets: ["latin"], variable: "--font-sans" });
+const mono = Roboto_Mono({ subsets: ["latin"], variable: '--font-mono' });
+
+export const metadata: Metadata = {
+    title: {
+        default: 'BuilderFive',
+        template: 'BuilderFive - %s',
+    },
+    description: "Where builders connect and collaborate offline",
+    icons: {
+        icon: "/favicon.ico",
+    },
 };
 
 export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <>
-      <Script
-        id="Google-Analytics-1"
-        strategy="lazyOnload"
-        src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}
-      ></Script>
-      <Script strategy="lazyOnload" id="Google-Analytics-2">
-        {` 
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}', {
-          page_path: window.location.pathname,
-          });
-      `}
-      </Script>
-      <html lang="en" className={GeistSans.className}>
-        <Head>
-          <link
-            rel="BuilderFive Icon"
-            href="./public/BuilderFive_Logo_Icon.png"
-          />
-        </Head>
-        <link rel="icon" type="image" href="../BuilderFive_Logo_Icon.png" />
-        <body className="bg-background text-foreground">
-          <main className="min-h-screen flex flex-col items-center">
-            <SessionProvider>{children}</SessionProvider>
-          </main>
-          <ToastContainer />
-        </body>
-      </html>
-    </>
-  );
+    children,
+}: Readonly<{
+    children: React.ReactNode;
+}>) {
+    return (
+        <html lang="en" suppressHydrationWarning>
+            <head>
+                <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+            </head>
+            <body className={css("min-h-screen font-sans antialiased", sans.variable, mono.variable)}>
+                <ThemeProvider attribute="class" defaultTheme="dark">
+                    <div className="relative flex min-h-screen flex-col bg-cover bg-twighlight">
+                        <Header />
+                        <div className="flex-1">{children}</div>
+                        <Footer />
+                      
+                    </div>
+                </ThemeProvider>
+            </body>
+        </html>
+    );
 }
