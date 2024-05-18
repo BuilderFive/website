@@ -99,9 +99,9 @@ export const FeatureElement: React.FC<FeatureElementProps> = ({ feature, flipped
                         <motion.h2 className="text-2xl font-bold font-mono tracking-tighter sm:text-3xl xl:text-3xl/none text-blue-400" style={{ y }}>
                             {feature.icon} {feature.title}
                         </motion.h2>
-                        <motion.p style={{ y }}>
+                        <motion.div style={{ y }}>
                             {feature.description}
-                        </motion.p>
+                        </motion.div>
                     </div>
                 </div>
             </div>

@@ -31,12 +31,12 @@ export default function RootLayout({
             <head>
                 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
             </head>
-            <body className={css("min-h-screen bg-pattern font-sans antialiased", sans.variable, mono.variable)}>
+            <body className={css("min-h-screen font-sans antialiased", sans.variable, mono.variable)}>
                 <ThemeProvider attribute="class" defaultTheme="dark">
-                    <div className="relative flex min-h-screen flex-col">
-                        <Header />
-                        <div className="flex-1">{children}</div>
-                        <Footer />
+                    <div className="relative flex min-h-screen flex-col bg-cover bg-twighlight">
+                      <Header />
+                      <div className="flex-1">{children}</div>
+                      <Footer />
                     </div>
                 </ThemeProvider>
             </body>

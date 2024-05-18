@@ -6,11 +6,13 @@ import { AppSection } from './components/AppSection';
 import { RsvpSection } from './components/RsvpSection';
 import { FeatureGrid } from './components/FeatureGrid';
 import { mdiAlphaPCircle, mdiArrowRight } from '@mdi/js';
+import Hero from './components/Hero';
 
 export default function Home() {
+
     return (
-        <div className="container relative">
-            <section className="mx-auto flex max-w-[980px] flex-col items-center gap-2 mt-7 py-8 md:py-12 md:pb-8 lg:py-24 lg:pb-20">
+        <div className="w-full relative">
+            {/** <section className="mx-auto flex max-w-[980px] flex-col items-center gap-2 mt-7 py-8 md:py-12 md:pb-8 lg:py-24 lg:pb-20">
                 <Badge variant="secondary" className="text-sm py-1 mb-6">
                     <a href="https://producthunt.com/abc" target="_blank" rel="noopener noreferrer">
                         <MdiIcon path={mdiAlphaPCircle} size="20px" className="inline-block mr-2 text-orange-600" />
@@ -32,27 +34,16 @@ export default function Home() {
                             Meet with local like-minded innovators on your campus in person
                         </p>
                     </div>
-                </div>
+                    </div>
 
                 <div className="flex w-full items-center justify-center space-x-4 py-4 md:pb-10">
                     <CtaButton target="rsvp">
                         Sign Up
                     </CtaButton>
                 </div>
-            </section>
-
-            {/* <section className="w-full py-12 md:py-24 lg:py-32">
-                <div className="container px-4 md:px-6">
-                    <div className="flex flex-col items-center justify-center space-y-4 text-center">
-                        <div className="space-y-2">
-                            <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">section title</h2>
-                            <p className="max-w-[900px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
-                                section content
-                            </p>
-                        </div>
-                    </div>
-                </div>
             </section> */}
+
+            <Hero />
 
             {/* <AppSection /> */}
             <FeatureGrid />
