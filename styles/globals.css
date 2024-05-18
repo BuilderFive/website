@@ -10,6 +10,7 @@
         --background-1-translucent: hsl(0 0 100% / 0.6);
         --background-2: hsl(0 0 98%);
         --background-3: hsl(0 0 90%);
+        --white: hsl(0 0 100%);
         --error-1: hsl(0 88% 54%);
         --secondary-1: hsl(212 100% 69%);
         --secondary-2: hsl(212 74% 45%);
@@ -19,7 +20,8 @@
         --text-2: hsl(0 0% 46%);
         --text-3: hsl(0 0 37%);
         --text-4: hsl(0 0 100%);
-        --text-5: hsl(0 0 37%);
+        --text-5: hsl(0 0 85%);
+        --text-6: hsl(0 0% 24%);
     }
     .dark {
         --tabs: hsl(211 100% 81%);
@@ -27,6 +29,7 @@
         --background-1-translucent: hsl(0 0 0% / 0.4);
         --background-2: hsl(0 0 26%);
         --background-3: hsl(0 1% 35%);
+        --white: hsl(0 0 100%);
         --error-1: hsl(0 100% 75%);
         --secondary-1: hsl(212 54% 49%);
         --secondary-2: hsl(227 48% 33%);
@@ -36,7 +39,8 @@
         --text-2: hsl(0 0 93%);
         --text-3: hsl(0 0 85%);
         --text-4: hsl(0 0 0%);
-        --text-5: hsl(0 0 37%);
+        --text-5: hsl(0 0 85%);
+        --text-6: hsl(0 0% 24%);
     }
 }
 

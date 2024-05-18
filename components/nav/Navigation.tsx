@@ -18,11 +18,9 @@ import {
 
 export const Navigation: React.FC = () => {
     return (
-        <div className="mr-4 hidden md:flex">
-            <Link href="/" className="text-lg mr-6 flex items-center space-x-2">
-                <span className="hidden font-extrabold font-mono sm:inline-block text-blue-400">
-                    BuilderFive
-                </span>
+        <div className="hidden md:flex space-x-[48px] w-fit">
+            <Link href="/" className="flex items-center">
+                <img src="/static/BuilderFive_Logo_Icon.png" alt="BuilderFive" className="aspect-square h-[48px]" />
             </Link>
             <NavigationMenu>
                 <NavigationMenuList>
@@ -56,7 +54,7 @@ export const Navigation: React.FC = () => {
                             return (
                                 <NavigationMenuItem key={route.key}>
                                     <Link href={route.path} legacyBehavior passHref>
-                                        <NavigationMenuLink className={css('font-mono', navigationMenuTriggerStyle())}>
+                                        <NavigationMenuLink className={css(navigationMenuTriggerStyle())}>
                                             {route.name}
                                         </NavigationMenuLink>
                                     </Link>

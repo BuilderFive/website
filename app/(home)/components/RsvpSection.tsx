@@ -26,12 +26,12 @@ export const RsvpSection: React.FC = () => {
     }
 
     return (
-        <section id="rsvp" className="w-full">
+        <section id="rsvp" className="max-w-[500px] w-full">
             <div className="flex flex-col justify-center space-y-4">
                 <div className="flex w-full justify-center items-center">
                     <section className="w-fit h-fit flex space-x-[24px] px-[48px] py-[12px]">
                         <section className="flex flex-col items-center">
-                            <p className="text-sm text-stone-300">
+                            <p className="text-sm text-text5">
                                 WEEKS
                             </p>
                             <p className="text-4xl text-white">
@@ -39,15 +39,15 @@ export const RsvpSection: React.FC = () => {
                             </p>
                         </section>
                         <section className="flex flex-col items-center">
-                            <p className="text-sm text-stone-300">
+                            <p className="text-sm text-text5">
                                 DAYS
                             </p>
-                            <p className="text-4xl text-secondary1">
+                            <p className="text-4xl text-white">
                                 05
                             </p>
                         </section>
                         <section className="flex flex-col items-center">
-                            <p className="text-sm text-stone-300">
+                            <p className="text-sm text-text5">
                                 HOURS
                             </p>
                             <p className="text-4xl text-white">
@@ -56,37 +56,28 @@ export const RsvpSection: React.FC = () => {
                         </section>
                     </section>
                 </div>
-                
-                <div className="w-full max-w-sm space-y-3">
-                    <form onSubmit={e => e.preventDefault()} className="flex space-x-2">
-                        <Input
-                            required
+                <div className="w-full space-y-[12px]">
+                    <form onSubmit={e => e.preventDefault()} className="flex max-md:flex-col space-x-[12px] max-md:space-x-[0px] max-md:space-y-[12px]">
+                        <Input required
                             type="email"
                             value={email}
                             pattern={EMAIL_REGEX.source}
-                            className="peer max-w-lg flex-1 h-26 bg-white text-gray-700 invalid:border-red-400"
+                            className="w-full p-[24px] bg-white text-text6 invalid:border-red-400 rounded-[12px] h-full"
                             placeholder="Enter your email"
-                            onChange={e => setEmail(e.target.value)}
-                        />
-                        <Button
-                            className={css(
-                                'transform transition-transform ease-in-out active:scale-90',
-                                'peer-invalid:cursor-not-allowed peer-invalid:bg-secondary/60 peer-invalid:text-secondary-foreground/60 peer-invalid:dark:text-slate-400 peer-invalid:active:scale-100',
-                                buttonVariants({ variant: 'secondary' }),
-                            )}
+                            onChange={e => setEmail(e.target.value)}/>
+                        <Button variant='secondary'
+                            className={"bg-secondary1 rounded-[12px] h-full p-[24px] max-md:p-[12px]"}
                             disabled={loading}
-                            onClick={e => handleSubmit(email)}
-                        >
+                            onClick={e => handleSubmit(email)}>
                             { loading && <MdiIcon path={mdiLoading} size="20px" className="animate-spin" /> }
-                            { !loading && 'Join the waitlist' }
+                            { !loading && <p className="font-semibold text-md">JOIN EARLY</p> }
                         </Button>
                     </form>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">
-                        Sign up to join the waitlist.{" "}
-                        <Link className="underline underline-offset-2" href="#">
-                            Terms & Conditions
-                        </Link>
-                    </p>
+                    <section className="flex flex-col items-start text-center">
+                        <p className="text-md text-text5 w-full">
+                            Join as an early builder to collaborate in development and receive exclusive benefits on launch day
+                        </p>
+                    </section>
                 </div>
             </div>
         </section>

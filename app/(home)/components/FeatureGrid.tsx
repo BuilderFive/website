@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef } from 'react';
+import { ReactNode, useEffect, useRef, useState } from 'react';
 import { MdiIcon, css } from '~/util';
 import { mdiAccountGroup, mdiMapLegend } from '@mdi/js';
 import { motion, useTransform, MotionValue, useScroll } from 'framer-motion';
@@ -108,9 +108,84 @@ export const FeatureElement: React.FC<FeatureElementProps> = ({ feature, flipped
         </section>
     );
 }
-
+const RevealOnScroll = ({ children }: {children: ReactNode}) => {
+    const [isVisible, setIsVisible] = useState(false);
+    const ref = useRef<HTMLDivElement|null>(null);
+  
+    useEffect(() => {
+        const onWindScroll = () => {
+            const element = ref.current;
+            if (element) {
+                const { top } = element.getBoundingClientRect();
+                const isVisible = top < window.innerHeight;
+                setIsVisible(isVisible);
+            }
+        };
+  
+        window.addEventListener("scroll", onWindScroll);
+        return () => {
+            window.removeEventListener("scroll", onWindScroll);
+        };
+    }, []);
+  
+    const classes = `transition-opacity duration-1000
+        ${isVisible ? "opacity-100" : "opacity-0"
+        }`;
+  
+    return (
+        <div ref={ref} className={classes}>
+            {children}
+        </div>
+    );
+  };
 export const FeatureGrid = () => (
-    <>
+    <div className="container flex flex-col space-y-[256px] items-center pt-[256px] md-max:py-[0px] justify-center items-start md-max:space-y-[24px]">
+        <RevealOnScroll><section id="Row 1" className="flex items-center justify-center flex-wrap">
+            <section className="flex flex-col space-y-[24px] w-[300px]">
+                <div className="flex flex-row space-x-[8px] w-full">
+                    <MdiIcon path={mdiAccountGroup} size="33px" />
+                    <p className="text-2xl text-text5">Builder Mastermind</p>
+                </div>
+                <div>
+                    <p className="text-4xl font-bold text-white">Rocket-Growth Productivity</p>
+                </div>
+                <div>
+                    <p className="text-2xl text-text5">Collaborate with driven peers to elevate each other.</p>
+                </div>
+            </section>
+            <div className='flex justify-center'>
+                <img loading="lazy"
+                src="static/ticket-mockup.svg"
+                alt="Group of people collaborating"
+                className="aspect-square w-[640px] min-w-[360px] max-md:w-[180px]"
+                />
+            </div>
+            
+        </section></RevealOnScroll>
+
+        <RevealOnScroll><section id="Row 2" className="flex items-center justify-center flex-wrap-reverse">
+            <div className='flex justify-center'>
+                <img loading="lazy"
+                src="static/map-mockup.svg"
+                alt="Group of people collaborating"
+                className="aspect-square w-[640px] min-w-[360px] max-md:w-[180px]"
+                />
+            </div>
+            <section className="flex flex-col space-y-[24px] w-[300px]">
+                <div className="flex flex-row space-x-[8px] w-full">
+                    <MdiIcon path={mdiMapLegend} size="33px" />
+                    <p className="text-2xl text-text5">Startup Journey Map</p>
+                </div>
+                <div>
+                    <p className="text-4xl font-bold text-white">Lead with Confidence</p>
+                </div>
+                <div>
+                    <p className="text-2xl text-text5">Reflect on key questions to master your market and product.</p>
+                </div>
+            </section>
+        </section></RevealOnScroll>
+    </div>
+    /** <>
         {
             Features.map((feature, i) => (
                 <FeatureElement
@@ -120,5 +195,5 @@ export const FeatureGrid = () => (
                 />
             ))
         }
-    </>
+    </> */
 )

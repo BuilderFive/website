@@ -2,8 +2,8 @@ import { RsvpSection } from "./RsvpSection";
 
 export default function Hero() {
 
-    return <div id="Hero" className="container mx-auto w-full flex flex-wrap h-min-screen justify-between max-md:items-center pt-[64px] max-md:pt-[42px]">
-        <section id="Column 1" className="flex flex-col items-start h-full max-w-full flex-grow">
+    return <div id="Hero" className="container w-full flex flex-wrap h-min-screen pt-[48px] justify-between max-md:items-center max-md:pt-[42px] max-md:space-y-[24px]">
+        <section id="Column 1" className="flex flex-col items-start justify-center flex-grow">
             <section className="flex-col space-y-[24px] w-[500px] max-md:w-full justify-center text-center">
                 <h1 className="text-6xl font-bold text-white max-md:max-w-full max-md:text-4xl">
                     Join Startup Masterminds
@@ -13,14 +13,17 @@ export default function Hero() {
                 </p>
             </section>
         </section>
-        <section id="Column 2" className="flex flex-col items-end h-full max-w-full flex-grow">
-            <section className="flex justify-between flex-col space-y-[24px] w-[500px] max-md:w-full">
+        <section id="Column 2" className="flex flex-col justify-between items-end flex-grow">
+            <section className="flex justify-between flex-col space-y-[64px] w-[500px] max-md:w-full h-full max-md:space-y-[24px]">
                 <img loading="lazy"
                 src="static/rocket-man.svg"
                 alt="Visual representation of startup community"
-                className="self-center max-w-full aspect-square w-[420px]"
+                className="self-center max-w-full aspect-square w-[420px] max-md:w-[180px]"
                 />
-                <RsvpSection />
+                <div className="flex items-center justify-center w-full">
+                    <RsvpSection />
+                </div>
+                
             </section>
         </section>
     </div>

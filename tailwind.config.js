@@ -22,6 +22,7 @@ module.exports = {
         'background1-translucent': 'var(--background-1-translucent)',
         background2: 'var(--background-2)',
         background3: 'var(--background-3)',
+        white: 'var(--white)',
         error1: 'var(--error-1)',
         secondary1: 'var(--secondary-1)',
         secondary2: 'var(--secondary-2)',
@@ -31,7 +32,9 @@ module.exports = {
         text2: 'var(--text-2)',
         text3: 'var(--text-3)',
         text4: 'var(--text-4)',
-        text4: 'var(--text-5)',
+        text5: 'var(--text-5)',
+        text6: 'var(--text-6)',
+
         border: "var(--background-3)",
         input: "var(--secondary-1)",
         ring: "var(--ring)",

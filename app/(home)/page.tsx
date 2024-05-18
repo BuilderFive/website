@@ -7,9 +7,9 @@ import { RsvpSection } from './components/RsvpSection';
 import { FeatureGrid } from './components/FeatureGrid';
 import { mdiAlphaPCircle, mdiArrowRight } from '@mdi/js';
 import Hero from './components/Hero';
+import FeatureFooter from './components/FeatureFooter';
 
 export default function Home() {
-
     return (
         <div className="w-full relative">
             {/** <section className="mx-auto flex max-w-[980px] flex-col items-center gap-2 mt-7 py-8 md:py-12 md:pb-8 lg:py-24 lg:pb-20">
@@ -47,9 +47,9 @@ export default function Home() {
 
             {/* <AppSection /> */}
             <FeatureGrid />
-
+            <FeatureFooter/>
             <RsvpSection />
-
+            
         </div>
     );
 }
