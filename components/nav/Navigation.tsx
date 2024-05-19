@@ -19,8 +19,10 @@ import {
 export const Navigation: React.FC = () => {
     return (
         <div className="hidden md:flex space-x-[48px] w-fit">
-            <Link href="/" className="flex items-center">
-                <img src="/static/BuilderFive_Logo_Icon.png" alt="BuilderFive" className="aspect-square h-[48px]" />
+            <Link href="/" className="flex items-center space-x-[12px]">
+                {/**<img src="/static/BuilderFive_Logo_Icon.png" alt="BuilderFive" className="aspect-square h-[48px]" />*/}
+                <p className='text-2xl text-white font-mono font-semibold'>BuilderFive</p>
+
             </Link>
             <NavigationMenu>
                 <NavigationMenuList>

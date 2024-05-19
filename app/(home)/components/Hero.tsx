@@ -4,12 +4,12 @@ export default function Hero() {
 
     return <div id="Hero" className="container w-full flex flex-wrap h-min-screen pt-[48px] justify-between max-md:items-center max-md:pt-[42px] max-md:space-y-[24px]">
         <section id="Column 1" className="flex flex-col items-start justify-center flex-grow">
-            <section className="flex-col space-y-[24px] w-[500px] max-md:w-full justify-center text-center">
-                <h1 className="text-6xl font-bold text-white max-md:max-w-full max-md:text-4xl">
-                    Join Startup Masterminds
+            <section className="flex-col space-y-[24px] w-[700px] max-md:w-full justify-center text-center">
+                <h1 className="text-7xl font-bold text-white max-md:max-w-full max-md:text-4xl">
+                    Join <a className="text-secondary1">Startup</a> Masterminds
                 </h1>
-                <p className="text-2xl text-text5 max-md:text-lg">
-                    Collaborate in week-long peer groups of founders with our social networking app that helps you grow your idea into a product
+                <p className="text-4xl text-text5 max-md:text-lg text-secondary4">
+                    Collaborate with others founders from our social networking app that helps you grow your idea into a product
                 </p>
             </section>
         </section>

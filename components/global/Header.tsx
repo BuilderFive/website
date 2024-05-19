@@ -9,11 +9,12 @@ export const Header: React.FC = () => (
       <div className="flex flex-row w-full justify-between max-md:h-16 py-[24px] px-[24px] items-center justify-center text-white">
             <Navigation />
             <MobileNavigation />
-            <div className="flex md:justify-end w-fit">
+            
+            {/**<div className="flex md:justify-end w-fit items-center space-x-[24px]">
                 <nav className="flex items-center">
                     <ThemeSwitcher />
                 </nav>
-            </div>
+</div>*/}
         </div>
     </header>
 )
