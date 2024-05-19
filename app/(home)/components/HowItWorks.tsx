@@ -32,7 +32,7 @@ export default function HowItWorks() {
                 </div>
                 
                 <div id="howitworks-row-1" className="flex flex-row w-full flex-wrap gap-x-[24px] gap-y-[24px] justify-between max-md:space-y-[24px]">
-                    <RevealOnScroll><div id="howitworks-item-1" className="hover:shadow-xl flex relative flex-col flex-grow px-[24px] py-[24px] bg-background2 border-[2px] border-background3 rounded-[12px] space-y-[24px] max-md:space-y-[0px] max-md:w-full items-center justify-center max-md:flex-row max-md:space-x-[24px]">
+                    <RevealOnScroll><div id="howitworks-item-1" className="hover:shadow-xl flex relative flex-col flex-grow px-[24px] py-[24px] bg-background2 border-background3 rounded-[12px] space-y-[24px] max-md:space-y-[0px] max-md:w-full items-center justify-center max-md:flex-row max-md:space-x-[24px]">
                         <p className="text-3xl w-[240px] font-semibold max-md:text-2xl">you have<br/>an idea</p>
                         <img loading="lazy"
                             src="static/business-idea.svg"
@@ -42,7 +42,7 @@ export default function HowItWorks() {
                             <p className="text-text4 text-2xl font-bold max-md:text-sm">1</p>
                         </div>
                     </div></RevealOnScroll>
-                    <RevealOnScroll><div id="howitworks-item-2" className="hover:shadow-xl flex relative flex-col flex-grow px-[24px] py-[24px] bg-background2 border-[2px] border-background3 rounded-[12px] space-y-[24px] max-md:space-y-[0px] max-md:w-full items-center justify-center max-md:flex-row max-md:space-x-[24px]">
+                    <RevealOnScroll><div id="howitworks-item-2" className="hover:shadow-xl flex relative flex-col flex-grow px-[24px] py-[24px] bg-background2 border-background3 rounded-[12px] space-y-[24px] max-md:space-y-[0px] max-md:w-full items-center justify-center max-md:flex-row max-md:space-x-[24px]">
                         <p className="text-3xl w-[240px] font-semibold max-md:text-2xl">you download<br/>BuilderFive</p>
                         <img loading="lazy"
                             src="static/download-app.svg"
@@ -52,7 +52,7 @@ export default function HowItWorks() {
                             <p className="text-text4 text-2xl font-bold max-md:text-sm">2</p>
                         </div>
                     </div></RevealOnScroll>
-                    <RevealOnScroll><div id="howitworks-item-3" className="hover:shadow-xl flex relative flex-col flex-grow px-[24px] py-[24px] bg-background2 border-[2px] border-background3 rounded-[12px] space-y-[24px] max-md:space-y-[0px] max-md:w-full items-center justify-center max-md:flex-row max-md:space-x-[24px]">
+                    <RevealOnScroll><div id="howitworks-item-3" className="hover:shadow-xl flex relative flex-col flex-grow px-[24px] py-[24px] bg-background2 border-background3 rounded-[12px] space-y-[24px] max-md:space-y-[0px] max-md:w-full items-center justify-center max-md:flex-row max-md:space-x-[24px]">
                         <p className="text-3xl w-[240px] font-semibold max-md:text-2xl">you follow our<br/>journey map</p>
                         <img loading="lazy"
                             src="static/mountain-journey.svg"
@@ -64,7 +64,7 @@ export default function HowItWorks() {
                     </div></RevealOnScroll>
                 </div>
                 <div id="howitworks-row-2" className="flex flex-row w-full flex-wrap justify-between gap-x-[24px] gap-y-[24px] max-md:space-y-[24px]">
-                    <RevealOnScroll><div id="howitworks-item-4" className="hover:shadow-xl flex relative flex-col flex-grow px-[24px] py-[24px] bg-background2 border-[2px] border-background3 rounded-[12px] space-y-[24px] max-md:space-y-[0px] max-md:w-full items-center justify-center max-md:flex-row max-md:space-x-[24px]">
+                    <RevealOnScroll><div id="howitworks-item-4" className="hover:shadow-xl flex relative flex-col flex-grow px-[24px] py-[24px] bg-background2 border-background3 rounded-[12px] space-y-[24px] max-md:space-y-[0px] max-md:w-full items-center justify-center max-md:flex-row max-md:space-x-[24px]">
                         <p className="text-3xl w-[240px] font-semibold max-md:text-2xl">...and journal<br/>ups and lows</p>
                         <img loading="lazy"
                             src="static/answer-questions.svg"
@@ -74,7 +74,7 @@ export default function HowItWorks() {
                             <p className="text-text4 text-2xl font-bold max-md:text-sm">4</p>
                         </div>
                     </div></RevealOnScroll>
-                    <RevealOnScroll><div id="howitworks-item-5" className="hover:shadow-xl flex relative flex-col flex-grow px-[24px] py-[24px] bg-background2 border-[2px] border-background3 rounded-[12px] space-y-[24px] max-md:space-y-[0px] max-md:w-full items-center justify-center max-md:flex-row max-md:space-x-[24px]">
+                    <RevealOnScroll><div id="howitworks-item-5" className="hover:shadow-xl flex relative flex-col flex-grow px-[24px] py-[24px] bg-background2 border-background3 rounded-[12px] space-y-[24px] max-md:space-y-[0px] max-md:w-full items-center justify-center max-md:flex-row max-md:space-x-[24px]">
                         <p className="text-3xl w-[240px] font-semibold max-md:text-2xl">earn tokens<br/>from updates</p>
                         <img loading="lazy"
                             src="static/get-tokens.svg"
@@ -84,7 +84,7 @@ export default function HowItWorks() {
                             <p className="text-text4 text-2xl font-bold max-md:text-sm">5</p>
                         </div>
                     </div></RevealOnScroll>
-                    <RevealOnScroll><div id="howitworks-item-6" className="hover:shadow-xl flex relative flex-col flex-grow px-[24px] py-[24px] bg-background2 border-[2px] border-background3 rounded-[12px] space-y-[24px] max-md:space-y-[0px] max-md:w-full items-center justify-center max-md:flex-row max-md:space-x-[24px]">
+                    <RevealOnScroll><div id="howitworks-item-6" className="hover:shadow-xl flex relative flex-col flex-grow px-[24px] py-[24px] bg-background2 border-background3 rounded-[12px] space-y-[24px] max-md:space-y-[0px] max-md:w-full items-center justify-center max-md:flex-row max-md:space-x-[24px]">
                         <p className="text-3xl w-[240px] font-semibold max-md:text-2xl">...collaborate<br/>in peer groups</p>
                         <img loading="lazy"
                             src="static/join-group.svg"

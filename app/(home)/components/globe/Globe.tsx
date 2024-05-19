@@ -35,7 +35,7 @@ const Countries: React.FC<ThreePropWithTheme> = ({ theme }) => {
 
 const GlobeGraticule: React.FC<ThreePropWithTheme> = ({ theme }) => {
     let themeColor = theme === 'light'
-        ? '#3b82f6'
+        ? '#59A4E0'
         : '#3c3c3c';
 
     return (
@@ -49,7 +49,7 @@ const GlobeGraticule: React.FC<ThreePropWithTheme> = ({ theme }) => {
 
 const GlobeMesh: React.FC<ThreePropWithTheme> = ({ theme }) => {
     let themeColor = theme === 'light'
-        ? '#3b82f6'
+        ? '#59A4E0'
         : '#0f172a';
 
     return (
