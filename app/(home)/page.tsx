@@ -8,6 +8,7 @@ import { FeatureGrid } from './components/FeatureGrid';
 import { mdiAlphaPCircle, mdiArrowRight } from '@mdi/js';
 import Hero from './components/Hero';
 import FeatureFooter from './components/FeatureFooter';
+import CTA from './components/CTA';
 
 export default function Home() {
     return (
@@ -42,13 +43,14 @@ export default function Home() {
                     </CtaButton>
                 </div>
             </section> */}
+            <div className='z-20 relative'>
+                <Hero />
 
-            <Hero />
-
-            {/* <AppSection /> */}
-            <FeatureGrid />
+                <FeatureGrid />
+            </div>
+            
             <FeatureFooter/>
-            <RsvpSection />
+            <CTA/>
             
         </div>
     );

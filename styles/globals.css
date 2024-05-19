@@ -22,6 +22,7 @@
         --text-4: hsl(0 0 100%);
         --text-5: hsl(0 0 85%);
         --text-6: hsl(0 0% 24%);
+        --background-4: hsl(209.3 100% 8.8%);
     }
     .dark {
         --tabs: hsl(211 100% 81%);
@@ -41,6 +42,8 @@
         --text-4: hsl(0 0 0%);
         --text-5: hsl(0 0 85%);
         --text-6: hsl(0 0% 24%);
+        --background-4: hsl(209.3 100% 8.8%);
+
     }
 }
 
