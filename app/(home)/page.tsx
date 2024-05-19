@@ -10,6 +10,7 @@ import Hero from './components/Hero';
 import FeatureFooter from './components/FeatureFooter';
 import CTA from './components/CTA';
 import HowItWorks from './components/HowItWorks';
+import { Globe } from './components/globe/Globe';
 
 export default function Home() {
     return (
@@ -49,7 +50,6 @@ export default function Home() {
                 <HowItWorks />
                 <FeatureGrid />
             </div>
-            
             <FeatureFooter/>
             <CTA/>
             

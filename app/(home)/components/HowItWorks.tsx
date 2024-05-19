@@ -19,7 +19,7 @@ import { ReactNode, useState, useRef, useEffect } from "react";
 export default function HowItWorks() {
     return <div className="max-w-container w-full flex items-center justify-center">
         <div id="howitworks-background" className="w-[1400px] text-text1 text-center bg-background1 px-[48px] py-[48px] max-md:p-[24px] max-md:w-full rounded-[12px]">
-            <p className="text-7xl font-bold max-md:text-5xl mb-[24px] text-secondary3 max-md:text-3xl">HOW IT<br/> WORKS</p>
+            <p className="text-7xl font-bold max-md:text-5xl mb-[24px] text-text3 max-md:text-3xl">HOW IT<br/> WORKS</p>
 
             <div id="howitworks-content" className="flex flex-col space-y-[24px] items-center">
                 <div className="flex flex-row items-center gap-[24px] flex-wrap">
@@ -27,7 +27,7 @@ export default function HowItWorks() {
                         Growing an <a className="text-secondary1">idea</a> <br/>into a <a className="text-secondary1">product</a> 
                     </h2>
                     <h2 className="text-3xl max-md:text-xl text-text3 font-semibold text-start w-fit bg-secondary4 p-[12px] rounded-[12px]">
-                        with <a className="text-secondary2">peers</a>  who share <br/>your <a className="text-secondary2">problems</a> 
+                        with <a className="text-secondary3">peers</a>  who share <br/>your <a className="text-secondary3">problems</a> 
                     </h2>
                 </div>
                 
