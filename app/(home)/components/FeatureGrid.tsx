@@ -139,11 +139,11 @@ const RevealOnScroll = ({ children }: {children: ReactNode}) => {
     );
   };
 export const FeatureGrid = () => (
-    <div className="container flex flex-col space-y-[256px] items-center pt-[256px] md-max:py-[0px] justify-center items-start md-max:space-y-[24px]">
+    <div className="container flex flex-col space-y-[256px] items-center md-max:py-[0px] justify-center items-start md-max:space-y-[24px]">
         <RevealOnScroll><section id="Row 1" className="flex items-center justify-center flex-wrap">
             <section className="flex flex-col space-y-[24px] w-[300px]">
                 <div className="flex flex-row space-x-[8px] w-full">
-                    <MdiIcon path={mdiAccountGroup} size="33px" />
+                    <MdiIcon path={mdiAccountGroup} size="33px" className="text-white" />
                     <p className="text-2xl text-text5">Builder Mastermind</p>
                 </div>
                 <div>
@@ -173,7 +173,7 @@ export const FeatureGrid = () => (
             </div>
             <section className="flex flex-col space-y-[24px] w-[300px]">
                 <div className="flex flex-row space-x-[8px] w-full">
-                    <MdiIcon path={mdiMapLegend} size="33px" />
+                    <MdiIcon path={mdiMapLegend} size="33px" className='text-white'/>
                     <p className="text-2xl text-text5">Startup Journey Map</p>
                 </div>
                 <div>
@@ -184,6 +184,7 @@ export const FeatureGrid = () => (
                 </div>
             </section>
         </section></RevealOnScroll>
+        
     </div>
     /** <>
         {

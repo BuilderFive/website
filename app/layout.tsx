@@ -2,13 +2,20 @@ import { css } from '~/util';
 import type { Metadata } from 'next';
 import { Header } from '~/components/global/Header';
 import { Footer } from '~/components/global/Footer';
-import { Inter, Roboto_Mono } from 'next/font/google';
+
+import { Inter, Roboto_Mono, Poppins } from 'next/font/google';
 import { ThemeProvider } from '~/components/ui/theme-provider';
 
 import "~/styles/globals.css";
 
 const sans = Inter({ subsets: ["latin"], variable: "--font-sans" });
 const mono = Roboto_Mono({ subsets: ["latin"], variable: '--font-mono' });
+const poppins = Poppins({
+    subsets: ['latin'],
+    display: 'swap',
+    variable: '--font-poppins',
+    weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900']
+  });
 
 export const metadata: Metadata = {
     title: {
@@ -31,7 +38,7 @@ export default function RootLayout({
             <head>
                 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
             </head>
-            <body className={css("min-h-screen font-sans antialiased", sans.variable, mono.variable)}>
+            <body className={css("min-h-screen font-poppins antialiased", sans.variable, mono.variable, poppins.variable)}>
                 <ThemeProvider attribute="class" defaultTheme="dark">
                     <div className="relative flex min-h-screen flex-col bg-cover bg-twighlight">
                         <Header />

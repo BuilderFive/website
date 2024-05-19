@@ -22,6 +22,7 @@ module.exports = {
         'background1-translucent': 'var(--background-1-translucent)',
         background2: 'var(--background-2)',
         background3: 'var(--background-3)',
+        background4: 'var(--background-4)',
         white: 'var(--white)',
         error1: 'var(--error-1)',
         secondary1: 'var(--secondary-1)',
@@ -70,6 +71,8 @@ module.exports = {
       },
       fontFamily: {
           sans: ["var(--font-sans)", ...fontFamily.sans],
+          poppins: "var(--font-poppins)", ...fontFamily.poppins,
+
       },
     },
   },
