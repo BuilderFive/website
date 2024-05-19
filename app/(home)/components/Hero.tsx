@@ -1,10 +1,11 @@
 import { RsvpSection } from "./RsvpSection";
+import { Globe } from "./globe/Globe";
 
 export default function Hero() {
 
     return <div id="Hero" className="container w-full flex flex-wrap h-min-screen pt-[48px] justify-between max-md:items-center max-md:pt-[42px] max-md:space-y-[24px]">
-        <section id="Column 1" className="flex flex-col items-start justify-center flex-grow">
-            <section className="flex-col space-y-[24px] w-[700px] max-md:w-full justify-center text-center">
+        <section id="Column 1" className="flex relative gap-y-[48px] flex-col items-start justify-between flex-grow ">
+            <section className="flex-col space-y-[24px] w-[700px] max-md:w-full text-center">
                 <h1 className="text-7xl font-bold text-white max-md:max-w-full max-md:text-4xl">
                     Turn an <a className="text-secondary1">Idea</a> <br/>into a <a className="text-secondary1">Startup</a>
                 </h1>
@@ -12,6 +13,9 @@ export default function Hero() {
                     Collaborate with others founders from our social networking app that helps you grow your idea into a product
                 </p>
             </section>
+            <div className="aspect-video invisible lg:visible overflow-hidden object-cover object-center w-[0px] lg:w-[640px]">
+                <Globe />
+            </div>
         </section>
         <section id="Column 2" className="flex flex-col justify-between items-end flex-grow">
             <section className="flex justify-between flex-col space-y-[64px] w-[500px] max-md:w-full h-full max-md:space-y-[24px]">
