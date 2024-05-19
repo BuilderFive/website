@@ -35,6 +35,8 @@ module.exports = {
         text4: 'var(--text-4)',
         text5: 'var(--text-5)',
         text6: 'var(--text-6)',
+        text7: 'var(--text-7)',
+        text8: 'var(--text-8)',
 
         border: "var(--background-3)",
         input: "var(--secondary-1)",
@@ -64,11 +66,22 @@ module.exports = {
               from: { height: "var(--radix-accordion-content-height)" },
               to: { height: "0" },
           },
+          slidein: {
+            from: {
+              opacity: "0",
+              transform: "translateY(-10px)",
+            },
+            to: {
+              opacity: "1",
+              transform: "translateY(0)",
+            },
+          },
       },
       animation: {
           "accordion-down": "accordion-down 0.2s ease-out",
           "accordion-up": "accordion-up 0.2s ease-out",
-      },
+          slidein: "slidein 1s ease var(--slidein-delay, 0) forwards",
+        },
       fontFamily: {
           sans: ["var(--font-sans)", ...fontFamily.sans],
           poppins: "var(--font-poppins)", ...fontFamily.poppins,
