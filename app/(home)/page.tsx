@@ -9,6 +9,7 @@ import { mdiAlphaPCircle, mdiArrowRight } from '@mdi/js';
 import Hero from './components/Hero';
 import FeatureFooter from './components/FeatureFooter';
 import CTA from './components/CTA';
+import HowItWorks from './components/HowItWorks';
 
 export default function Home() {
     return (
@@ -43,9 +44,9 @@ export default function Home() {
                     </CtaButton>
                 </div>
             </section> */}
-            <div className='z-20 relative'>
+            <div className='z-20 relative flex flex-col space-y-[256px] pb-[256px]'>
                 <Hero />
-
+                <HowItWorks />
                 <FeatureGrid />
             </div>
             

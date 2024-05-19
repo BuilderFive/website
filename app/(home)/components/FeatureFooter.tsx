@@ -36,7 +36,7 @@ const RevealOnScroll = ({ children }: {children: ReactNode}) => {
   };
 
 export default function FeatureFooter() {
-    return <div id="footer feature" className="relative flex flex-col w-full h-fit pt-[256px] items-center ">
+    return <div id="footer feature" className="relative flex flex-col w-full h-fit items-center ">
         <RevealOnScroll><div id="last features" className="z-20 container w-full flex flex-wrap justify-between pb-[640px] max-md:pb-[256px] max-md:space-y-[128px] max-md:items-center">
             <div className='flex flex-grow justify-center'>
                 <section className="flex flex-col space-y-[24px] w-[300px] max-md:text-center">

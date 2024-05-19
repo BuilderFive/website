@@ -21,6 +21,7 @@ export const RsvpSection: React.FC = () => {
         const currentDate = new Date();
         const futureDate = new Date();
         futureDate.setFullYear(2024, 5, 14);
+        futureDate.setHours(12, 30, 30, 10);
 
         const timeDifference = futureDate.getTime() - currentDate.getTime();
         const weeks = Math.floor(timeDifference / (1000 * 60 * 60 * 24 * 7));
@@ -72,7 +73,7 @@ export const RsvpSection: React.FC = () => {
                                 HOURS
                             </p>
                             <p className="text-4xl text-white">
-                            {calculateTimeRemaining().hours}
+                                {calculateTimeRemaining().hours}
                             </p>
                         </section>
                     </section>
