@@ -51,7 +51,6 @@ export const RsvpSection: React.FC = () => {
         <section id="rsvp" className="max-w-[500px] w-full">
             <div className="flex flex-col justify-center space-y-4">
                 <div className="flex flex-col w-full justify-center items-center">
-                   <p className='text-white font-regular text-lg'>Arriving to your app store in...</p>
                     <section className="w-fit h-fit flex space-x-[24px] px-[48px] py-[12px]">
                         
                         <section className="flex flex-col items-center">
@@ -77,6 +76,7 @@ export const RsvpSection: React.FC = () => {
                             </p>
                         </section>
                     </section>
+                    <p className='text-text5 font-light text-md'>until 1st round of early release</p>
                 </div>
                 <div className="w-full space-y-[12px]">
                     <form onSubmit={e => e.preventDefault()} className="flex max-md:flex-col space-x-[12px] max-md:space-x-[0px] max-md:space-y-[12px]">

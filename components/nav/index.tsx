@@ -27,36 +27,41 @@ export type MobileRoute = {
 
 export const MobileRoutes: MobileRouteSection[] = [
     {
-        title: '<todo>',
+        title: 'Navigation',
         routes: [
             {
-                name: '<todo>',
-                key: 'todo',
+                name: 'home',
+                key: 'home',
                 path: '#'
             },
+            {
+                name: 'pricing (wip)',
+                key: 'pricing',
+                path: '/'
+            },
+            {
+                name: 'about (wip)',
+                key: 'about',
+                path: '/about'
+            }
         ]
     }
 ] 
 
 export const Routes: Route[] = [
     {
-        name: 'Home',
+        name: 'home',
         key: 'home',
         path: '/'
     },
     {
-        name: 'Pricing',
+        name: 'pricing (wip)',
         key: 'pricing',
-        path: '/pricing'
+        path: '/'
     },
     {
-        name: 'About',
+        name: 'about (wip)',
         key: 'about',
         path: '/about'
-    },
-    {
-        name: 'Contact',
-        key: 'contact',
-        path: '/contact'
     }
 ]
