@@ -75,7 +75,7 @@ export const MobileNavigation: React.FC = () => {
                     </div>
                     <div className="flex flex-col pt-9 space-y-2 text-sm">
                         <span className="font-bold font-mono text-transparent bg-clip-text bg-gradient-to-br from-indigo-200 from-15% via-blue-400 via-50% to-purple-400 to-90%">
-                            BuilderFive <span className="text-gray-300 font-medium">&copy; 2020-{new Date().getFullYear()}</span>
+                            BuilderFive <span className="text-gray-300 font-medium">&copy; May 20, 2024 -{new Date().getFullYear()}</span>
                         </span> 
 
                         <span className="text-muted-foreground text-sm">
