@@ -22,10 +22,21 @@ export const metadata: Metadata = {
         default: 'BuilderFive',
         template: 'BuilderFive - %s',
     },
-    description: "Where builders connect and collaborate offline",
+    description: "Where builders collaborate in masterminds to turn ideas into products.",
     icons: {
         icon: "/favicon.ico",
     },
+    openGraph: {
+        type: "website",
+        url: "https://BuilderFive.com",
+        title: "BuilderFive",
+        description: "Where builders collaborate in masterminds to turn ideas into products.n",
+        siteName: "BuilderFive",
+        images: [{
+          url: "https://BuilderFive.com/static/logos/logo-image.png",
+        }],
+    }
+
 };
 
 export default function RootLayout({
