@@ -23,10 +23,10 @@ export default function HowItWorks() {
 
             <div id="howitworks-content" className="flex flex-col space-y-[24px] items-center">
                 <div className="flex flex-row items-center gap-[24px] flex-wrap">
-                    <h2 className="text-3xl max-md:text-xl text-text3 font-semibold text-start w-fit bg-secondary4 p-[12px] rounded-[12px]">
-                        Growing an <a className="text-secondary1">idea</a> <br/>into a <a className="text-secondary1">product</a> 
+                    <h2 className="text-3xl max-md:text-xl text-text6 font-semibold text-start w-fit bg-secondary4 p-[12px] rounded-[12px]">
+                        Growing an <a className="text-text7">idea</a> <br/>into a <a className="text-secondary1">product</a> 
                     </h2>
-                    <h2 className="text-3xl max-md:text-xl text-text3 font-semibold text-start w-fit bg-secondary4 p-[12px] rounded-[12px]">
+                    <h2 className="text-3xl max-md:text-xl text-text6 font-semibold text-start w-fit bg-secondary4 p-[12px] rounded-[12px]">
                         with <a className="text-secondary3">peers</a>  who share <br/>your <a className="text-secondary3">problems</a> 
                     </h2>
                 </div>
@@ -39,7 +39,7 @@ export default function HowItWorks() {
                             alt="Group of people collaborating"
                             className="aspect-square w-[240px] max-md:w-[120px]"/>
                         <div className="flex items-center justify-center w-[48px] max-md:w-[24px] aspect-square absolute right-[12px] bottom-[12px] bg-secondary3 rounded-full">
-                            <p className="text-text4 text-2xl font-bold max-md:text-sm">1</p>
+                            <p className="text-text5 text-2xl font-bold max-md:text-sm">1</p>
                         </div>
                     </div></RevealOnScroll>
                     <RevealOnScroll><div id="howitworks-item-2" className="hover:shadow-xl flex relative flex-col flex-grow px-[24px] py-[24px] bg-background2 border-background3 rounded-[12px] space-y-[24px] max-md:space-y-[0px] max-md:w-full items-center justify-center max-md:flex-row max-md:space-x-[24px]">
@@ -49,7 +49,7 @@ export default function HowItWorks() {
                             alt="Group of people collaborating"
                             className="aspect-square w-[240px] max-md:w-[120px]"/>
                         <div className="flex items-center justify-center w-[48px] max-md:w-[24px] aspect-square absolute right-[12px] bottom-[12px] bg-secondary3 rounded-full">
-                            <p className="text-text4 text-2xl font-bold max-md:text-sm">2</p>
+                            <p className="text-text5 text-2xl font-bold max-md:text-sm">2</p>
                         </div>
                     </div></RevealOnScroll>
                     <RevealOnScroll><div id="howitworks-item-3" className="hover:shadow-xl flex relative flex-col flex-grow px-[24px] py-[24px] bg-background2 border-background3 rounded-[12px] space-y-[24px] max-md:space-y-[0px] max-md:w-full items-center justify-center max-md:flex-row max-md:space-x-[24px]">
@@ -59,7 +59,7 @@ export default function HowItWorks() {
                             alt="Group of people collaborating"
                             className="aspect-square w-[240px] max-md:w-[120px]"/>
                         <div className="flex items-center justify-center w-[48px] max-md:w-[24px] aspect-square absolute right-[12px] bottom-[12px] bg-secondary3 rounded-full">
-                            <p className="text-text4 text-2xl font-bold max-md:text-sm">3</p>
+                            <p className="text-text5 text-2xl font-bold max-md:text-sm">3</p>
                         </div>
                     </div></RevealOnScroll>
                 </div>
@@ -71,7 +71,7 @@ export default function HowItWorks() {
                             alt="Group of people collaborating"
                             className="aspect-square w-[240px] max-md:w-[120px]"/>
                         <div className="flex items-center justify-center w-[48px] max-md:w-[24px] aspect-square absolute right-[12px] bottom-[12px] bg-secondary3 rounded-full">
-                            <p className="text-text4 text-2xl font-bold max-md:text-sm">4</p>
+                            <p className="text-text5 text-2xl font-bold max-md:text-sm">4</p>
                         </div>
                     </div></RevealOnScroll>
                     <RevealOnScroll><div id="howitworks-item-5" className="hover:shadow-xl flex relative flex-col flex-grow px-[24px] py-[24px] bg-background2 border-background3 rounded-[12px] space-y-[24px] max-md:space-y-[0px] max-md:w-full items-center justify-center max-md:flex-row max-md:space-x-[24px]">
@@ -81,7 +81,7 @@ export default function HowItWorks() {
                             alt="Group of people collaborating"
                             className="aspect-square w-[240px] max-md:w-[120px]"/>
                         <div className="flex items-center justify-center w-[48px] max-md:w-[24px] aspect-square absolute right-[12px] bottom-[12px] bg-secondary3 rounded-full">
-                            <p className="text-text4 text-2xl font-bold max-md:text-sm">5</p>
+                            <p className="text-text5 text-2xl font-bold max-md:text-sm">5</p>
                         </div>
                     </div></RevealOnScroll>
                     <RevealOnScroll><div id="howitworks-item-6" className="hover:shadow-xl flex relative flex-col flex-grow px-[24px] py-[24px] bg-background2 border-background3 rounded-[12px] space-y-[24px] max-md:space-y-[0px] max-md:w-full items-center justify-center max-md:flex-row max-md:space-x-[24px]">
@@ -91,7 +91,7 @@ export default function HowItWorks() {
                             alt="Group of people collaborating"
                             className="aspect-square w-[240px] max-md:w-[120px]"/>
                         <div className="flex items-center justify-center w-[48px] max-md:w-[24px] aspect-square absolute right-[12px] bottom-[12px] bg-secondary3 rounded-full">
-                            <p className="text-text4 text-2xl font-bold max-md:text-sm">6</p>
+                            <p className="text-text5 text-2xl font-bold max-md:text-sm">6</p>
                         </div>
                     </div></RevealOnScroll>
                 </div>

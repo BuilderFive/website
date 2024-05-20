@@ -4,19 +4,18 @@ import { Globe } from "./globe/Globe";
 export default function Hero() {
 
     return <div id="Hero" className="container w-full flex flex-wrap h-min-screen pt-[48px] justify-between max-md:items-center max-md:pt-[42px] max-md:space-y-[24px]">
-        <section id="Column 1" className="flex relative gap-y-[48px] flex-col items-start justify-between flex-grow ">
+        <section id="Column 1" className="flex relative gap-y-[48px] flex-col items-start justify-center flex-grow ">
             <section className="flex-col space-y-[24px] w-[700px] max-md:w-full text-center animate-slidein opacity-0 [--slidein-delay:300ms]">
                 <div className="text-7xl font-bold text-white max-md:max-w-full max-md:text-4xl">
-                    <a className="animate-slidein opacity-0 [--slidein-delay:500ms]">Turn an <a className="text-text7 animate-slidein opacity-0 [--slidein-delay:800ms]">Idea</a></a> 
-                    <a className="animate-slidein opacity-0 [--slidein-delay:1500ms]"><br/>into a <a className="text-text8 animate-slidein opacity-0 [--slidein-delay:1800ms]">Startup</a></a>
+                    <p className="animate-slidein opacity-0 [--slidein-delay:500ms]">Turn an <a className="text-text7 animate-slidein opacity-0 [--slidein-delay:800ms]">idea</a></p> 
+                    <p className="animate-slidein opacity-0 [--slidein-delay:1500ms]">into a <a className="text-text8 animate-slidein opacity-0 [--slidein-delay:1800ms]">product.</a></p>
                 </div>
-                <p className="text-4xl text-text5 max-md:text-lg text-secondary4">
-                    Collaborate with others founders from our social networking app that helps you grow your idea into a product
-                </p>
+                <div className="flex text-4xl max-md:text-lg text-white font-regular justify-center w-full">
+                    <p className="animate-slidein opacity-0 [--slidein-delay:3500ms] w-full max-md:w-[80%]">
+                        Solve hard startup questions by collaborating with peers and tracking your journey, so that you can build with confidence
+                    </p> 
+                </div>
             </section>
-            <div className="aspect-video invisible lg:visible overflow-hidden object-cover object-center w-[0px] lg:w-[640px]">
-                <Globe />
-            </div>
         </section>
         <section id="Column 2" className="flex flex-col justify-between items-end flex-grow">
             <section className="flex justify-between flex-col space-y-[64px] w-[500px] max-md:w-full h-full max-md:space-y-[24px]">
