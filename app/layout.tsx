@@ -7,6 +7,7 @@ import { Inter, Roboto_Mono, Poppins } from 'next/font/google';
 import { ThemeProvider } from '~/components/ui/theme-provider';
 
 import "~/styles/globals.css";
+import "tailwindcss/tailwind.css"
 
 const sans = Inter({ subsets: ["latin"], variable: "--font-sans" });
 const mono = Roboto_Mono({ subsets: ["latin"], variable: '--font-mono' });
