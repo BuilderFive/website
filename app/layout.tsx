@@ -30,7 +30,7 @@ export const metadata: Metadata = {
         type: "website",
         url: "https://BuilderFive.com",
         title: "BuilderFive",
-        description: "Where builders collaborate in masterminds to turn ideas into products.n",
+        description: "Where builders collaborate in masterminds to turn ideas into products.",
         siteName: "BuilderFive",
         images: [{
           url: "https://BuilderFive.com/static/logos/logo-image.png",
