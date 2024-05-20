@@ -65,7 +65,7 @@ export default function HowItWorks() {
                 </div>
                 <div id="howitworks-row-2" className="flex flex-row w-full flex-wrap justify-between gap-x-[24px] gap-y-[24px] max-md:space-y-[24px]">
                     <RevealOnScroll><div id="howitworks-item-4" className="hover:shadow-xl flex relative flex-col flex-grow px-[24px] py-[24px] bg-background2 border-background3 rounded-[12px] space-y-[24px] max-md:space-y-[0px] max-md:w-full items-center justify-center max-md:flex-row max-md:space-x-[24px]">
-                        <p className="text-3xl w-[240px] font-semibold max-md:text-2xl">...and journal<br/>ups and lows</p>
+                        <p className="text-3xl w-[240px] font-semibold max-md:text-2xl">journal your<br/>highs and lows</p>
                         <img loading="lazy"
                             src="static/answer-questions.svg"
                             alt="Group of people collaborating"
@@ -85,7 +85,7 @@ export default function HowItWorks() {
                         </div>
                     </div></RevealOnScroll>
                     <RevealOnScroll><div id="howitworks-item-6" className="hover:shadow-xl flex relative flex-col flex-grow px-[24px] py-[24px] bg-background2 border-background3 rounded-[12px] space-y-[24px] max-md:space-y-[0px] max-md:w-full items-center justify-center max-md:flex-row max-md:space-x-[24px]">
-                        <p className="text-3xl w-[240px] font-semibold max-md:text-2xl">...collaborate<br/>in peer groups</p>
+                        <p className="text-3xl w-[240px] font-semibold max-md:text-2xl">spend tokens<br/>for peer groups</p>
                         <img loading="lazy"
                             src="static/join-group.svg"
                             alt="Group of people collaborating"
@@ -95,6 +95,16 @@ export default function HowItWorks() {
                         </div>
                     </div></RevealOnScroll>
                 </div>
+                <RevealOnScroll><div id="howitworks-item-6" className="hover:shadow-xl flex relative flex-col flex-grow px-[24px] py-[24px] bg-background2 border-background3 rounded-[12px] space-y-[24px] max-md:space-y-[0px] max-md:w-full items-center justify-center max-md:flex-row max-md:space-x-[24px]">
+                        <p className="text-3xl w-[240px] font-semibold max-md:text-2xl">do steps 3-6<br/>to improve</p>
+                        <img loading="lazy"
+                            src="static/make-progress.svg"
+                            alt="Making progress"
+                            className="aspect-square w-[240px] max-md:w-[120px]"/>
+                        <div className="flex items-center justify-center w-[48px] max-md:w-[24px] aspect-square absolute right-[12px] bottom-[12px] bg-secondary3 rounded-full">
+                            <p className="text-text5 text-2xl font-bold max-md:text-sm">7</p>
+                        </div>
+                    </div></RevealOnScroll>
             </div>
         </div>
     </div>
