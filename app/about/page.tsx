@@ -110,7 +110,7 @@ export default function About() {
             </div>
             
             <RevealOnScroll><div id="about-row-2" className="rounded-[12px] p-[24px] bg-background1">
-                <p className="text-6xl font-semibold text-text1">My name's My Phung</p>
+                <p className="text-6xl font-semibold text-text1">My name is My Phung</p>
             </div></RevealOnScroll>
             <RevealOnScroll><div id="about-row-3" className="rounded-[12px] p-[24px] bg-background1">
                 <p className="text-2xl font-regular text-text3">This is a work in progress by the way. I figured I would release anyways haha</p>
