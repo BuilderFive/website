@@ -18,8 +18,8 @@ import { ReactNode, useState, useRef, useEffect } from "react";
  */
 export default function HowItWorks() {
     return <div className="max-w-container w-full flex items-center justify-center">
-        <div id="howitworks-background" className="w-[1400px] text-text1 text-center bg-background1 px-[48px] py-[48px] max-md:p-[24px] max-md:w-full rounded-[12px]">
-            <p className="text-7xl font-bold max-md:text-5xl mb-[24px] text-text3 max-md:text-3xl">HOW IT<br/> WORKS</p>
+        <div id="howitworks-background" className="w-[1400px] text-text1 text-center px-[48px] py-[48px] max-md:p-[24px] max-md:w-full rounded-[12px]">
+            <p className="text-7xl font-bold max-md:text-5xl mb-[24px] text-text3 max-md:text-3xl text-white">HOW IT<br/> WORKS</p>
 
             <div id="howitworks-content" className="flex flex-col space-y-[24px] items-center">
                 <div className="flex flex-row items-center gap-[24px] flex-wrap">
@@ -31,7 +31,7 @@ export default function HowItWorks() {
                     </h2>
                 </div>
                 
-                <div id="howitworks-row-1" className="flex flex-row w-full flex-wrap gap-x-[24px] gap-y-[24px] justify-between max-md:space-y-[24px]">
+                <div id="howitworks-row-1" className="flex flex-row w-full flex-wrap gap-x-[24px] gap-y-[24px] justify-between max-md:space-y-[12px]">
                     <RevealOnScroll><div id="howitworks-item-1" className="hover:shadow-xl flex relative flex-col flex-grow px-[24px] py-[24px] bg-background2 border-background3 rounded-[12px] space-y-[24px] max-md:space-y-[0px] max-md:w-full items-center justify-center max-md:flex-row max-md:space-x-[24px]">
                         <p className="text-3xl w-[240px] font-semibold max-md:text-2xl">you have<br/>an idea</p>
                         <img loading="lazy"
@@ -63,7 +63,7 @@ export default function HowItWorks() {
                         </div>
                     </div></RevealOnScroll>
                 </div>
-                <div id="howitworks-row-2" className="flex flex-row w-full flex-wrap justify-between gap-x-[24px] gap-y-[24px] max-md:space-y-[24px]">
+                <div id="howitworks-row-2" className="flex flex-row w-full flex-wrap justify-between gap-x-[24px] gap-y-[24px] max-md:space-y-[12px]">
                     <RevealOnScroll><div id="howitworks-item-4" className="hover:shadow-xl flex relative flex-col flex-grow px-[24px] py-[24px] bg-background2 border-background3 rounded-[12px] space-y-[24px] max-md:space-y-[0px] max-md:w-full items-center justify-center max-md:flex-row max-md:space-x-[24px]">
                         <p className="text-3xl w-[240px] font-semibold max-md:text-2xl">journal your<br/>highs and lows</p>
                         <img loading="lazy"
@@ -94,17 +94,19 @@ export default function HowItWorks() {
                             <p className="text-text5 text-2xl font-bold max-md:text-sm">6</p>
                         </div>
                     </div></RevealOnScroll>
-                </div>
-                <RevealOnScroll><div id="howitworks-item-6" className="hover:shadow-xl flex relative flex-col flex-grow px-[24px] py-[24px] bg-background2 border-background3 rounded-[12px] space-y-[24px] max-md:space-y-[0px] max-md:w-full items-center justify-center max-md:flex-row max-md:space-x-[24px]">
-                        <p className="text-3xl w-[240px] font-semibold max-md:text-2xl">do steps 3-6<br/>to improve</p>
+                    <RevealOnScroll><div id="howitworks-item-7" className="hover:shadow-xl flex relative flex-col flex-grow px-[24px] py-[24px] bg-background2 border-background3 rounded-[12px] space-y-[24px] max-md:space-y-[0px] max-md:w-full items-center justify-center max-md:flex-row max-md:space-x-[24px]">
+                        <p className="text-3xl w-[240px] font-semibold max-md:text-2xl">do steps 3-6<br/>to progress</p>
                         <img loading="lazy"
                             src="static/make-progress.svg"
-                            alt="Making progress"
+                            alt="Group of people collaborating"
                             className="aspect-square w-[240px] max-md:w-[120px]"/>
                         <div className="flex items-center justify-center w-[48px] max-md:w-[24px] aspect-square absolute right-[12px] bottom-[12px] bg-secondary3 rounded-full">
                             <p className="text-text5 text-2xl font-bold max-md:text-sm">7</p>
                         </div>
                     </div></RevealOnScroll>
+                    
+                </div>
+                
             </div>
         </div>
     </div>
