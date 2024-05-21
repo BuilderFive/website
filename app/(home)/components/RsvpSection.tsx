@@ -115,12 +115,12 @@ export const RsvpSection: React.FC = () => {
                             { !loading && addedEmail && <MdiIcon path={mdiCheck} size="20px" />}
                             { !loading && addedEmail && <p className="font-semibold text-md">EMAIL ADDED</p>}
 
-                            { !loading && !addedEmail && <p className="font-semibold text-md">JOIN EARLY</p> }
+                            { !loading && !addedEmail && <p className="font-semibold text-md">JOIN EARLY WAITLIST</p> }
                         </Button>
                     </form>
                     <section className="flex flex-col items-start text-start max-md:text-center">
                         <p className="text-md text-text5 w-[80%] max-md:w-full">
-                            Join as an early builder to collaborate in development and receive exclusive benefits on launch day
+                            Join as an early builder to collaborate in development and be the first to try our app
                         </p>
                     </section>
                 </div>

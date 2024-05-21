@@ -23,10 +23,8 @@ export default function HowItWorks() {
 
             <div id="howitworks-content" className="flex flex-col space-y-[24px] items-center">
                 <div className="flex flex-row items-center gap-[24px] flex-wrap">
-                    <h2 className="text-3xl max-md:text-xl text-text6 font-semibold text-start w-fit bg-secondary4 p-[12px] rounded-[12px]">
-                        Growing an <a className="text-text7">idea</a> <br/>into a <a className="text-secondary1">product</a> 
-                    </h2>
-                    <h2 className="text-3xl max-md:text-xl text-text6 font-semibold text-start w-fit bg-secondary4 p-[12px] rounded-[12px]">
+                    <h2 className="text-3xl max-md:text-xl text-text4 font-semibold text-start w-fit p-[12px] rounded-[12px]">
+                        Growing an <a className="text-text7">idea</a><br/> into a <a className="text-secondary1">product</a><br/><br/>
                         with <a className="text-secondary3">peers</a>  who share <br/>your <a className="text-secondary3">problems</a> 
                     </h2>
                 </div>

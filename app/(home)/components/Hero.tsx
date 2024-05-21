@@ -12,7 +12,7 @@ export default function Hero() {
                 </div>
                 <div className="flex text-4xl max-md:text-lg text-white font-regular justify-center w-full">
                     <p className="animate-slidein opacity-0 [--slidein-delay:3000ms] w-full max-md:w-[80%]">
-                        Solve hard startup questions by collaborating with peers and tracking your journey, so that you can build with confidence
+                        Solve hard startup questions by collaborating with peers and tracking your journey in our networking app, so that you can build with confidence
                     </p> 
                 </div>
             </section>
