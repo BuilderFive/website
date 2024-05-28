@@ -8,6 +8,7 @@ import { ThemeProvider } from '~/components/ui/theme-provider';
 
 import "~/styles/globals.css";
 import "tailwindcss/tailwind.css"
+import Script from 'next/script';
 
 const sans = Inter({ subsets: ["latin"], variable: "--font-sans" });
 const mono = Roboto_Mono({ subsets: ["latin"], variable: '--font-mono' });
@@ -46,6 +47,22 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
+        <>
+        <Script id="Google-Analytics-1"
+            strategy="lazyOnload"
+            src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}`}
+        />
+
+        <Script strategy="lazyOnload" id="Google-Analytics-2">
+            {` 
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS}', {
+                page_path: window.location.pathname,
+                });
+            `}
+        </Script>
         <html lang="en" suppressHydrationWarning>
             <head>
                 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
@@ -61,6 +78,6 @@ export default function RootLayout({
                     </div>
                 </ThemeProvider>
             </body>
-        </html>
+        </html></>
     );
 }
