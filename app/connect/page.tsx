@@ -253,7 +253,7 @@ export default function Connect() {
                         <Input
                             type="email"
                             value={email}
-                            className="max-w-[360px] p-[12px] rounded-[8px] text-text6 text-xl invalid:border-red-400 h-fit border-[2px]"
+                            className="max-w-[360px] bg-white p-[12px] rounded-[8px] text-text6 text-xl invalid:border-red-400 h-fit border-[2px]"
                             placeholder="Enter your email"
                             onChange={e => setEmail(e.target.value)}/>
                         <Button className={"bg-secondary1 max-md:w-full rounded-[12px] h-fit p-[12px] max-md:p-[12px]"}
@@ -271,7 +271,7 @@ export default function Connect() {
                     <textarea disabled={!emailSubmitted}
                         value={goal} 
                         contentEditable={false}
-                        className="resize-none p-[12px] text-text6 text-xl rounded-[8px] invalid:border-red-400 h-fit border-[2px] w-full"
+                        className="resize-none p-[12px] bg-white text-text6 text-xl rounded-[8px] invalid:border-red-400 h-fit border-[2px] w-full"
                         placeholder="What goals do you want to work with a group on?"
                         onChange={e => setGoal(e.target.value)}/>
                     <Button className={"bg-secondary1 max-md:w-full rounded-[12px] h-fit p-[12px] px-[24px]"}
