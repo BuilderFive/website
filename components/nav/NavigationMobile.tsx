@@ -50,7 +50,7 @@ export const MobileNavigation: React.FC = () => {
                     <span className="sr-only">Toggle Menu</span>
                 </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="pr-0">
+            <SheetContent side="left" className="pr-0 bg-background1">
                 <MobileLink href="/" className="flex items-center" onOpenChange={setOpen}>
                     <span className="font-extrabold font-mono">
                         BuilderFive
