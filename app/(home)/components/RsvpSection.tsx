@@ -54,7 +54,7 @@ export const RsvpSection: React.FC = () => {
 
         const { data, error } = await supabase
             .from("rsvp")
-            .insert([{ email }]);
+            .upsert([{ email }]);
         if (error) console.error(error);
         
         await new Promise(resolve => setTimeout(resolve, 2000));

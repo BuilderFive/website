@@ -43,6 +43,11 @@ export const MobileRoutes: MobileRouteSection[] = [
                 name: 'about (wip)',
                 key: 'about',
                 path: '/about'
+            },
+            {
+                name: 'connect',
+                key: 'connect',
+                path: '/connect'
             }
         ]
     }
@@ -63,5 +68,10 @@ export const Routes: Route[] = [
         name: 'about (wip)',
         key: 'about',
         path: '/about'
+    },
+    {
+        name: 'connect',
+        key: 'connect',
+        path: '/connect'
     }
 ]

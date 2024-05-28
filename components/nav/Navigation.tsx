@@ -22,7 +22,6 @@ export const Navigation: React.FC = () => {
             <Link href="/" className="flex items-center space-x-[12px]">
                 <img src="/static/logos/blue-logo.svg" alt="BuilderFive" className="aspect-square h-[48px] rounded-full" />
                 <p className='text-2xl text-white font-mono font-semibold'>BuilderFive</p>
-
             </Link>
             <NavigationMenu>
                 <NavigationMenuList>
