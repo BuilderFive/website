@@ -116,7 +116,6 @@ export default function About() {
                 <p className="text-2xl font-regular text-text3">This is a work in progress by the way. I figured I would release anyways haha</p>
             </div></RevealOnScroll>
         </div>
-        
     </div>);
 }
 const RevealOnScroll = ({ children }: {children: ReactNode}) => {
