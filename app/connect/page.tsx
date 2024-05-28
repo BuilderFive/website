@@ -3,6 +3,7 @@
 import { mdiLoading, mdiCheck, mdiClose } from "@mdi/js";
 import { SunIcon, MoonIcon } from "@radix-ui/react-icons";
 import { RealtimeChannel } from "@supabase/supabase-js";
+import Image from "next/image";
 import { ReactNode, useState, useRef, useEffect, useContext, act } from "react";
 import { Button } from "~/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "~/components/ui/dropdown-menu";
@@ -54,7 +55,7 @@ export default function Connect() {
         }
         fetchData()
         fetchEmail()
-    },[])
+    })
     
     async function fetchData() {
         const fetchedGroups = await fetchAllGroups();
@@ -237,7 +238,7 @@ export default function Connect() {
     return (<div className="min-h-screen relative w-full">
         <div id="connect-content" className="flex flex-col px-[48px] py-[24px] gap-[48px] items-center max-md:px-[12px] max-md:gap-[12px]">
             <div id="connect-row-1" className="w-full rounded-[12px] p-[48px] gap-[48px] bg-background1 justify-center flex flex-col w-fit items-center">
-                <img loading="lazy"
+                <Image loading="lazy" width={180} height={180}
                     src="static/logos/blue-logo.svg"
                     alt="Logo"
                     className="aspect-square max-w-[180px] rounded-full"/>
@@ -291,7 +292,7 @@ export default function Connect() {
             </div>
             <div id="connect-row-3" className="w-full rounded-[12px] p-[24px] gap-[24px] bg-background1 justify-center flex flex-col w-fit items-center">
                 <div id="connect-title" className="gap-[12px] flex flex-col items-center pb-[24px]">
-                    <p className="text-4xl text-text8 font-semibold">This week's goals</p>
+                    <p className="text-4xl text-text8 font-semibold">Weekly goals</p>
                     <p className="text-xl text-text8 font-regular">Click a goal to join</p>
                 </div>
                 
