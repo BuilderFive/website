@@ -55,7 +55,7 @@ export default function Connect() {
         }
         fetchData()
         fetchEmail()
-    })
+    },[])
     
     async function fetchData() {
         const fetchedGroups = await fetchAllGroups();
