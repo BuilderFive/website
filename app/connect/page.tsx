@@ -244,6 +244,8 @@ export default function Connect() {
                     className="aspect-square max-w-[180px] rounded-full"/>
                 <div className="flex flex-col gap-[24px] max-w-[840px] w-full items-center">
                     <p className="text-4xl font-semibold text-text8 max-md:text-3xl text-center">Join a team to<br/>work on a goal</p>
+                    <p className="text-xl font-regular text-text3 max-md:text-lg text-start">1. Enter your email <br/> 2. Type in your goal for the week <br/> 3. Click on a goal to join <br/> 4. Get connected via email when five people show interest</p>
+
                     <form onSubmit={e => e.preventDefault()}
                     className="items-center w-full flex justify-center max-md:flex-col space-x-[12px] max-md:space-x-[0px] h-fit max-md:space-y-[12px]">
                         
