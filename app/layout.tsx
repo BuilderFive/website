@@ -9,6 +9,8 @@ import { ThemeProvider } from '~/components/ui/theme-provider';
 import "~/styles/globals.css";
 import "tailwindcss/tailwind.css"
 import Script from 'next/script';
+import { GroupContextProvider } from '~/util/GroupContextProvider';
+import { SessionProvider } from '~/util/AuthProvider';
 
 const sans = Inter({ subsets: ["latin"], variable: "--font-sans" });
 const mono = Roboto_Mono({ subsets: ["latin"], variable: '--font-mono' });
@@ -70,12 +72,16 @@ export default function RootLayout({
             </head>
             <body className={css("min-h-screen font-poppins antialiased", sans.variable, mono.variable, poppins.variable)}>
                 <ThemeProvider attribute="class" defaultTheme="dark">
+                <SessionProvider>
+                <GroupContextProvider>
                     <div className="relative flex min-h-screen flex-col bg-cover bg-twighlight">
                         <Header />
                         <div className="flex-1">{children}</div>
                         <Footer />
                       
                     </div>
+                </GroupContextProvider>
+                </SessionProvider>
                 </ThemeProvider>
             </body>
         </html></>

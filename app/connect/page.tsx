@@ -8,7 +8,9 @@ import { ReactNode, useState, useRef, useEffect, useContext, act } from "react";
 import { Button } from "~/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "~/components/ui/dropdown-menu";
 import { Input } from "~/components/ui/input";
+import Modal from "~/components/ui/modal-auth";
 import { MdiIcon } from "~/util";
+import { useGroupContext } from "~/util/GroupContextProvider";
 import { supabase } from '~/util/supabaseClient';
 
 export type Group = {
@@ -35,16 +37,11 @@ const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"
 export default function Connect() {
     const [email, setEmail] = useState('');
     const [emailSubmitted, setEmailSubmitted] = useState(false);
-
     const [goal, setGoal] = useState('')
-
     const [loading, setLoading] = useState(false);
-    const [loadingEnqueue, setLoadingEnqueue] = useState(false);
+    const { packagedGroups, groups, members, cacheGroup, cacheNewMember, cachePackagedGroup, enqueueMember, determineAction, CreateGroup, fetchPackagedGroups } = useGroupContext();
+    const [showModal, setShowModal] = useState(false);
 
-    const [packagedGroups, setPackagedGroups] = useState<PackagedGroup[]>([]);
-    const [groups, setGroups] = useState<Group[]>([]);
-    const [members, setMembers] = useState<Member[]>([]);
-    
     useEffect(() => {
         async function fetchEmail() {
             const storedEmail = localStorage.getItem('email');
@@ -53,35 +50,9 @@ export default function Connect() {
                 setEmailSubmitted(true);
             }
         }
-        fetchData()
         fetchEmail()
     },[])
-    
-    async function fetchData() {
-        const fetchedGroups = await fetchAllGroups();
-        const fetchedMembers = await fetchAllMembers();
-        if (fetchedGroups && fetchedMembers) {
-            const fetchedPackagedGroups = await fetchPackagedGroups(fetchedGroups, fetchedMembers);
-        }
-    }
-    const fetchAllGroups = async (): Promise<Group[] | null> => {
-        const { data, error } = await supabase.from('MVP_group').select('*');
-        if (error) {
-            console.log('Error fetching groups:', error.message);
-            return null
-        }
-        setGroups(data)
-        return data as Group[];
-    }
-    const fetchAllMembers = async (): Promise<Member[] | null> => {
-        const { data, error } = await supabase.from('MVP_members').select('*');
-        if (error) {
-            console.error('Error fetching members:', error.message);
-            return null;
-        }
-        setMembers(data)
-        return data as Member[];
-    }
+
     const handleSubmit = async () => {
         if (!EMAIL_REGEX.test(email)) return;
         setLoading(true);
@@ -96,85 +67,7 @@ export default function Connect() {
         localStorage.setItem('email', email);
         setEmailSubmitted(true);
     }
-    const enqueueMember = async(email: string, group: Group): Promise<Member | Error | null> => {
-        if (email == '' || group == null) {
-            return Error('Email or group is invalid')
-        }
-        if (group.status != "QUEUE") {
-            return Error('Email not queueable')
-        }
-        setLoadingEnqueue(true)
-
-        const addGroupMember = async(): Promise<Member | null> => {
-            const {data, error} = await supabase
-                .from('MVP_members')
-                .insert([{ email: email, group_uuid: group.uuid}]).select()
-                .single();
-            if (error) {
-                console.error('Error adding group member', error);
-                setLoadingEnqueue(false)
-                return null
-            }
-            return data as Member
-        }
-        const newMember = await addGroupMember() //this is you
-        setLoadingEnqueue(false)
-        return newMember
-    }
-    const activateGroup = async(group: PackagedGroup): Promise<Group|null> => {        
-        const { data, error } = await supabase
-            .from('MVP_group')
-            .update([{ status: 'ACTIVE' }]).eq('uuid', group.group.uuid)
-            .select()
-            .single();
     
-        if (error) {
-            console.error('Error updating group:', error.message);
-            return null
-        }
-
-        fetch('../api/email/', {
-            method: 'POST',
-            body: JSON.stringify({
-                members: group.members, 
-                goal: group.group.goal})
-        })
-
-        //should send a notification to all members
-
-        return data as Group
-    }
-
-    const fetchPackagedGroups = async (groups: Group[], members: Member[]) => {
-        const packagedGroups: PackagedGroup[] = [];
-
-        groups.forEach((group) => {
-            const matchedMembers = members.filter((member) => member.group_uuid === group.uuid);
-            const packagedGroup: PackagedGroup = {
-                group,
-                members: matchedMembers,
-            };
-            packagedGroups.push(packagedGroup);
-        });
-
-        setPackagedGroups(packagedGroups);
-    };
-
-    async function CreateGroup(goal: string): Promise<Group | null> {
-        const { data, error } = await supabase
-            .from('MVP_group')
-            .insert([{ goal: goal, status: 'QUEUE' }]).select('*')
-            .single();
-    
-        if (error) {
-            console.error('Error creating group:', error.message);
-            return null
-        }
-        const newGroup: Group = data
-
-        return newGroup
-    }
-
     const RenderGoals = ({goals}: {goals: PackagedGroup[]}) => {
         const calculateTimeLeft = (targetDate: Date): string => {
             const currentDate = new Date();
@@ -185,57 +78,38 @@ export default function Connect() {
             return `${days} days ${hours} hours ${minutes} minutes`;
         };
 
-        const RenderedGoal = ({groupItem, membersItem} : {groupItem: Group, membersItem: Member[]}) => {
-            const dateTime = new Date(groupItem.created_at).getTime()
+        const RenderedGoal = ({packagedGroup} : {packagedGroup: PackagedGroup}) => {
+            const dateTime = new Date(packagedGroup.group.created_at).getTime()
             return (
                 <div onClick={async()=>{
-                    if (membersItem.some(member => member.email === email) || loadingEnqueue) return;
+                    determineAction(packagedGroup, email)
                     
-                    const member = await enqueueMember(email, groupItem)
-                    if (member == null || member instanceof Error) return
-                    let newGroups = groups
-
-                    if (membersItem.length >= groupItem.max_members-1) {
-                        const packagedGroup = {group: groupItem, members: membersItem} as PackagedGroup
-                        const activatedGroup = await activateGroup(packagedGroup)
-                        if (activatedGroup == null) return
-                        newGroups = groups.map((g) => {
-                            if (g.uuid === groupItem.uuid) {
-                                return activatedGroup;
-                            }
-                            return g;
-                    })}
-
-                    setGroups(newGroups);
-                    setMembers([...members, member]);
-
-                    fetchPackagedGroups(newGroups, [...members, member])
-                    
-                }} className="flex flex-1 flex-col gap-[12px] rounded-[12px] p-[12px] bg-secondary4 h-[180px] w-fit min-w-[240px] max-md:w-full max-mad:max-w-full items-start hover:bg-secondary2 hover:cursor-pointer">
-                    {groupItem.status == "ACTIVE" && <div className="flex w-full flex-row justify-between">
+                }} className="flex flex-1 overflow-scroll flex-col gap-[12px] rounded-[12px] p-[12px] bg-secondary4 h-[180px] w-fit min-w-[240px] max-md:w-full max-mad:max-w-full items-start hover:bg-secondary2 hover:cursor-pointer">
+                    {packagedGroup.group.status == "ACTIVE" && <div className="flex w-full flex-row justify-between">
                         <p className="text-2xl font-semibold text-secondary1 text-center">ACTIVE</p>
-                        <p className="text-2xl font-semibold text-secondary1 text-center">{membersItem.length}/{groupItem.max_members}</p>
+                        <p className="text-2xl font-semibold text-secondary1 text-center">{packagedGroup.members.length}/{packagedGroup.group.max_members}</p>
 
                     </div>}
-                    {groupItem.status == "QUEUE" && <div className="flex w-full flex-row justify-between">
+                    {packagedGroup.group.status == "QUEUE" && <div className="flex w-full flex-row justify-between">
                         <p className="text-2xl font-semibold text-secondary1 text-center">QUEUEING</p>
-                        <p className="text-2xl font-semibold text-secondary1 text-center">{membersItem.length}/{groupItem.max_members}</p>
+                        <p className="text-2xl font-semibold text-secondary1 text-center">{packagedGroup.members.length}/{packagedGroup.group.max_members}</p>
 
                     </div>}
-                    <p className="text-lg font-normal text-text1 text-start">{groupItem.goal}</p>
-                    {groupItem.status == "ACTIVE" && <p className="text-xs font-light text-error1 text-start">Disbands in {calculateTimeLeft(new Date(dateTime + 7 * 24 * 60 * 60 * 1000))}</p>}
+                    <p className="text-lg font-normal text-text1 text-start">{packagedGroup.group.goal}</p>
+                    {packagedGroup.group.status == "ACTIVE" && <p className="text-xs font-light text-error1 text-start">Disbands in {calculateTimeLeft(new Date(dateTime + 7 * 24 * 60 * 60 * 1000))}</p>}
 
                 </div>
             )
         }
         return <div className="flex flex-wrap gap-[24px] w-full justify-start">
             {goals.map((packagedGroup, id) => {
-                return <RenderedGoal key={id} groupItem={packagedGroup.group} membersItem={packagedGroup.members} />
+                return <RenderedGoal key={id} packagedGroup={packagedGroup} />
             })}
         </div>
     }
 
     return (<div className="min-h-screen relative w-full">
+        <Modal showModal={showModal} setShowModal={setShowModal} />
         <div id="connect-content" className="flex flex-col px-[48px] py-[24px] gap-[48px] items-center max-md:px-[12px] max-md:gap-[12px]">
             <div id="connect-row-1" className="w-full rounded-[12px] p-[48px] gap-[48px] bg-background1 justify-center flex flex-col w-fit items-center">
                 <Image loading="lazy" width={180} height={180}
@@ -257,7 +131,7 @@ export default function Connect() {
                             placeholder="Enter your email"
                             onChange={e => setEmail(e.target.value)}/>
                         <Button className={"bg-secondary1 max-md:w-full rounded-[12px] h-fit p-[12px] max-md:p-[12px]"}
-                           onClick={() => handleSubmit()}>
+                           onClick={() => setShowModal(!showModal)}>
                             { loading && <MdiIcon path={mdiLoading} size="20px" className="animate-spin" /> }
                             { !loading && emailSubmitted && <p className="font-semibold text-md text-white">Change email</p> }
                             { !loading && !emailSubmitted && <p className="font-semibold text-md text-white">OKAY</p> }
@@ -284,8 +158,9 @@ export default function Connect() {
                             setGoal('')
                             const member = await enqueueMember(email, newGroup)
                             if (member == null || member instanceof Error) return
-                            setMembers([...members, member]);
-                            setGroups([...groups, newGroup]);
+                            
+                            cacheGroup(newGroup)
+                            cacheNewMember(member)
                             fetchPackagedGroups([...groups, newGroup], [...members, member])
                         }}>
                         <p className="font-semibold text-md text-white">ADD GOAL</p>
