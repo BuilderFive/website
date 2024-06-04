@@ -1,8 +1,9 @@
+"use client"
+
 import React, { ReactNode, createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { supabase } from './supabaseClient';
 import { User, Session, SupabaseClient, createClient, AuthChangeEvent } from '@supabase/supabase-js';
 import { Tables } from './supabase-types';
-import 'react-native-get-random-values';
 import {v4 as uuidv4} from 'uuid';
 import { useRouter } from 'next/router';
 
@@ -54,8 +55,6 @@ export function SessionProvider(props: React.PropsWithChildren) {
     const [isInvited, setIsInvited] = useState<boolean>(false);
 
     const [isLoading, setLoading] = useState<boolean>(true);
-
-    const router = useRouter()
 
     //this will not reset until the app reloads
     const loadStack = {
