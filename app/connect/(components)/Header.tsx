@@ -71,8 +71,8 @@ const AccountDrawer = () => {
             <div id="row-1" className="hover:cursor-pointer hover:bg-background3 p-[8px] rounded-[12px] flex flex-row items-center gap-[8px]" onClick={()=>{
                 setTheme(theme == 'light' ? 'dark' : 'light')
             }}>
-                {theme == 'light' ? <SunIcon color={"var(--text-1)"} className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 text-blue-500" />
-                : <MoonIcon className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 text-blue-500" />}
+                {theme == 'light' ? <SunIcon color={"var(--text-1)"} />
+                : <MoonIcon color={"var(--text-1)"} />}
                 <p className="text-text1">{theme == 'light' ? 'Light' : "Dark"}</p>
             </div>
             <div id="row-2" className="hover:cursor-pointer hover:bg-background3 p-[8px] rounded-[12px] flex flex-row items-center gap-[8px]" onClick={signout}>

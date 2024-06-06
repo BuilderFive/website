@@ -128,7 +128,7 @@ const Modal = ({ showModal, setShowModal }) => {
                         <p className='text-4xl font-semibold text-text1'>Sign Up</p>
                         <IoMdClose color={"var(--text-1)"} className='text-4xl hover:cursor-pointer' onClick={() => setShowModal(false)} />
                     </div>
-                    <p className='text-xl font-regular text-text3'>Join communities of real people</p>
+                    <p className='text-xl font-regular text-text3 text-start'>Join communities of real people</p>
                 </div>
 
                 <form onSubmit={e => e.preventDefault()}
@@ -207,7 +207,7 @@ const Modal = ({ showModal, setShowModal }) => {
                         <p className='text-4xl font-semibold text-text1'>Sign In</p>
                         <IoMdClose color={"var(--text-1)"} className='text-4xl hover:cursor-pointer' onClick={() => setShowModal(false)} />
                     </div>
-                    <p className='text-xl font-regular text-text3'>Register to get full access!</p>
+                    <p className='text-xl font-regular text-text3 text-start'>Register to get full access!</p>
                 </div>
 
                 <form onSubmit={e => e.preventDefault()}
