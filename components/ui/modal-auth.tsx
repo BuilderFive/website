@@ -240,7 +240,7 @@ const Modal = ({ showModal, setShowModal }) => {
 
                     <div className='w-full'>
                         <div className='flex flex-row justify-center'>
-                            <p className='text-text3'>Don't have an account? <a onClick={()=>setIsSignUp(true)} className='text-secondary1 hover:cursor-pointer'>Sign up</a></p>
+                            <p className='text-text3'>Don&apos;t have an account? <a onClick={()=>setIsSignUp(true)} className='text-secondary1 hover:cursor-pointer'>Sign up</a></p>
                         </div>
                     </div>
                 </div>
