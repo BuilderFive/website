@@ -13,8 +13,6 @@ interface SessionContextProps {
     supabase: SupabaseClient
     isLoading: boolean;
     isInvited: boolean;
-    projects: Tables<'project'>[];
-    createProject: (name: string, description: string) => void;
     signout: () => void;
 }
 
@@ -24,8 +22,6 @@ const SessionContext = createContext<SessionContextProps>({
     supabase: supabase,
     isLoading: false,
     isInvited: false,
-    projects: [],
-    createProject: () => {},
     signout: () => {}
 });
 
@@ -51,7 +47,6 @@ export function SessionProvider(props: React.PropsWithChildren) {
     const [user, setUser] = useState<any>(null);
     const supabase = useContext(SessionContext).supabase;
 
-    const [projects, setProjects] = useState<Tables<'project'>[]>([]);
     const [isInvited, setIsInvited] = useState<boolean>(false);
 
     const [isLoading, setLoading] = useState<boolean>(true);
@@ -60,7 +55,6 @@ export function SessionProvider(props: React.PropsWithChildren) {
     const loadStack = {
         sessionLoaded: useRef(false),
         inviteLoaded: useRef(false),
-        projectsLoaded: useRef(false),
     };
     const checkLoadedState = () => {
         const allLoaded = Object.values(loadStack).every(ref => ref.current);
@@ -115,7 +109,6 @@ export function SessionProvider(props: React.PropsWithChildren) {
         const fetchData = async () => {
             try {
                 await fetchInvited()
-                await fetchProjects()
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -128,7 +121,6 @@ export function SessionProvider(props: React.PropsWithChildren) {
         
         setTimeout(() => {
             loadStack.inviteLoaded.current = true;
-            loadStack.projectsLoaded.current = true;
             checkLoadedState();
         }, 1000);
     }, [user]);
@@ -138,25 +130,6 @@ export function SessionProvider(props: React.PropsWithChildren) {
         supabase.auth.signOut()
         setSession(null);
         setUser(null);
-    }
-
-
-    /* Fetch Project */
-    const fetchProjects = async () => {
-
-        const { data, error } = await supabase.from('project').select('*').eq('owner_uuid', user.id)
-        
-        
-        if (error) {
-            throw error;
-        }
-
-        if (!data || data.length == 0) {
-            return false
-        }
-        
-        setProjects(data);
-        return true
     }
 
     const fetchInvited = async () => {
@@ -174,31 +147,6 @@ export function SessionProvider(props: React.PropsWithChildren) {
         setIsInvited(true)
         return true
     }
-
-    const createProject = async (name: string, description: string) => {
-        type BareProject = {
-            name: string,
-            description: string,
-            owner_uuid: string
-        }
-        const project: BareProject = {
-            name: name,
-            description: description,
-            owner_uuid: user.id
-        };
-
-        const addProject = async(newProject: BareProject) => {
-            const { data, error } = await supabase.from('project').insert(newProject).select().single();
-            
-            if (error) {
-                throw error;
-            }
-
-            setProjects([...projects, data]);
-        }
-
-        await addProject(project);
-    }
     
 
     const contextObject = {
@@ -207,8 +155,6 @@ export function SessionProvider(props: React.PropsWithChildren) {
         supabase,
         isLoading,
         isInvited,
-        projects,
-        createProject,
         signout
     };
 

@@ -126,7 +126,7 @@ const Modal = ({ showModal, setShowModal }) => {
                 <div className='flex flex-col'>
                     <div className='flex flex-row justify-between'>
                         <p className='text-4xl font-semibold text-text1'>Sign Up</p>
-                        <IoMdClose className='text-4xl hover:cursor-pointer' onClick={() => setShowModal(false)} />
+                        <IoMdClose color={"var(--text-1)"} className='text-4xl hover:cursor-pointer' onClick={() => setShowModal(false)} />
                     </div>
                     <p className='text-xl font-regular text-text3'>Join communities of real people</p>
                 </div>
@@ -195,7 +195,7 @@ const Modal = ({ showModal, setShowModal }) => {
 
                     <div className='w-full'>
                         <div className='flex flex-row justify-center'>
-                            <p>Already have an account? <a onClick={()=>setIsSignUp(false)} className='text-secondary4 hover:cursor-pointer'>Sign in</a></p>
+                            <p className='text-text3'>Already have an account? <a onClick={()=>setIsSignUp(false)} className='text-secondary1 hover:cursor-pointer'>Sign in</a></p>
                         </div>
                     </div>
                 </div>
@@ -205,7 +205,7 @@ const Modal = ({ showModal, setShowModal }) => {
                 <div className='flex flex-col'>
                     <div className='flex flex-row justify-between'>
                         <p className='text-4xl font-semibold text-text1'>Sign In</p>
-                        <IoMdClose className='text-4xl hover:cursor-pointer' onClick={() => setShowModal(false)} />
+                        <IoMdClose color={"var(--text-1)"} className='text-4xl hover:cursor-pointer' onClick={() => setShowModal(false)} />
                     </div>
                     <p className='text-xl font-regular text-text3'>Register to get full access!</p>
                 </div>
@@ -240,7 +240,7 @@ const Modal = ({ showModal, setShowModal }) => {
 
                     <div className='w-full'>
                         <div className='flex flex-row justify-center'>
-                            <p>Don't have an account? <a onClick={()=>setIsSignUp(true)} className='text-secondary4 hover:cursor-pointer'>Sign up</a></p>
+                            <p className='text-text3'>Don't have an account? <a onClick={()=>setIsSignUp(true)} className='text-secondary1 hover:cursor-pointer'>Sign up</a></p>
                         </div>
                     </div>
                 </div>
