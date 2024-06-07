@@ -9,9 +9,9 @@ import { ThemeProvider } from '~/components/ui/theme-provider';
 import "~/styles/globals.css";
 import "tailwindcss/tailwind.css"
 import Script from 'next/script';
-import { GroupContextProvider } from '~/util/GroupContextProvider';
 import { SessionProvider } from '~/util/AuthProvider';
 import {NextUIProvider} from "@nextui-org/react";
+import { GroupProvider } from '~/util/GroupProvider';
 
 const sans = Inter({ subsets: ["latin"], variable: "--font-sans" });
 const mono = Roboto_Mono({ subsets: ["latin"], variable: '--font-mono' });
@@ -75,9 +75,9 @@ export default function RootLayout({
                 <ThemeProvider attribute="class" defaultTheme="dark">
                 <NextUIProvider>
                 <SessionProvider>
-                <GroupContextProvider>
+                <GroupProvider>
                     <div className="flex-1">{children}</div>
-                </GroupContextProvider>
+                </GroupProvider>
                 </SessionProvider>
                 </NextUIProvider>
                 </ThemeProvider>
