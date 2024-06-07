@@ -11,6 +11,7 @@ export type Database = {
     Tables: {
       account: {
         Row: {
+          avatar: string
           bio: string
           created_at: string
           first_name: string
@@ -20,6 +21,7 @@ export type Database = {
           uuid: string
         }
         Insert: {
+          avatar?: string
           bio?: string
           created_at?: string
           first_name?: string
@@ -29,6 +31,7 @@ export type Database = {
           uuid?: string
         }
         Update: {
+          avatar?: string
           bio?: string
           created_at?: string
           first_name?: string
@@ -85,18 +88,21 @@ export type Database = {
       }
       group_members: {
         Row: {
+          avatar: string
           created_at: string
           group_uuid: string
           member_uuid: string
           user_uuid: string | null
         }
         Insert: {
+          avatar?: string
           created_at?: string
           group_uuid: string
           member_uuid?: string
           user_uuid?: string | null
         }
         Update: {
+          avatar?: string
           created_at?: string
           group_uuid?: string
           member_uuid?: string

@@ -50,7 +50,7 @@ export function GroupProvider(props: React.PropsWithChildren) {
     const [radius, setRadius] = useState(1000)
     const [userLocation, setUserLocation] = useState({latitude: 30.35736619550383, longitude: -97.73011964664344})
     const [packagedGroup, setPackagedGroup] = useState<PackagedGroup>() //current group that the user is in
-    const [topic, setTopic] = useState("startups")
+    const [topic, setTopic] = useState("")
     const [isLoading, setLoading] = useState<boolean>(true);
     const availableTopics = ["startups","productivity","academics", "careers", "science","history"]
 

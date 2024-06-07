@@ -69,13 +69,25 @@ export default function MapComponent() {
         </Button>
     }
     function SideBar () {
-        return <div className='absolute right-4 bottom-24 w-fit h-fit rounded-[99px]'>
+        return <div className='w-fit h-fit rounded-[99px]'>
             <CenterLocation/>
         </div>
     }
 
     return isLoaded ? (
-        <div className='h-screen w-screen'>
+        <div className='h-screen w-screen relative'>
+            <div className='absolute bottom-32 right-4 z-40 flex flex-row gap-[24px] items-center'>
+                <div className='w-[480px] h-fit text-text1'>
+                    <Slider showSteps={true} size={"lg"} hideValue={true}
+                        step={5000} onChange={handleChange} value={radius}
+                        maxValue={100000} radius='full' aria-label='slider'
+                        minValue={5000} showTooltip={true}
+                        defaultValue={5000} disableThumbScale={true}
+                        className="font-semibold"
+                    />
+                </div>
+                <SideBar/>
+            </div>
             <GoogleMap mapContainerStyle={{ height: "100%", width: "100%" }}
                 options={{
                     disableDefaultUI: true,
@@ -86,16 +98,6 @@ export default function MapComponent() {
                 zoom={10}>
                 {userLocation && <Marker position={{ lat: userLocation.latitude, lng: userLocation.longitude }} />}
                 <Circle options={{ fillColor: "hsl(212 100% 69%)", strokeColor: "hsl(212 100% 69%)"}} center={{ lat: userLocation.latitude, lng: userLocation.longitude }} radius={radius} /> {/* 2000 meters */}
-                <SideBar/>
-                <div className='absolute bottom-24 right-24 w-[480px] h-fit text-text1'>
-                    <Slider showSteps={true} size={"lg"} hideValue={true}
-                        step={5000} onChange={handleChange} value={radius}
-                        maxValue={100000} radius='full' aria-label='slider'
-                        minValue={5000} showTooltip={true}
-                        defaultValue={5000} disableThumbScale={true}
-                        className="font-semibold"
-                    />
-                </div>
             </GoogleMap>
         </div>
         ) : <></>
