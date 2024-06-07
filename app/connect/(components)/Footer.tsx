@@ -18,7 +18,7 @@ const TopicDrawer = () => {
     const [open, setOpen] = useState(false);
     const { user } = useSession();
     const [showModal, setShowModal] = useState(false);
-    const { topic, handleSetTopic, availableTopics } = useGroup();
+    const { topic, handleSetTopic, availableTopics, packagedGroup } = useGroup();
 
     const handleChange = async (inputTopic: string) => {
         setOpen(false)
@@ -35,9 +35,11 @@ const TopicDrawer = () => {
                 setOpen(!open)
             }
         }} className="flex items-center space-x-[12px] hover:cursor-pointer h-full">
-            {user ? <Button className='h-full p-[12px] rounded-[8px] bg-secondary1 max-w-[180px] justify-start'>
-                <p className='text-white font-semibold text-lg'>{topic ? topic : "select topic"}</p>
-            </Button> : <Button className='h-full p-[12px] rounded-[8px] bg-secondary1 max-w-[180px] justify-start'>
+            {user ? 
+                <Button className='h-full p-[12px] rounded-[8px] bg-secondary1 max-w-[180px] justify-start'>
+                    <p className='text-white font-semibold text-lg'>{topic ? topic : "select topic"}</p>
+                </Button>
+            : <Button className='h-full p-[12px] rounded-[8px] bg-secondary1 max-w-[180px] justify-start'>
                 <p className='text-white font-semibold text-lg'>SIGN IN</p>
             </Button>}
 
@@ -96,17 +98,10 @@ export const Footer = () => {
             </div>
         }
 
-        const memberIcons = packagedGroup.members.map((member, id) => (
-            <Image key={id} src={member.avatar} alt="avatar" width={64} height={64} className={css({ borderRadius: 99 })} />
-        ));
-        const questionMarkIcons = Array(packagedGroup.group.max_members - memberIcons.length).map((id) => (
-            <div key={memberIcons.length + id} className='rounded-[99px] h-[64px] w-[64px] flex items-center justify-center bg-background3'>
-                <FaQuestion color={"var(--text-2)" } size={36} />
-            </div>
-        ));
-
         return <div className='flex flex-row gap-[24px] jusify-start items-center'>
-            {[...memberIcons, ...questionMarkIcons]}
+            {packagedGroup.members.map((member, id) => (
+                <Image key={id} src={"/static/logos/blue-logo.svg"} alt="avatar" width={64} height={64} className='rounded-[99px]'/>
+            ))}
         </div>
         
     }
@@ -127,13 +122,13 @@ export const Footer = () => {
     }
 
     function getTimeRemaining() {
-        //const timeRemaining = packagedGroup?.group.end_at;
-        const endAt = new Date();
-        endAt.setMinutes(endAt.getMinutes() + 1);
+        if (packagedGroup == null) return null;
+        const endAt = packagedGroup.group.end_at;
 
         if (endAt) {
+            const endAtDate = new Date(endAt);
             const now = new Date();
-            const timeDiff = endAt.getTime() - now.getTime();
+            const timeDiff = endAtDate.getTime() - now.getTime();
             const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
 
@@ -149,6 +144,8 @@ export const Footer = () => {
     const formattedTimeText = () => {
         if (packagedGroup == null) {
             return topic ? "Searching..." : "Choose a topic"
+        } else if (timeRemaining.minutes <= 0 && timeRemaining.seconds <= 0) {
+            return "Searching..."
         } else {
             return `${formatTime(timeRemaining.minutes)}:${formatTime(timeRemaining.seconds)} remaining`
         

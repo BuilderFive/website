@@ -48,10 +48,10 @@ export function SessionProvider(props: React.PropsWithChildren) {
     const supabase = useContext(SessionContext).supabase;
 
     const [isInvited, setIsInvited] = useState<boolean>(false);
-
     const [isLoading, setLoading] = useState<boolean>(true);
+    //get/set the user's avatar
+    //use avatar in footer loading and header account
 
-    //this will not reset until the app reloads
     const loadStack = {
         sessionLoaded: useRef(false),
         inviteLoaded: useRef(false),
