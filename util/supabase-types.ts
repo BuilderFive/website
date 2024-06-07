@@ -11,6 +11,7 @@ export type Database = {
     Tables: {
       account: {
         Row: {
+          avatar: string
           bio: string
           created_at: string
           first_name: string
@@ -20,6 +21,7 @@ export type Database = {
           uuid: string
         }
         Insert: {
+          avatar?: string
           bio?: string
           created_at?: string
           first_name?: string
@@ -29,6 +31,7 @@ export type Database = {
           uuid?: string
         }
         Update: {
+          avatar?: string
           bio?: string
           created_at?: string
           first_name?: string
@@ -85,60 +88,67 @@ export type Database = {
       }
       group_members: {
         Row: {
+          avatar: string
           created_at: string
           group_uuid: string
-          id: number
-          qRank: number
-          user_uuid: string
+          member_uuid: string
+          user_uuid: string | null
         }
         Insert: {
+          avatar?: string
           created_at?: string
           group_uuid: string
-          id?: number
-          qRank?: number
-          user_uuid: string
+          member_uuid?: string
+          user_uuid?: string | null
         }
         Update: {
+          avatar?: string
           created_at?: string
           group_uuid?: string
-          id?: number
-          qRank?: number
-          user_uuid?: string
+          member_uuid?: string
+          user_uuid?: string | null
         }
         Relationships: [
           {
-            foreignKeyName: "group_members_group_uuid_fkey"
+            foreignKeyName: "group_members_user_uuid_fkey"
+            columns: ["user_uuid"]
+            isOneToOne: false
+            referencedRelation: "account"
+            referencedColumns: ["uuid"]
+          },
+          {
+            foreignKeyName: "MVP_members_group_uuid_fkey"
             columns: ["group_uuid"]
             isOneToOne: false
             referencedRelation: "groups"
-            referencedColumns: ["uuid"]
+            referencedColumns: ["group_uuid"]
           },
         ]
       }
       groups: {
         Row: {
           created_at: string
-          expires_at: string | null
-          id: number
-          qRank: number
-          status: Database["public"]["Enums"]["group-status"]
-          uuid: string
+          end_at: string | null
+          group_uuid: string
+          location: number[]
+          max_members: number
+          topic: string
         }
         Insert: {
           created_at?: string
-          expires_at?: string | null
-          id?: number
-          qRank?: number
-          status?: Database["public"]["Enums"]["group-status"]
-          uuid?: string
+          end_at?: string | null
+          group_uuid?: string
+          location?: number[]
+          max_members?: number
+          topic?: string
         }
         Update: {
           created_at?: string
-          expires_at?: string | null
-          id?: number
-          qRank?: number
-          status?: Database["public"]["Enums"]["group-status"]
-          uuid?: string
+          end_at?: string | null
+          group_uuid?: string
+          location?: number[]
+          max_members?: number
+          topic?: string
         }
         Relationships: []
       }
@@ -174,94 +184,6 @@ export type Database = {
           },
         ]
       }
-      MVP_group: {
-        Row: {
-          created_at: string
-          goal: string
-          max_members: number
-          status: Database["public"]["Enums"]["group-status"]
-          uuid: string
-        }
-        Insert: {
-          created_at?: string
-          goal?: string
-          max_members?: number
-          status?: Database["public"]["Enums"]["group-status"]
-          uuid?: string
-        }
-        Update: {
-          created_at?: string
-          goal?: string
-          max_members?: number
-          status?: Database["public"]["Enums"]["group-status"]
-          uuid?: string
-        }
-        Relationships: []
-      }
-      MVP_members: {
-        Row: {
-          created_at: string
-          email: string
-          group_uuid: string
-          id: number
-        }
-        Insert: {
-          created_at?: string
-          email?: string
-          group_uuid: string
-          id?: number
-        }
-        Update: {
-          created_at?: string
-          email?: string
-          group_uuid?: string
-          id?: number
-        }
-        Relationships: [
-          {
-            foreignKeyName: "MVP_members_group_uuid_fkey"
-            columns: ["group_uuid"]
-            isOneToOne: false
-            referencedRelation: "MVP_group"
-            referencedColumns: ["uuid"]
-          },
-        ]
-      }
-      project: {
-        Row: {
-          created_at: string
-          description: string
-          logo: string | null
-          name: string
-          owner_uuid: string
-          uuid: string
-        }
-        Insert: {
-          created_at?: string
-          description?: string
-          logo?: string | null
-          name?: string
-          owner_uuid: string
-          uuid?: string
-        }
-        Update: {
-          created_at?: string
-          description?: string
-          logo?: string | null
-          name?: string
-          owner_uuid?: string
-          uuid?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "project_owner_uuid_fkey"
-            columns: ["owner_uuid"]
-            isOneToOne: false
-            referencedRelation: "users"
-            referencedColumns: ["id"]
-          },
-        ]
-      }
       rsvp: {
         Row: {
           created_at: string
@@ -282,7 +204,16 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      join_or_create_group: {
+        Args: {
+          p_user_uuid: string
+          p_topic: string
+          p_radius: number
+          p_latitude: number
+          p_longitude: number
+        }
+        Returns: string
+      }
     }
     Enums: {
       "group-status": "QUEUE" | "ACTIVE" | "INACTIVE"

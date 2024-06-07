@@ -9,7 +9,6 @@ import { ThemeProvider } from '~/components/ui/theme-provider';
 import "~/styles/globals.css";
 import "tailwindcss/tailwind.css"
 import Script from 'next/script';
-import { GroupContextProvider } from '~/util/GroupContextProvider';
 import { SessionProvider } from '~/util/AuthProvider';
 
 export default function LandingLayout({

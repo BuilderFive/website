@@ -48,10 +48,10 @@ export function SessionProvider(props: React.PropsWithChildren) {
     const supabase = useContext(SessionContext).supabase;
 
     const [isInvited, setIsInvited] = useState<boolean>(false);
-
     const [isLoading, setLoading] = useState<boolean>(true);
+    //get/set the user's avatar
+    //use avatar in footer loading and header account
 
-    //this will not reset until the app reloads
     const loadStack = {
         sessionLoaded: useRef(false),
         inviteLoaded: useRef(false),
@@ -66,13 +66,15 @@ export function SessionProvider(props: React.PropsWithChildren) {
      * @param callback 
      * @returns 
      */
-    function onAuthStateChange(callback: (event : AuthChangeEvent, session: Session) => void) {
-        let currentSession: Session | null;
-        return supabase.auth.onAuthStateChange((event: any, session: any) => {
-            if (session?.user?.id == currentSession?.user?.id) return;
+    function onAuthStateChange(callback: (event: AuthChangeEvent, session: Session) => void) {
+        let currentSession: Session | null = null;
+        const { data: authListener } = supabase.auth.onAuthStateChange((event: any, session: any) => {
+            if (session?.user?.id === currentSession?.user?.id) return;
             currentSession = session;
             callback(event, session);
         });
+
+        return authListener;
     }
 
     /**
@@ -80,49 +82,50 @@ export function SessionProvider(props: React.PropsWithChildren) {
      */
     useEffect(() => {
         const requestSession = async () => {
-            const { data: { session }, error } = await supabase.auth.getSession()
-            loadStack.sessionLoaded.current = true;
-            checkLoadedState();
-            if (error) throw error;
+            try{
+                const { data: { session }, error } = await supabase.auth.getSession()
+                loadStack.sessionLoaded.current = true;
+                checkLoadedState();
+                if (error) throw error;
 
-            if(session) {
-                setSession(session);
-                setUser(session?.user);
+                if(session) {
+                    setSession(session);
+                    setUser(session?.user);
+                }
+            } catch(error) {
+                console.error('Error getting session:', error);
             }
         };
-        const { data: listener } = onAuthStateChange(async(event : any, newSession: any) => {
-            console.log(event)
-            if (newSession?.user?.id !== session?.user?.id) {
-                setSession(newSession);
-                setUser(newSession?.user);     
+        const handleAuthChange = async (event, newSession) => {
+            try {
+                loadStack.sessionLoaded.current = true;
+                checkLoadedState();
+    
+                if (newSession?.user?.id !== session?.user?.id) {
+                    setSession(newSession);
+                    setUser(newSession.user);
+                }
+            } catch (error) {
+                console.error('Error in auth state change:', error);
             }
-        });
+        };
+        const { subscription: listener } = onAuthStateChange(handleAuthChange);
+        
         requestSession();
 
         return () => {
-            listener?.subscription.unsubscribe();
+            listener?.unsubscribe();
         };
     }, [supabase]);
 
     useEffect(() => {
-        // issue where when user signs in it will 
         const fetchData = async () => {
-            try {
-                await fetchInvited()
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        };
-
-        if (user) {
-            fetchData();
-        }
-
-        
-        setTimeout(() => {
-            loadStack.inviteLoaded.current = true;
+            const isInvited = await fetchInvited()
+            loadStack.inviteLoaded.current = true
             checkLoadedState();
-        }, 1000);
+            setIsInvited(isInvited)
+        };
+        if (user) fetchData();
     }, [user]);
 
     const signout = async () => {
@@ -133,18 +136,13 @@ export function SessionProvider(props: React.PropsWithChildren) {
     }
 
     const fetchInvited = async () => {
-
-        const { data, error } = await supabase.from('invite_code').select('*').eq('recipient_id', user.id).single()
-        
+        const { data, error } = await supabase.from('invite_code').select('*').eq('recipient_id', user.id)
         if (error) {
             throw error;
         }
-
-        if (!data.recipient_id) {
+        if (!data || data.length == 0) {
             return false
         }
-
-        setIsInvited(true)
         return true
     }
     

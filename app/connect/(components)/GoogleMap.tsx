@@ -6,15 +6,13 @@ import { Button } from '~/components/ui/button';
 import { FaLocationArrow, FaSpinner } from "react-icons/fa";
 import {Slider} from "@nextui-org/slider";
 import { useTheme } from 'next-themes';
+import { useGroup } from '~/util/GroupProvider';
 
-export default function MapComponent({rad, setRad}) {
+export default function MapComponent() {
     const { isLoaded } = useJsApiLoader({
         googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ""
     })
-
-    const [latitude, setLatitude] = React.useState(30.35736619550383)
-    const [longitude, setLongitude] = React.useState( -97.73011964664344)
-    const [center, setCenter] = React.useState({ lat: latitude, lng: longitude })
+    const { radius, setRadius, setUserLocation, userLocation } = useGroup();
     const [loading, setLoading] = React.useState(false)
     const { theme } = useTheme();
 
@@ -23,7 +21,7 @@ export default function MapComponent({rad, setRad}) {
     }, [])
     const handleChange = (value) => {
         if (isNaN(Number(value))) return;
-        setRad(value);
+        setRadius(value);
       };
 
     function getLocation() {
@@ -36,9 +34,7 @@ export default function MapComponent({rad, setRad}) {
     }
 
     function getCoordinates(position) {
-        setLatitude(position.coords.latitude)
-        setLongitude(position.coords.longitude)
-        setCenter({ lat: position.coords.latitude, lng: position.coords.longitude })
+        setUserLocation({latitude: position.coords.latitude, longitude: position.coords.longitude})
         setLoading(false)
     }
 
@@ -73,32 +69,35 @@ export default function MapComponent({rad, setRad}) {
         </Button>
     }
     function SideBar () {
-        return <div className='absolute right-4 bottom-24 w-fit h-fit rounded-[99px]'>
+        return <div className='w-fit h-fit rounded-[99px]'>
             <CenterLocation/>
         </div>
     }
 
     return isLoaded ? (
-        <div className='h-screen w-screen'>
-            <GoogleMap mapContainerStyle={{ height: "100%", width: "100%" }}
-                options={{
-                    disableDefaultUI: true,
-                    styles: theme == "dark" ? nightModeMapStyles : [],
-                }}
-                center={center}
-                zoom={10}>
-                {center && <Marker position={{ lat: latitude, lng: longitude }} />}
-                <Circle options={{ fillColor: "hsl(212 100% 69%)", strokeColor: "hsl(212 100% 69%)"}} center={center} radius={rad} /> {/* 2000 meters */}
-                <SideBar/>
-                <div className='absolute bottom-24 right-24 w-[480px] h-fit text-text1'>
+        <div className='h-screen w-screen relative'>
+            <div className='absolute bottom-32 right-4 z-40 flex flex-row gap-[24px] items-center'>
+                <div className='w-[480px] h-fit text-text1'>
                     <Slider showSteps={true} size={"lg"} hideValue={true}
-                        step={5000} onChange={handleChange} value={rad}
+                        step={5000} onChange={handleChange} value={radius}
                         maxValue={100000} radius='full' aria-label='slider'
                         minValue={5000} showTooltip={true}
                         defaultValue={5000} disableThumbScale={true}
                         className="font-semibold"
                     />
                 </div>
+                <SideBar/>
+            </div>
+            <GoogleMap mapContainerStyle={{ height: "100%", width: "100%" }}
+                options={{
+                    disableDefaultUI: true,
+                    styles: theme == "dark" ? nightModeMapStyles : [],
+                    
+                }}
+                center={{ lat: userLocation.latitude, lng: userLocation.longitude }}
+                zoom={10}>
+                {userLocation && <Marker position={{ lat: userLocation.latitude, lng: userLocation.longitude }} />}
+                <Circle options={{ fillColor: "hsl(212 100% 69%)", strokeColor: "hsl(212 100% 69%)"}} center={{ lat: userLocation.latitude, lng: userLocation.longitude }} radius={radius} /> {/* 2000 meters */}
             </GoogleMap>
         </div>
         ) : <></>

@@ -14,15 +14,15 @@ import {Slider} from "@nextui-org/slider";
 export const Header: React.FC = () => {
     const CurrentlySearching = () => (
         <div className="p-[12px] flex flex-row gap-[8px] bg-background3 items-center rounded-[8px]">
-            <FaSearchLocation color={"var(--text-2)" } size={24} />
-            <p className="text-text2 font-bold text-[18px]">30 searching</p>
+            <FaSearchLocation color={"var(--text-2)" } size={20} />
+            <p className="text-text2 font-semibold text-[14px]">30 searching</p>
         </div>
     )
 
     const CurrentlyCalling = () => (
         <div className="p-[12px] flex flex-row gap-[8px] bg-background3 items-center rounded-[8px]">
-            <FaMicrophone color={"var(--text-2)"} size={24} />
-            <p className="text-text2 font-bold text-[18px]">131 calling</p>
+            <FaMicrophone color={"var(--text-2)"} size={20} />
+            <p className="text-text2 font-semibold text-[14px]">131 calling</p>
         </div>
     )
 

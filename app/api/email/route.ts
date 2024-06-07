@@ -1,7 +1,6 @@
 import { Head, Html, Text } from "@react-email/components";
 import { Resend } from 'resend'
 import { render } from '@react-email/render';
-import { Member } from "../../connect/page";
 import { resend } from "~/util/resendClient";
 import { NextResponse } from "next/server";
 
