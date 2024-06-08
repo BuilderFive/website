@@ -7,6 +7,8 @@ import { Tables } from './supabase-types';
 import {v4 as uuidv4} from 'uuid';
 import { useRouter } from 'next/router';
 import { useSession } from './AuthProvider';
+import { group } from 'console';
+import { m } from 'framer-motion';
 
 interface GroupContextProps {
     radius: number;
@@ -57,7 +59,7 @@ export function GroupProvider(props: React.PropsWithChildren) {
     const availableTopics = ["startups","productivity","academics", "careers", "science","history"]
 
     /**
-     * When user updates, request for the supabase session and replace the current session
+     * On initial load, fetch the user's group data.
      */
     useEffect(() => {
         const fetchGroupData = async () => {
@@ -111,17 +113,72 @@ export function GroupProvider(props: React.PropsWithChildren) {
         fetchGroupData();
     }, [user]);
 
+    useEffect(() => {
+        const channel = supabase.channel('realtime members')
+            .on('postgres_changes', {
+                event: 'INSERT', schema: 'public', table: 'group_members', filter: `group_uuid=eq.${packagedGroup?.group.group_uuid}`
+            }, (payload)=> {
+                const newMember = {payload}.payload.new
+                console.log(newMember)
+                handleInsertMember(newMember as Tables<'group_members'>);
+            })
+            .on('postgres_changes', {
+                event: 'DELETE', schema: 'public', table: 'group_members', filter: `group_uuid=eq.${packagedGroup?.group.group_uuid}`
+            }, (payload)=> {
+                const removedMember = payload.old.user_uuid
+                handleRemoveMember(removedMember)
+            })
+        .subscribe()
+
+        return () => {
+            if (channel) supabase.removeChannel(channel)
+        }
+    },[user, packagedGroup])
+
+    const handleRemoveMember = (member_uuid: string) => {
+        if (member_uuid === user?.id) {
+            setPackagedGroup(null);
+            return;
+        }
+        if (!packagedGroup) return;
+
+        // Remove member from group_members table
+        const updatedMembers = packagedGroup?.members.filter(member => member.user_uuid !== member_uuid) || [];
+        const updatedPackagedGroup = {
+            group: packagedGroup.group,
+            members: updatedMembers,
+        };
+        setPackagedGroup(updatedPackagedGroup);
+    };
+    const handleInsertMember = useCallback((newMember: Tables<'group_members'>) => {
+        if (!packagedGroup) return;
+        const updatedMembers = [...packagedGroup.members, newMember];
+        const updatedPackagedGroup = {
+            group: packagedGroup.group,
+            members: updatedMembers,
+        };
+        setPackagedGroup(updatedPackagedGroup);
+    }, [packagedGroup]);
+
+
     //get user's current group
     //get members of the group
     //update packaged group object after receiving handleSetTopic
 
-    const handleSetTopic = async (topic: string) => {
-        setTopic(topic)
+    const handleSetTopic = async (newTopic: string) => {
+        setTopic(newTopic)
+        if (packagedGroup) {
+            //means user is currently in a call. Leave the group
+            const response = await leaveGroup();
+
+            //if response is successful, call joinGroup
+            //not here rn because we don't know want successful response is
+        }
         //check if user is already in a group, if so call leaveGroup and await for user confirmation
-        systemProcessGroupJoin()
+        systemProcessGroupJoin(newTopic)
     };
 
-    const systemProcessGroupJoin = async() => {
+    const systemProcessGroupJoin = async(newTopic: string) => {
         try {
             const response = await fetch('../api/group/joinFromTopic/', { 
                 method: 'POST',
@@ -130,7 +187,7 @@ export function GroupProvider(props: React.PropsWithChildren) {
                 },
                 body: JSON.stringify({
                     userUuid: user?.id,
-                    topic,
+                    topic: newTopic,
                     radius,
                     latitude: userLocation.latitude,
                     longitude: userLocation.longitude,
@@ -139,15 +196,13 @@ export function GroupProvider(props: React.PropsWithChildren) {
     
             if (response.ok) {
                 const data = await response.json();
-                alert(`Joined group with UUID: ${data.group_uuid}`);
-                console.log(data);
+                setPackagedGroup(data.result);
             } else {
                 const errorData = await response.json();
-                alert(`Failed to join or create group: ${errorData.error}`);
+                console.error(`Failed to join or create group: ${errorData.error}`);
             }
         } catch (error) {
             console.error('Error joining or creating group:', error);
-            alert('An error occurred while joining or creating the group');
         }
     }
 
@@ -156,7 +211,7 @@ export function GroupProvider(props: React.PropsWithChildren) {
         const user_uuid = user?.id;
         try {
             const response = await fetch('../api/group/leaveClick/', {
-                method: 'POST',
+                method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -165,13 +220,12 @@ export function GroupProvider(props: React.PropsWithChildren) {
         
             const data = await response.json();
             if (response.ok) {
-                console.log('Successfully left the group:', data);
+                return data
             } else {
                 console.error('Error leaving group:', data.error);
             }
         } catch (error) {
             console.error('Error leaving group:', error);
-            alert('An error occurred while leaving the group');
         }
         
     }

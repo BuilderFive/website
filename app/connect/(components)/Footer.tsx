@@ -36,7 +36,7 @@ const TopicDrawer = () => {
             }
         }} className="flex items-center space-x-[12px] hover:cursor-pointer h-full">
             {user ? 
-                <Button className='h-full p-[12px] rounded-[8px] bg-secondary1 max-w-[180px] justify-start'>
+                <Button onClick={()=>console.log(packagedGroup)} className='h-full p-[12px] rounded-[8px] bg-secondary1 max-w-[180px] justify-start'>
                     <p className='text-white font-semibold text-lg'>{topic ? topic : "select topic"}</p>
                 </Button>
             : <Button className='h-full p-[12px] rounded-[8px] bg-secondary1 max-w-[180px] justify-start'>
@@ -89,15 +89,7 @@ export const Footer = () => {
 
     //create avatar icons
     const Avatars = () => {
-        if (packagedGroup == null) {
-            return <div className='flex flex-row gap-[24px] jusify-start items-center'>
-                <img src="/static/logos/blue-logo.svg" alt="User's avatar" width={64} height={64} className="rounded-[99px]" />
-                {[1, 2, 3, 4].map((id) => (<div key={id} className='rounded-[99px] h-[64px] w-[64px] flex items-center justify-center bg-background3'>
-                    <FaQuestion color={"var(--text-2)" } size={36} />
-                </div>))}
-            </div>
-        }
-
+        if (packagedGroup == null) return null;
         return <div className='flex flex-row gap-[24px] jusify-start items-center'>
             {packagedGroup.members.map((member, id) => (
                 <Image key={id} src={"/static/logos/blue-logo.svg"} alt="avatar" width={64} height={64} className='rounded-[99px]'/>
@@ -115,10 +107,10 @@ export const Footer = () => {
     }
 
     const LeaveIcon = () => {
-        return <div onClick={()=>leaveGroup()} className='h-[64px] w-[64px] flex flex-col items-center justify-center bg-background2 rounded-[12px]'>
+        return <Button onClick={()=>leaveGroup()} className='h-[64px] w-[64px] flex flex-col items-center justify-center bg-background2 hover:bg-background3 rounded-[12px]'>
             <MdCallEnd color={"var(--error-1)"} />
             <p className='font-regular text-[14px] text-error1'>Leave</p>
-        </div>
+        </Button>
     }
 
     function getTimeRemaining() {
@@ -161,7 +153,7 @@ export const Footer = () => {
         <div className="w-full flex flex-row justify-between py-[24px] px-[24px] items-start justify-center text-white">
             <div className='flex flex-row gap-[48px]'>
                 <TopicDrawer/>
-                {topic && <Avatars/>}
+                {packagedGroup && <Avatars/>}
             </div>
             <div className='flex flex-row gap-[48px]'>
                 {packagedGroup && <div id="options" className='flex flex-row gap-[24px]'>
