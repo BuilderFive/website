@@ -56,7 +56,7 @@ const TopicDrawer = () => {
 }
 
 export const Footer = () => {
-    const { radius, packagedGroup, topic } = useGroup();
+    const { radius, packagedGroup, topic, leaveGroup } = useGroup();
     const [timeRemaining, setTimeRemaining] = useState({ minutes: 0, seconds: 0 });
 
     useEffect(() => {
@@ -115,7 +115,7 @@ export const Footer = () => {
     }
 
     const LeaveIcon = () => {
-        return <div className='h-[64px] w-[64px] flex flex-col items-center justify-center bg-background2 rounded-[12px]'>
+        return <div onClick={()=>leaveGroup()} className='h-[64px] w-[64px] flex flex-col items-center justify-center bg-background2 rounded-[12px]'>
             <MdCallEnd color={"var(--error-1)"} />
             <p className='font-regular text-[14px] text-error1'>Leave</p>
         </div>

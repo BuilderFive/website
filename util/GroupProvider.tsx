@@ -18,6 +18,7 @@ interface GroupContextProps {
     topic: string;
     availableTopics: string[];
     handleSetTopic: (topic: string) => void;
+    leaveGroup: () => void;
 }
 
 const GroupContext = createContext<GroupContextProps>({
@@ -29,7 +30,8 @@ const GroupContext = createContext<GroupContextProps>({
     packagedGroup: null,
     topic: "startups",
     availableTopics: ["startups","productivity","academics", "careers", "science","history"],
-    handleSetTopic: () => {}
+    handleSetTopic: () => {},
+    leaveGroup: () => {},
 });
 
 export const useGroup = () => useContext(GroupContext);
@@ -121,7 +123,7 @@ export function GroupProvider(props: React.PropsWithChildren) {
 
     const systemProcessGroupJoin = async() => {
         try {
-            const response = await fetch('../api/group/', { 
+            const response = await fetch('../api/group/joinFromTopic/', { 
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -149,10 +151,29 @@ export function GroupProvider(props: React.PropsWithChildren) {
         }
     }
 
-    //to call when the user wants to leave their group
-    const leaveGroup =() => {
-        //remove user from group members
-        //if group has no more members, disband group
+    const leaveGroup = async() => {
+        const group_uuid = packagedGroup?.group.group_uuid;
+        const user_uuid = user?.id;
+        try {
+            const response = await fetch('../api/group/leaveClick/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ group_uuid, user_uuid }),
+            });
+        
+            const data = await response.json();
+            if (response.ok) {
+                console.log('Successfully left the group:', data);
+            } else {
+                console.error('Error leaving group:', data.error);
+            }
+        } catch (error) {
+            console.error('Error leaving group:', error);
+            alert('An error occurred while leaving the group');
+        }
+        
     }
 
     //called if group timer is up or everyone has left
@@ -173,7 +194,7 @@ export function GroupProvider(props: React.PropsWithChildren) {
         setUserLocation,
         packagedGroup,
         topic, handleSetTopic,
-        availableTopics
+        availableTopics, leaveGroup
     };
 
     return (
