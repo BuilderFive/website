@@ -11,8 +11,6 @@ export async function DELETE(req: NextRequest, res: NextResponse) {
             user_id: user_uuid,
         });
 
-        console.log(data, error);
-
         if (error) {
             return NextResponse.json({ error: error.message }, { status: 500 });
         }

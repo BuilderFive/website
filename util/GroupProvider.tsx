@@ -119,7 +119,6 @@ export function GroupProvider(props: React.PropsWithChildren) {
                 event: 'INSERT', schema: 'public', table: 'group_members', filter: `group_uuid=eq.${packagedGroup?.group.group_uuid}`
             }, (payload)=> {
                 const newMember = {payload}.payload.new
-                console.log(newMember)
                 handleInsertMember(newMember as Tables<'group_members'>);
             })
             .on('postgres_changes', {
@@ -137,6 +136,7 @@ export function GroupProvider(props: React.PropsWithChildren) {
 
     const handleRemoveMember = (member_uuid: string) => {
         if (member_uuid === user?.id) {
+            setTopic("")
             setPackagedGroup(null);
             return;
         }
@@ -152,6 +152,11 @@ export function GroupProvider(props: React.PropsWithChildren) {
     };
     const handleInsertMember = useCallback((newMember: Tables<'group_members'>) => {
         if (!packagedGroup) return;
+        
+        // Check if the new member is already in the group
+        const isMemberAlreadyInGroup = packagedGroup.members.some(member => member.user_uuid === newMember.user_uuid);
+        if (isMemberAlreadyInGroup) return;
+        
         const updatedMembers = [...packagedGroup.members, newMember];
         const updatedPackagedGroup = {
             group: packagedGroup.group,
@@ -166,7 +171,6 @@ export function GroupProvider(props: React.PropsWithChildren) {
     //update packaged group object after receiving handleSetTopic
 
     const handleSetTopic = async (newTopic: string) => {
-        setTopic(newTopic)
         if (packagedGroup) {
             //means user is currently in a call. Leave the group
             const response = await leaveGroup();
@@ -176,6 +180,7 @@ export function GroupProvider(props: React.PropsWithChildren) {
         }
         //check if user is already in a group, if so call leaveGroup and await for user confirmation
         systemProcessGroupJoin(newTopic)
+        setTopic(newTopic)
     };
 
     const systemProcessGroupJoin = async(newTopic: string) => {
@@ -220,6 +225,8 @@ export function GroupProvider(props: React.PropsWithChildren) {
         
             const data = await response.json();
             if (response.ok) {
+                setPackagedGroup(null)
+                setTopic("")
                 return data
             } else {
                 console.error('Error leaving group:', data.error);

@@ -13,6 +13,7 @@ import { FaQ, FaQuestion } from "react-icons/fa6";
 import Image from 'next/image';
 import Logo from '../../../public/static/logos/blue-logo.png';
 import { FaSearchLocation } from 'react-icons/fa';
+import { clear } from 'console';
 
 const TopicDrawer = () => {
     const [open, setOpen] = useState(false);
@@ -68,6 +69,13 @@ export const Footer = () => {
         const updateTimer = () => {
             setTimeRemaining((prev) => {
                 let { minutes, seconds } = prev;
+                console.log('1')
+
+                //if packagedGroup becomes null then clear interval
+                if (packagedGroup == null) {
+                    clearInterval(interval);
+                    return { minutes: 0, seconds: 0 };
+                }
 
                 if (seconds > 0) {
                     seconds -= 1;
@@ -75,6 +83,8 @@ export const Footer = () => {
                     minutes -= 1;
                     seconds = 59;
                 } else {
+                    //function to leave group when interval drops to 0
+                    leaveGroup();
                     clearInterval(interval);
                 }
 
