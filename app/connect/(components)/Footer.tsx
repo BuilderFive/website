@@ -3,7 +3,7 @@
 import { css } from '~/util';
 import { Button, buttonVariants } from '../../../components/ui/button';
 import { InstagramLogoIcon, LinkedInLogoIcon } from '@radix-ui/react-icons';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSession } from '~/util/AuthProvider';
 import Modal from '~/components/ui/modal-auth';
 import { useGroup } from '~/util/GroupProvider';
@@ -14,17 +14,28 @@ import Image from 'next/image';
 import Logo from '../../../public/static/logos/blue-logo.png';
 import { FaSearchLocation } from 'react-icons/fa';
 import { clear } from 'console';
+import usePlayer from '~/util/calls/hooks/usePlayer';
+import usePeer from '~/util/calls/hooks/usePeer';
 
 const TopicDrawer = () => {
     const [open, setOpen] = useState(false);
     const { user } = useSession();
     const [showModal, setShowModal] = useState(false);
-    const { topic, handleSetTopic, availableTopics, packagedGroup } = useGroup();
+    const { topic, availableTopics, packagedGroup, systemProcessGroupJoin, setTopic, leaveGroup } = useGroup();
 
     const handleChange = async (inputTopic: string) => {
         setOpen(false)
         if (inputTopic != topic) {
-            handleSetTopic(inputTopic)
+            if (packagedGroup) {
+                //means user is currently in a call. Leave the group
+                const response = await leaveGroup();
+    
+                //if response is successful, call joinGroup
+                //not here rn because we don't know want successful response is
+            }
+            //check if user is already in a group, if so call leaveGroup and await for user confirmation
+            systemProcessGroupJoin(inputTopic)
+            setTopic(inputTopic)
         }
       };
 
@@ -69,8 +80,6 @@ export const Footer = () => {
         const updateTimer = () => {
             setTimeRemaining((prev) => {
                 let { minutes, seconds } = prev;
-                console.log('1')
-
                 //if packagedGroup becomes null then clear interval
                 if (packagedGroup == null) {
                     clearInterval(interval);
@@ -117,7 +126,7 @@ export const Footer = () => {
     }
 
     const LeaveIcon = () => {
-        return <Button onClick={()=>leaveGroup()} className='h-[64px] w-[64px] flex flex-col items-center justify-center bg-background2 hover:bg-background3 rounded-[12px]'>
+        return <Button onClick={leaveGroup} className='h-[64px] w-[64px] flex flex-col items-center justify-center bg-background2 hover:bg-background3 rounded-[12px]'>
             <MdCallEnd color={"var(--error-1)"} />
             <p className='font-regular text-[14px] text-error1'>Leave</p>
         </Button>

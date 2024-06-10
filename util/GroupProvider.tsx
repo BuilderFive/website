@@ -18,9 +18,10 @@ interface GroupContextProps {
     setUserLocation: (location: {latitude: number, longitude: number}) => void;
     packagedGroup: PackagedGroup | null;
     topic: string;
+    systemProcessGroupJoin: (newTopic: string) => void;
     availableTopics: string[];
-    handleSetTopic: (topic: string) => void;
     leaveGroup: () => void;
+    setTopic: (topic: string) => void;
 }
 
 const GroupContext = createContext<GroupContextProps>({
@@ -31,9 +32,10 @@ const GroupContext = createContext<GroupContextProps>({
     setUserLocation: () => {},
     packagedGroup: null,
     topic: "startups",
+    systemProcessGroupJoin: () => {},
     availableTopics: ["startups","productivity","academics", "careers", "science","history"],
-    handleSetTopic: () => {},
     leaveGroup: () => {},
+    setTopic: () => {}
 });
 
 export const useGroup = () => useContext(GroupContext);
@@ -170,19 +172,6 @@ export function GroupProvider(props: React.PropsWithChildren) {
     //get members of the group
     //update packaged group object after receiving handleSetTopic
 
-    const handleSetTopic = async (newTopic: string) => {
-        if (packagedGroup) {
-            //means user is currently in a call. Leave the group
-            const response = await leaveGroup();
-
-            //if response is successful, call joinGroup
-            //not here rn because we don't know want successful response is
-        }
-        //check if user is already in a group, if so call leaveGroup and await for user confirmation
-        systemProcessGroupJoin(newTopic)
-        setTopic(newTopic)
-    };
-
     const systemProcessGroupJoin = async(newTopic: string) => {
         try {
             const response = await fetch('../api/group/joinFromTopic/', { 
@@ -254,7 +243,7 @@ export function GroupProvider(props: React.PropsWithChildren) {
         userLocation,
         setUserLocation,
         packagedGroup,
-        topic, handleSetTopic,
+        topic, systemProcessGroupJoin, setTopic,
         availableTopics, leaveGroup
     };
 
