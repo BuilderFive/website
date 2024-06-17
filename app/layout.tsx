@@ -12,6 +12,7 @@ import Script from 'next/script';
 import { SessionProvider } from '~/util/AuthProvider';
 import {NextUIProvider} from "@nextui-org/react";
 import { GroupProvider } from '~/util/GroupProvider';
+import { ProfileProvider } from '~/util/ProfileProvider';
 
 const sans = Inter({ subsets: ["latin"], variable: "--font-sans" });
 const mono = Roboto_Mono({ subsets: ["latin"], variable: '--font-mono' });
@@ -76,7 +77,9 @@ export default function RootLayout({
                 <NextUIProvider>
                 <SessionProvider>
                 <GroupProvider>
+                <ProfileProvider>
                     <div className="flex-1">{children}</div>
+                </ProfileProvider>
                 </GroupProvider>
                 </SessionProvider>
                 </NextUIProvider>

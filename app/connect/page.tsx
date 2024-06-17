@@ -1,13 +1,15 @@
 "use client"
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Footer } from "./(components)/Footer";
 import MapComponent from "./(components)/GoogleMap";
+import { useRouter } from "next/router";
 
 export default function Page() {
 
-    return <>
+  return (<>
         <MapComponent />
-        <Footer/>
-    </>;
-}
+        <Footer /> 
+    </>
+  );
+};

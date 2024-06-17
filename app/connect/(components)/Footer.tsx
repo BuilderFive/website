@@ -3,27 +3,35 @@
 import { css } from '~/util';
 import { Button, buttonVariants } from '../../../components/ui/button';
 import { InstagramLogoIcon, LinkedInLogoIcon } from '@radix-ui/react-icons';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useSession } from '~/util/AuthProvider';
 import Modal from '~/components/ui/modal-auth';
 import { useGroup } from '~/util/GroupProvider';
-import { IoVolumeMute } from "react-icons/io5";
-import { MdCallEnd } from "react-icons/md";
-import { FaQ, FaQuestion } from "react-icons/fa6";
-import Image from 'next/image';
-import Logo from '../../../public/static/logos/blue-logo.png';
-import { FaSearchLocation } from 'react-icons/fa';
+import { MediaConnection } from 'peerjs';
+import { useProfile } from '~/util/ProfileProvider';
+import { ControlBar, AudioVisualizer, LiveKitRoom, TrackRefContext, useEnsureTrackRef, useParticipantTile, useTracks } from '@livekit/components-react';
+import { AudioConference } from '~/components/audio/room-conference';
+import { Track } from 'livekit-client';
 
 const TopicDrawer = () => {
     const [open, setOpen] = useState(false);
     const { user } = useSession();
     const [showModal, setShowModal] = useState(false);
-    const { topic, handleSetTopic, availableTopics, packagedGroup } = useGroup();
+    const { topic, availableTopics, packagedGroup, systemProcessGroupJoin, setTopic, leaveGroup } = useGroup();
 
     const handleChange = async (inputTopic: string) => {
         setOpen(false)
         if (inputTopic != topic) {
-            handleSetTopic(inputTopic)
+            if (packagedGroup) {
+                //means user is currently in a call. Leave the group
+                const response = await leaveGroup();
+    
+                //if response is successful, call joinGroup
+                //not here rn because we don't know want successful response is
+            }
+            //check if user is already in a group, if so call leaveGroup and await for user confirmation
+            systemProcessGroupJoin(inputTopic)
+            setTopic(inputTopic)
         }
       };
 
@@ -36,7 +44,7 @@ const TopicDrawer = () => {
             }
         }} className="flex items-center space-x-[12px] hover:cursor-pointer h-full">
             {user ? 
-                <Button className='h-full p-[12px] rounded-[8px] bg-secondary1 max-w-[180px] justify-start'>
+                <Button onClick={()=>console.log(packagedGroup)} className='h-full p-[12px] rounded-[8px] bg-secondary1 max-w-[180px] justify-start'>
                     <p className='text-white font-semibold text-lg'>{topic ? topic : "select topic"}</p>
                 </Button>
             : <Button className='h-full p-[12px] rounded-[8px] bg-secondary1 max-w-[180px] justify-start'>
@@ -56,8 +64,64 @@ const TopicDrawer = () => {
 }
 
 export const Footer = () => {
-    const { radius, packagedGroup, topic } = useGroup();
+    const { packagedGroup } = useGroup();
+
+    //changes when a user joins a new call
+    return <>
+        {packagedGroup ? <FooterInCall/> : <FooterIdle/>}
+    </>
+};
+
+const FooterIdle = () => {
+
+    const { radius } = useGroup();
+    
+    function formatNumberWithCommas(number) {
+        if (typeof number !== 'number') {
+            throw new TypeError('The input must be a number');
+        }
+        return number.toLocaleString('en-US');
+    }
+    return <footer className="bottom-0 w-full absolute bg-background1 text-text1">
+        <div className="w-full h-[80px] flex flex-row justify-between py-[12px] px-[12px] gap-[24px] items-center justify-center">
+            <div className='flex flex-row gap-[48px]'>
+                <TopicDrawer/>
+            </div>
+            <div className='flex flex-row gap-[48px]'>
+                
+                <div id="details" className="flex flex-col text-text1 text-sm">
+                    <p className='font-semibold text-lg'>{formatNumberWithCommas(radius)} meters</p>
+                    <p>Searching...</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+};
+
+const FooterInCall = () => {
+    const { radius, packagedGroup, topic, leaveGroup } = useGroup();
+    const { first_name, last_name } = useProfile()
+    const { user } = useSession();
+    const name = `${first_name} ${last_name}`;
+    const [token, setToken] = useState("");
+    const room = packagedGroup?.group.group_uuid;
     const [timeRemaining, setTimeRemaining] = useState({ minutes: 0, seconds: 0 });
+    
+    useEffect(() => {
+        if (!first_name || !last_name) return;
+
+        (async () => {
+        try {
+            const resp = await fetch(
+            `/api/get-participant-token?room=${room}&username=${name}`
+            );
+            const data = await resp.json();
+            setToken(data.token);
+        } catch (e) {
+            console.error(e);
+        }
+        })();
+    }, [first_name, last_name, room]);
 
     useEffect(() => {
         const initialRemaining = getTimeRemaining();
@@ -68,6 +132,11 @@ export const Footer = () => {
         const updateTimer = () => {
             setTimeRemaining((prev) => {
                 let { minutes, seconds } = prev;
+                //if packagedGroup becomes null then clear interval
+                if (packagedGroup == null) {
+                    clearInterval(interval);
+                    return { minutes: 0, seconds: 0 };
+                }
 
                 if (seconds > 0) {
                     seconds -= 1;
@@ -75,6 +144,8 @@ export const Footer = () => {
                     minutes -= 1;
                     seconds = 59;
                 } else {
+                    //function to leave group when interval drops to 0
+                    leaveGroup();
                     clearInterval(interval);
                 }
 
@@ -85,41 +156,7 @@ export const Footer = () => {
         const interval = setInterval(updateTimer, 1000);
 
         return () => clearInterval(interval);
-    }, [packagedGroup]);
-
-    //create avatar icons
-    const Avatars = () => {
-        if (packagedGroup == null) {
-            return <div className='flex flex-row gap-[24px] jusify-start items-center'>
-                <img src="/static/logos/blue-logo.svg" alt="User's avatar" width={64} height={64} className="rounded-[99px]" />
-                {[1, 2, 3, 4].map((id) => (<div key={id} className='rounded-[99px] h-[64px] w-[64px] flex items-center justify-center bg-background3'>
-                    <FaQuestion color={"var(--text-2)" } size={36} />
-                </div>))}
-            </div>
-        }
-
-        return <div className='flex flex-row gap-[24px] jusify-start items-center'>
-            {packagedGroup.members.map((member, id) => (
-                <Image key={id} src={"/static/logos/blue-logo.svg"} alt="avatar" width={64} height={64} className='rounded-[99px]'/>
-            ))}
-        </div>
-        
-    }
-
-    //mute/leave icon
-    const MuteIcon = () => {
-        return <div className='h-[64px] w-[64px] flex flex-col items-center justify-center bg-background2 rounded-[12px]'>
-            <IoVolumeMute color={"var(--secondary-1)"} />
-            <p className='font-regular text-[14px] text-secondary1'>Mute</p>
-        </div>
-    }
-
-    const LeaveIcon = () => {
-        return <div className='h-[64px] w-[64px] flex flex-col items-center justify-center bg-background2 rounded-[12px]'>
-            <MdCallEnd color={"var(--error-1)"} />
-            <p className='font-regular text-[14px] text-error1'>Leave</p>
-        </div>
-    }
+    }, [packagedGroup, user]);
 
     function getTimeRemaining() {
         if (packagedGroup == null) return null;
@@ -157,23 +194,20 @@ export const Footer = () => {
         }
         return number.toLocaleString('en-US');
     }
+
     return <footer className="bottom-0 w-full absolute bg-background1 text-text1">
-        <div className="w-full flex flex-row justify-between py-[24px] px-[24px] items-start justify-center text-white">
-            <div className='flex flex-row gap-[48px]'>
-                <TopicDrawer/>
-                {topic && <Avatars/>}
+        <LiveKitRoom audio={true}
+            token={token} className="w-full h-[80px] flex flex-row justify-between py-[12px] px-[12px] gap-[24px] items-center justify-center"
+            serverUrl={process.env.NEXT_PUBLIC_LIVEKIT_URL}
+            // Use the default LiveKit theme for nice styles.
+            data-lk-theme="default">
+                
+            <TopicDrawer/>
+            <AudioConference className='flex flex-row text-text1 w-full justify-between items-center'/>
+            <div id="details" className="flex flex-col text-text1 text-sm">
+                <p className='font-semibold text-lg truncate'>{formatNumberWithCommas(radius)} meters</p>
+                <p>{formattedTimeText()}</p>
             </div>
-            <div className='flex flex-row gap-[48px]'>
-                {packagedGroup && <div id="options" className='flex flex-row gap-[24px]'>
-                    <MuteIcon/>
-                    <LeaveIcon/>
-                </div>}
-                <div id="details" className="flex flex-col text-text1 text-sm">
-                    <p className='font-semibold text-lg'>{formatNumberWithCommas(radius)} meters</p>
-                    <p>{formattedTimeText()}</p>
-                </div>
-            </div>
-            
-        </div>
+        </LiveKitRoom>
     </footer>
 };
