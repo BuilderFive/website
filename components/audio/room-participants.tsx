@@ -15,7 +15,7 @@ const Avatars = ({ ...props }: RoomParticipantsProps) => {
     return <div {...props}>
       {audioTracks.map((trackReference) => {
         return (
-          <TrackRefContext.Provider value={trackReference}>
+          <TrackRefContext.Provider key={trackReference.participant.identity} value={trackReference}>
             {/*<AudioVisualizer />*/}
             <AudioTrack trackRef={trackReference} />
             <div id="audio-participant" className="flex flex-col items-center justify-center">
