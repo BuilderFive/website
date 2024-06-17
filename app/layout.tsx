@@ -12,7 +12,6 @@ import Script from 'next/script';
 import { SessionProvider } from '~/util/AuthProvider';
 import {NextUIProvider} from "@nextui-org/react";
 import { GroupProvider } from '~/util/GroupProvider';
-import { SocketProvider } from '~/util/SocketProvider';
 import { ProfileProvider } from '~/util/ProfileProvider';
 
 const sans = Inter({ subsets: ["latin"], variable: "--font-sans" });
@@ -79,9 +78,7 @@ export default function RootLayout({
                 <SessionProvider>
                 <GroupProvider>
                 <ProfileProvider>
-                <SocketProvider>
                     <div className="flex-1">{children}</div>
-                </SocketProvider>
                 </ProfileProvider>
                 </GroupProvider>
                 </SessionProvider>

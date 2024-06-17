@@ -10,7 +10,6 @@ import Script from 'next/script';
 import { SessionProvider } from '~/util/AuthProvider';
 import { Header } from './(components)/Header';
 import { Footer } from './(components)/Footer';
-import { SocketProvider } from '~/util/SocketProvider';
 
 export default function LandingLayout({
     children,
