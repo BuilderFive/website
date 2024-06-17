@@ -41,7 +41,8 @@ export const metadata: Metadata = {
         images: [{
           url: "https://BuilderFive.com/static/logos/logo-image.png",
         }],
-    }
+    },
+    
 
 };
 
@@ -70,7 +71,7 @@ export default function RootLayout({
         <html lang="en" suppressHydrationWarning>
             <head>
                 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-                <link rel="icon" href="http://www.builderfive.com/favicon.ico?v=2" />
+                <link rel="icon" href="https://www.builderfive.com/favicon.ico?v=2" />
             </head>
             <body className={css("min-h-screen font-poppins antialiased", sans.variable, mono.variable, poppins.variable)}>
                 <ThemeProvider attribute="class" defaultTheme="dark">
