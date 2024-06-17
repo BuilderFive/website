@@ -1,18 +1,22 @@
-import { useGroup } from "~/util/GroupProvider"
-import { socket } from "../../../pages/api/socket/io"
-import { useState, useEffect, useRef } from "react"
-import Peer from "peerjs"
+import { useSession } from "~/util/AuthProvider";
+import { useGroup } from "~/util/GroupProvider";
+import { useSocket } from "~/util/SocketProvider";
+
+const { useState, useEffect, useRef } = require("react")
 
 const usePeer = () => {
+    const {socket} = useSocket()
     const { packagedGroup } = useGroup()
-    const [peer, setPeer] = useState<Peer | null>(null)
-    const [myId, setMyId] = useState<string>('')
+    const roomId = packagedGroup?.group.group_uuid
+    const [peer, setPeer] = useState(null)
+    const [myId, setMyId] = useState('')
     const isPeerSet = useRef(false)
 
     useEffect(() => {
-        if (isPeerSet.current || !packagedGroup || !socket) return;
+        if (isPeerSet.current || !roomId || !socket) return;
         isPeerSet.current = true;
         let myPeer;
+
         (async function initPeer() {
             myPeer = new (await import('peerjs')).default()
             setPeer(myPeer)
@@ -20,10 +24,10 @@ const usePeer = () => {
             myPeer.on('open', (id) => {
                 console.log(`your peer id is ${id}`)
                 setMyId(id)
-                socket?.emit('join-room', packagedGroup.group.group_uuid, id)
+                socket?.emit('join-room', roomId, id)
             })
         })()
-    }, [packagedGroup, socket])
+    }, [roomId, socket])
 
     return {
         peer,

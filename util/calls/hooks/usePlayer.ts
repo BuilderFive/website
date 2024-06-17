@@ -1,18 +1,13 @@
 import {useState} from 'react'
 import { cloneDeep } from 'lodash'
-import { socket } from "../../../pages/api/socket/io"
+import { useRouter } from 'next/router'
+import { useSocket } from '~/util/SocketProvider'
 import { useGroup } from '~/util/GroupProvider'
+import Peer from 'peerjs'
 
-type Players = {
-    [key: string]: {
-        muted: boolean;
-        playing: boolean;
-    };
-};
-
-const usePlayer = (myId, peer) => {
-    const { packagedGroup } = useGroup()
-    const [players, setPlayers] = useState<Players>({})
+const usePlayer = (myId: string, roomId: string, peer: Peer) => {
+    const {socket} = useSocket()
+    const [players, setPlayers] = useState({})
     const playersCopy = cloneDeep(players)
     const { leaveGroup } = useGroup()
 
@@ -22,10 +17,10 @@ const usePlayer = (myId, peer) => {
     const nonHighlightedPlayers = playersCopy
 
     const leaveRoom = () => {
-        socket?.emit('user-leave', myId, packagedGroup?.group.group_uuid)
-        console.log("leaving room", packagedGroup?.group.group_uuid)
+        socket?.emit('user-leave', myId, roomId)
+        console.log("leaving room", roomId)
         peer?.disconnect();
-        leaveGroup();
+        leaveGroup()
     }
 
     const toggleAudio = () => {
@@ -35,7 +30,8 @@ const usePlayer = (myId, peer) => {
             copy[myId].muted = !copy[myId].muted
             return {...copy}
         })
-        socket?.emit('user-toggle-audio', myId, packagedGroup?.group.group_uuid)
+        socket?.emit('user-toggle-audio', myId, roomId)
+        console.log(socket)
     }
 
     const toggleVideo = () => {
@@ -45,7 +41,7 @@ const usePlayer = (myId, peer) => {
             copy[myId].playing = !copy[myId].playing
             return {...copy}
         })
-        socket?.emit('user-toggle-video', myId, packagedGroup?.group.group_uuid)
+        socket?.emit('user-toggle-video', myId, roomId)
     }
 
     return {players, setPlayers, playerHighlighted, nonHighlightedPlayers, toggleAudio, toggleVideo, leaveRoom}

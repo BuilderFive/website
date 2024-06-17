@@ -4,8 +4,6 @@ import React, { ReactNode, createContext, useCallback, useContext, useEffect, us
 import { supabase } from './supabaseClient';
 import { User, Session, SupabaseClient, createClient, AuthChangeEvent } from '@supabase/supabase-js';
 import { Tables } from './supabase-types';
-import {v4 as uuidv4} from 'uuid';
-import { useRouter } from 'next/router';
 import { useSession } from './AuthProvider';
 import { group } from 'console';
 import { m } from 'framer-motion';
@@ -59,7 +57,6 @@ export function GroupProvider(props: React.PropsWithChildren) {
     const [topic, setTopic] = useState("")
     const [isLoading, setLoading] = useState<boolean>(true);
     const availableTopics = ["startups","productivity","academics", "careers", "science","history"]
-
     /**
      * On initial load, fetch the user's group data.
      */
@@ -191,6 +188,7 @@ export function GroupProvider(props: React.PropsWithChildren) {
             if (response.ok) {
                 const data = await response.json();
                 setPackagedGroup(data.result);
+                return (data.result as PackagedGroup).group.group_uuid;
             } else {
                 const errorData = await response.json();
                 console.error(`Failed to join or create group: ${errorData.error}`);
@@ -216,6 +214,7 @@ export function GroupProvider(props: React.PropsWithChildren) {
             if (response.ok) {
                 setPackagedGroup(null)
                 setTopic("")
+                console.log('deleted')
                 return data
             } else {
                 console.error('Error leaving group:', data.error);

@@ -8,17 +8,16 @@ import { cloneDeep } from "lodash";
 import { MediaConnection } from "peerjs";
 import { useGroup } from "~/util/GroupProvider";
 import { useSocket } from "~/util/SocketProvider";
+import usePeer from "~/util/calls/hooks/usePeer";
+import useMediaStream from "~/util/calls/hooks/useMediaStream";
+import usePlayer from "~/util/calls/hooks/usePlayer";
+import { useRouter } from "next/router";
 
 export default function Page() {
-  const { socket } = useSocket()
-  const { leaveGroup, systemProcessGroupJoin } = useGroup();
-  const [users, setUsers] = useState<MediaConnection[]>([])
-
-  console.log(socket)
 
   return (<>
         <MapComponent />
-        <Footer/> 
+        <Footer /> 
     </>
   );
 };
