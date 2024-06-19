@@ -22,7 +22,7 @@ export const RsvpSection: React.FC = () => {
     const calculateTimeRemaining = () => {
         const currentDate = new Date();
         const futureDate = new Date();
-        futureDate.setFullYear(2024, 5, 14);
+        futureDate.setFullYear(2024, 6, 2);
         futureDate.setHours(12, 30, 30, 10);
 
         const timeDifference = futureDate.getTime() - currentDate.getTime();
