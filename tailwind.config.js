@@ -26,6 +26,7 @@ module.exports = {
         background3: 'var(--background-3)',
         background4: 'var(--background-4)',
         white: 'var(--white)',
+        success1: 'var(--success-1)',
         error1: 'var(--error-1)',
         secondary1: 'var(--secondary-1)',
         secondary2: 'var(--secondary-2)',
