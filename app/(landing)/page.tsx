@@ -1,16 +1,16 @@
 
 import { MdiIcon, css } from '~/util';
 import { Badge } from '~/components/ui/badge';
-import { CtaButton } from './components/CtaButton';
-import { AppSection } from './components/AppSection';
-import { RsvpSection } from './components/RsvpSection';
-import { FeatureGrid } from './components/FeatureGrid';
+import { CtaButton } from './(home)/components/CtaButton';
+import { AppSection } from './(home)/components/AppSection';
+import { RsvpSection } from './(home)/components/RsvpSection';
+import { FeatureGrid } from './(home)/components/FeatureGrid';
 import { mdiAlphaPCircle, mdiArrowRight } from '@mdi/js';
-import Hero from './components/Hero';
-import FeatureFooter from './components/FeatureFooter';
-import CTA from './components/CTA';
-import HowItWorks from './components/HowItWorks';
-import { Globe } from './components/globe/Globe';
+import Hero from './(home)/components/Hero';
+import FeatureFooter from './(home)/components/FeatureFooter';
+import CTA from './(home)/components/CTA';
+import HowItWorks from './(home)/components/HowItWorks';
+import { Globe } from './(home)/components/globe/Globe';
 
 export default function Home() {
     return (
