@@ -17,11 +17,11 @@ export default function Home() {
         <div className="w-full relative">
             <div className='z-20 relative flex flex-col space-y-[256px] pb-[256px]'>
                 <Hero />
-                <HowItWorks />
-                <FeatureGrid />
+                {/*<HowItWorks />
+                <FeatureGrid />*/}
             </div>
-            <FeatureFooter/>
-            <CTA/>
+            {/*<FeatureFooter/>
+            <CTA/>*/}
             
         </div>
     );

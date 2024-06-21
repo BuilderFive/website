@@ -5,14 +5,14 @@ export default function Hero() {
 
     return <div id="Hero" className="container w-full flex flex-wrap h-min-screen pt-[48px] justify-between max-md:items-center max-md:pt-[42px] max-md:space-y-[24px]">
         <section id="Column 1" className="flex relative gap-y-[48px] flex-col items-start justify-center flex-grow ">
-            <section className="flex-col space-y-[24px] w-[700px] max-md:w-full text-center animate-slidein opacity-0 [--slidein-delay:300ms]">
+            <section className="flex-col space-y-[24px] w-[600px] max-md:w-full text-left animate-slidein opacity-0 [--slidein-delay:300ms]">
                 <div className="text-7xl font-bold text-white max-md:max-w-full max-md:text-4xl">
-                    <p className="animate-slidein opacity-0 [--slidein-delay:500ms]">Turn an <a className="text-text7 animate-slidein opacity-0 [--slidein-delay:800ms]">idea</a></p> 
-                    <p className="animate-slidein opacity-0 [--slidein-delay:1500ms]">into a <a className="text-text8 animate-slidein opacity-0 [--slidein-delay:1800ms]">product.</a></p>
+                    <p className="animate-slidein opacity-0 [--slidein-delay:500ms]">Join group <a className="text-text7 animate-slidein opacity-0 [--slidein-delay:800ms]">calls</a></p> 
+                    <p className="animate-slidein opacity-0 [--slidein-delay:1500ms]">plan <a className="text-text8 animate-slidein opacity-0 [--slidein-delay:1800ms]">meetups</a></p>
                 </div>
                 <div className="flex text-4xl max-md:text-lg text-white font-regular justify-center w-full">
                     <p className="animate-slidein opacity-0 [--slidein-delay:3000ms] w-full max-md:w-[80%]">
-                        Solve hard startup questions by collaborating with peers and tracking your journey in our networking app, so that you can build with confidence
+                        Join a group call with local strangers over shared interests, and plan to meetup at a nearby coffee shops.
                     </p> 
                 </div>
             </section>
