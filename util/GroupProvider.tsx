@@ -126,7 +126,6 @@ export function GroupProvider(props: React.PropsWithChildren) {
 
                 if (groupErrors) throw groupErrors;
 
-                console.log(groups)
                 setLoadedGroups(groups)
             } catch (error) {
                 console.error('Error fetching group data:', error);
@@ -150,8 +149,7 @@ export function GroupProvider(props: React.PropsWithChildren) {
             .on('postgres_changes', {
                 event: 'DELETE', schema: 'public', table: 'groups'
             }, (payload)=> {
-                console.log(payload)
-                console.log(loadedGroups)
+                
                 const oldGroup = {payload}.payload.old
                 const newGroups = loadedGroups.filter(group => group.group_uuid !== oldGroup.group_uuid);
                 setLoadedGroups(newGroups);
@@ -249,8 +247,14 @@ export function GroupProvider(props: React.PropsWithChildren) {
     }
 
     const leaveGroup = async() => {
+        
+        //update loadedGroups for fast update
+        const newGroups = loadedGroups.filter(group => group.group_uuid !== packagedGroup?.group.group_uuid);
+        setLoadedGroups(newGroups);
+
         const group_uuid = packagedGroup?.group.group_uuid;
         const user_uuid = user?.id;
+        setPackagedGroup(null)
         try {
             const response = await fetch('../api/group/leaveClick/', {
                 method: 'DELETE',
@@ -262,7 +266,6 @@ export function GroupProvider(props: React.PropsWithChildren) {
         
             const data = await response.json();
             if (response.ok) {
-                setPackagedGroup(null)
                 console.log('deleted')
                 return data
             } else {

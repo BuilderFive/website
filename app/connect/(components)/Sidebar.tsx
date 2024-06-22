@@ -97,11 +97,12 @@ export const Sidebar = () => {
 };
 
 const RenderGroups = ({ filteredTopics, userLocation }) => {
+    const { leaveGroup } = useGroup()
     const [currentTime, setCurrentTime] = useState(new Date());
     useEffect(() => {
-      const intervalId = setInterval(() => {
-        setCurrentTime(new Date());
-      }, 1000);
+        const intervalId = setInterval(() => {
+            setCurrentTime(new Date());
+        }, 1000);
   
       return () => clearInterval(intervalId);
     }, []);
@@ -139,7 +140,7 @@ const RenderGroups = ({ filteredTopics, userLocation }) => {
     }, []);
   
     const formatTime = (time) => {
-      return time < 10 ? `0${time}` : time;
+        return Math.abs(time) < 10 ? `0${Math.abs(time)}` : Math.abs(time);
     }
   
     return filteredTopics.map((group: Tables<'groups'>) => {
