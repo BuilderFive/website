@@ -13,6 +13,9 @@
         --white: hsl(0 0 100%);
         --error-1: hsl(0 88% 54%);
         --success-1: hsl(94 72% 58%);
+        --activity-online: hsl(95 49% 43%);
+        --activity-idle: hsl(48 100% 50%);
+
         --secondary-1: hsl(212 100% 69%);
         --secondary-2: hsl(212 74% 45%);
         --secondary-3: hsl(220 76% 62%);
@@ -36,6 +39,9 @@
         --white: hsl(0 0 100%);
         --error-1: hsl(0 100% 75%);
         --success-1: hsl(94 72% 58%);
+        --activity-online: hsl(95 49% 43%);
+        --activity-idle: hsl(48 100% 50%);
+
         --secondary-1: hsl(212 100% 69%);
         --secondary-2: hsl(212 74% 45%);
         --secondary-3: hsl(220 76% 62%);

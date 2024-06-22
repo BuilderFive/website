@@ -6,7 +6,6 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest, res: NextResponse) {
     const { userUuid, topic, radius, latitude, longitude } = await req.json();
-
     const { data, error } = await supabase.rpc('join_or_create_group', {
         p_user_uuid: userUuid,
         p_topic: topic,

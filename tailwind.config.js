@@ -27,6 +27,9 @@ module.exports = {
         background4: 'var(--background-4)',
         white: 'var(--white)',
         success1: 'var(--success-1)',
+        online: 'var(--activity-online)',
+        idle: 'var(--activity-idle)',
+
         error1: 'var(--error-1)',
         secondary1: 'var(--secondary-1)',
         secondary2: 'var(--secondary-2)',

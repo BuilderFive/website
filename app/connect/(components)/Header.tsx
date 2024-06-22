@@ -26,14 +26,10 @@ export const Header: React.FC = () => {
         </div>
     )
 
-    return (<header className="absolute top-0 z-40 w-full">
-        <div className="flex flex-row w-full justify-between max-md:h-16 py-[24px] px-[24px] items-start justify-center text-white">
+    return (<header className="absolute top-0 right-0 z-40 w-fit">
+        <div className="flex flex-row w-full justify-end max-md:h-16 py-[24px] px-[24px] items-start text-white">
             
-            <div className="flex md:justify-start w-fit items-center space-x-[24px]">
-                <Link href="/" className="flex items-center space-x-[12px]">
-                    <img src="/static/logos/blue-logo.svg" alt="BuilderFive" className="aspect-square h-[72px] rounded-full" />
-                </Link>
-            </div>
+            
             
             <div className="flex md:justify-end w-fit items-center space-x-[24px]">
                 <nav className="flex items-center max-md:hidden">
