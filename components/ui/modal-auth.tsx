@@ -107,7 +107,7 @@ const Modal = ({ showModal, setShowModal }) => {
     return (
         showModal && (
         <div className="fixed z-10 inset-0 overflow-y-auto backdrop-blur-md flex justify-center items-center">
-            {finishedSignup && <div className="w-[540px] h-[540px] flex flex-col gap-[24px] bg-white items-center justify-center border-[4px] border-secondary1 rounded-[12px] p-[24px]">
+            {finishedSignup && <div className="w-[540px] h-[540px] flex flex-col gap-[24px] bg-white items-center justify-center rounded-[12px] p-[24px]">
                 <div className='flex flex-row justify-center items-center text-center'>
                     <p className='text-2xl font-semibold text-background1'>Check your email to verify your account</p>
                 </div>
@@ -122,7 +122,7 @@ const Modal = ({ showModal, setShowModal }) => {
                     Okay
                 </Button>
             </div>}
-            {!finishedSignup && isSignUp && <div className="w-[540px] min-h-[540px] flex flex-col gap-[24px] bg-background1 rounded-[24px] p-[24px]">
+            {!finishedSignup && isSignUp && <div className="w-[540px] min-h-[540px] flex flex-col gap-[24px] bg-background1 rounded-[12px] p-[24px]">
                 <div className='flex flex-col'>
                     <div className='flex flex-row justify-between'>
                         <p className='text-4xl font-semibold text-text1'>Sign Up</p>
