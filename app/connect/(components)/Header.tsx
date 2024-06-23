@@ -6,7 +6,6 @@ import Link from "next/link";
 import { useState } from "react";
 import { FaMicrophone, FaSearchLocation } from "react-icons/fa";
 import { ThemeSwitcher } from "~/components/nav/ThemeSwitcher";
-import Modal from "~/components/ui/modal-auth";
 import { useSession } from "~/util/AuthProvider";
 import { ImExit } from "react-icons/im";
 import {Slider} from "@nextui-org/slider";
@@ -26,7 +25,7 @@ export const Header: React.FC = () => {
         </div>
     )
 
-    return (<header className="absolute top-0 right-0 z-40 w-fit">
+    return (<header className="absolute top-0 right-0 z-10 w-fit">
         <div className="flex flex-row w-full justify-end max-md:h-16 py-[24px] px-[24px] items-start text-white">
             
             
@@ -78,6 +77,5 @@ const AccountDrawer = () => {
             
         </div>
         }
-        <Modal showModal={showModal} setShowModal={setShowModal} />
     </div>)
 }

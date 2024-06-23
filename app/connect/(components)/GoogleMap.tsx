@@ -79,7 +79,7 @@ export default function MapComponent({children}: {children: React.ReactNode}) {
           <div className='absolute z-40 bottom-0 w-full'>
             {children}
           </div>
-          <div className='absolute bottom-32 right-4 z-40 flex flex-row gap-[24px] items-center'>                
+          <div className='absolute bottom-32 right-4 z-10 flex flex-row gap-[24px] items-center'>                
               <div className='w-[480px] h-fit text-text1'>
                   <Slider showSteps={true} size={"lg"} hideValue={true}
                       step={5000} onChange={handleChange} value={radius}

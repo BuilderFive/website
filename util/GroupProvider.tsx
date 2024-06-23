@@ -21,6 +21,7 @@ interface GroupContextProps {
     leaveGroup: () => void;
     setTopic: (topic: string) => void;
     loadedGroups: Tables<'groups'>[];
+    setLoading: (loading: boolean) => void;
 }
 
 const GroupContext = createContext<GroupContextProps>({
@@ -35,7 +36,8 @@ const GroupContext = createContext<GroupContextProps>({
     availableTopics: ["startups","productivity","academics", "careers", "science","history"],
     leaveGroup: () => {},
     setTopic: () => {},
-    loadedGroups: []
+    loadedGroups: [],
+    setLoading: () => {}
 });
 
 export const useGroup = () => useContext(GroupContext);
@@ -57,9 +59,10 @@ export function GroupProvider(props: React.PropsWithChildren) {
     const [userLocation, setUserLocation] = useState({latitude: 30.35736619550383, longitude: -97.73011964664344})
     const [packagedGroup, setPackagedGroup] = useState<PackagedGroup| null>(null) //current group that the user is in
     const [topic, setTopic] = useState("startups")
-    const [isLoading, setLoading] = useState<boolean>(true);
+    const [isLoading, setLoading] = useState<boolean>(false);
     const availableTopics = ["startups","productivity","academics", "careers", "science","history"]
     const [loadedGroups, setLoadedGroups] = useState<Tables<'groups'>[]>([])
+    
     /**
      * On initial load, fetch the user's group data.
      */
@@ -218,6 +221,7 @@ export function GroupProvider(props: React.PropsWithChildren) {
     //update packaged group object after receiving handleSetTopic
 
     const systemProcessGroupJoin = async(newTopic: string) => {
+        setLoading(true)
         try {
             const response = await fetch('../api/group/joinFromTopic/', { 
                 method: 'POST',
@@ -236,12 +240,15 @@ export function GroupProvider(props: React.PropsWithChildren) {
             if (response.ok) {
                 const data = await response.json();
                 setPackagedGroup(data.result);
+                setLoading(false)
                 return (data.result as PackagedGroup).group.group_uuid;
             } else {
                 const errorData = await response.json();
+                setLoading(false)
                 console.error(`Failed to join or create group: ${errorData.error}`);
             }
         } catch (error) {
+            setLoading(false)
             console.error('Error joining or creating group:', error);
         }
     }
@@ -295,7 +302,8 @@ export function GroupProvider(props: React.PropsWithChildren) {
         setUserLocation,
         packagedGroup,
         topic, systemProcessGroupJoin, setTopic,
-        availableTopics, leaveGroup, loadedGroups
+        availableTopics, leaveGroup, loadedGroups,
+        setLoading
     };
 
     return (

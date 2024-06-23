@@ -5,7 +5,6 @@ import { Button, buttonVariants } from '../../../components/ui/button';
 import { InstagramLogoIcon, LinkedInLogoIcon } from '@radix-ui/react-icons';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useSession } from '~/util/AuthProvider';
-import Modal from '~/components/ui/modal-auth';
 import { useGroup } from '~/util/GroupProvider';
 import { MediaConnection } from 'peerjs';
 import { useProfile } from '~/util/ProfileProvider';
@@ -13,12 +12,13 @@ import { ControlBar, AudioVisualizer, LiveKitRoom, TrackRefContext, useEnsureTra
 import { AudioConference } from '~/components/audio/room-conference';
 import { Track } from 'livekit-client';
 import Image from 'next/image';
-import { FaAngleDown, FaAngleLeft, FaAngleRight, FaAngleUp } from "react-icons/fa";
+import { FaAngleDown, FaAngleLeft, FaAngleRight, FaAngleUp, FaSpinner } from "react-icons/fa";
 import { LuMegaphone } from "react-icons/lu";
 import { Tables } from '~/util/supabase-types';
+import { Spinner } from '@nextui-org/react';
 
 export const Sidebar = () => {
-    const { topic, setTopic, userLocation, loadedGroups, availableTopics } = useGroup();
+    const { topic, setTopic, userLocation, loadedGroups, availableTopics, packagedGroup, leaveGroup, systemProcessGroupJoin, isLoading } = useGroup();
     const [open, setOpen] = useState(false);
     const filteredTopics = loadedGroups.filter(group => group.topic == topic);
     console.log(filteredTopics)
@@ -46,8 +46,6 @@ export const Sidebar = () => {
        </div>
     }
     const JoinButton = () => {
-        const { topic, availableTopics, packagedGroup, systemProcessGroupJoin, setTopic, leaveGroup } = useGroup();
-
         const handleChange = async (inputTopic: string) => {
             if (packagedGroup) {
                 //means user is currently in a call. Leave the group
@@ -61,7 +59,7 @@ export const Sidebar = () => {
         };
 
         return <Button onClick={()=>handleChange(topic)} className='h-fit w-full p-[12px] rounded-[12px] bg-secondary1'>
-            <p className='text-white font-semibold text-2xl'>Join a group</p>
+            {isLoading ? <FaSpinner className='animate-spin' color={"var(--text-4)"} /> : <p className='text-white font-semibold text-2xl'>Join a group</p>}
         </Button>
     }
     const TopicDrawer = () => {    
@@ -79,7 +77,7 @@ export const Sidebar = () => {
     
 
     return <div className='flex flex-row relative'>
-        <div className='z-20 flex flex-col shadow-md min-w-[280px] max-w-[360px] w-fit bg-background1 px-[12px] py-[24px] gap-[12px] items-center justify-start'>
+        <div className='z-1 flex flex-col shadow-md min-w-[280px] max-w-[360px] w-fit bg-background1 px-[12px] py-[24px] gap-[12px] items-center justify-start'>
             <Title/>
             <JoinButton/>
             <TopicDrawer/>
