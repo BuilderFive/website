@@ -3,13 +3,11 @@
 import { ReactNode, useEffect, useRef, useState } from 'react';
 import { MdiIcon, css } from '~/util';
 import { mdiAccountGroup, mdiMapLegend } from '@mdi/js';
-import { RsvpSection } from './RsvpSection';
 
 export default function CTA() {
     return <div id="CTA" className="flex flex-row flex-wrap max-w-container justify-between w-full bg-background4 p-[48px]">
        
        <div className='flex flex-grow justify-center'>
-        <RsvpSection/>
         </div>
         <div className='flex flex-grow justify-center'>
         <img loading="lazy"
