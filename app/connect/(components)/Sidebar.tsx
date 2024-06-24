@@ -21,8 +21,6 @@ export const Sidebar = () => {
     const { topic, setTopic, userLocation, loadedGroups, availableTopics, packagedGroup, leaveGroup, systemProcessGroupJoin, isLoading } = useGroup();
     const [open, setOpen] = useState(false);
     const filteredTopics = loadedGroups.filter(group => group.topic == topic);
-    console.log(filteredTopics)
-    console.log(loadedGroups)
 
     const handleTopicChange = async (inputTopic: string) => {
         setOpen(false)
