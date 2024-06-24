@@ -49,6 +49,7 @@ export function SessionProvider(props: React.PropsWithChildren) {
 
     const [isInvited, setIsInvited] = useState<boolean>(false);
     const [isLoading, setLoading] = useState<boolean>(true);
+    
     //get/set the user's avatar
     //use avatar in footer loading and header account
 

@@ -78,7 +78,7 @@ export const Globe = () => {
             <pointLight position={[-10, -10, -10]} intensity={0.4} />
             
             <GlobeMesh theme={theme || 'dark'} />
-            <GlobeGraticule theme={theme || 'dark'} />
+            {/*<GlobeGraticule theme={theme || 'dark'} />*/}
             <Countries theme={theme || 'dark'} />
         </Canvas>
     );

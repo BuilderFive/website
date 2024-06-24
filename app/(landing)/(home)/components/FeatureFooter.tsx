@@ -36,7 +36,7 @@ const RevealOnScroll = ({ children }: {children: ReactNode}) => {
   };
 
 export default function FeatureFooter() {
-    return <div id="footer feature" className="relative flex flex-col w-full h-fit items-center ">
+    return <div id="footer feature" className="relative flex flex-col w-full items-center">
         <RevealOnScroll><div id="last features" className="z-20 container w-full flex flex-wrap justify-between pb-[640px] max-md:pb-[256px] max-md:space-y-[128px] max-md:items-center">
             <div className='flex flex-grow justify-center'>
                 <section className="flex flex-col space-y-[24px] w-[300px] max-md:text-center">
@@ -66,11 +66,11 @@ export default function FeatureFooter() {
                     </div>
                 </section>
             </div>
-        </div></RevealOnScroll>
+</div></RevealOnScroll>
         <img loading="lazy"
             src="static/bottom-background.svg"
             alt="Group of people collaborating"
-            className="w-full absolute w-screen bottom-0 max-w-container"
+            className="w-full absolute bottom-0"
             />
     </div>
 }

@@ -43,7 +43,11 @@ export const MobileNavigation: React.FC = () => {
     const [open, setOpen] = useState(false);
 
     return (
-        <Sheet open={open} onOpenChange={setOpen}>
+        open ? <Link href="/" className="flex items-center space-x-[12px]">
+            <img src="/static/logos/blue-logo.svg" alt="BuilderFive" className="aspect-square h-[48px] rounded-full" />
+            <p className='text-2xl text-white font-mono font-semibold'>BuilderFive</p>
+        </Link> : <></>
+        /*<Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
                 <Button variant="ghost" className="mr-2 px-0 text-base focus-visible:ring-0 focus-visible:ring-offset-0 md:hidden">
                     <MdiIcon path={mdiMenu} size="24px" className="inline" />
@@ -84,6 +88,6 @@ export const MobileNavigation: React.FC = () => {
                     </div>
                 </ScrollArea>
             </SheetContent>
-        </Sheet>
+                    </Sheet>*/
     )
 }

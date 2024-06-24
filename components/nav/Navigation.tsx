@@ -23,7 +23,7 @@ export const Navigation: React.FC = () => {
                 <img src="/static/logos/blue-logo.svg" alt="BuilderFive" className="aspect-square h-[48px] rounded-full" />
                 <p className='text-2xl text-white font-mono font-semibold'>BuilderFive</p>
             </Link>
-            <NavigationMenu>
+            {/*<NavigationMenu>
                 <NavigationMenuList>
                     {
                         Routes.map(route => {
@@ -64,7 +64,7 @@ export const Navigation: React.FC = () => {
                         })
                     }
                 </NavigationMenuList>
-            </NavigationMenu>
+                </NavigationMenu>*/}
         </div>
     );
 }

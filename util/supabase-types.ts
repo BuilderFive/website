@@ -91,18 +91,21 @@ export type Database = {
           avatar: string
           created_at: string
           group_uuid: string
+          location: number[]
           user_uuid: string
         }
         Insert: {
           avatar?: string
           created_at?: string
           group_uuid: string
+          location?: number[]
           user_uuid: string
         }
         Update: {
           avatar?: string
           created_at?: string
           group_uuid?: string
+          location?: number[]
           user_uuid?: string
         }
         Relationships: [
@@ -195,6 +198,48 @@ export type Database = {
           email?: string
         }
         Relationships: []
+      }
+      signaling_data: {
+        Row: {
+          created_at: string | null
+          data: Json
+          group_uuid: string | null
+          id: number
+          type: string
+          user_uuid: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          data: Json
+          group_uuid?: string | null
+          id?: number
+          type: string
+          user_uuid?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          data?: Json
+          group_uuid?: string | null
+          id?: number
+          type?: string
+          user_uuid?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "signaling_data_group_uuid_fkey"
+            columns: ["group_uuid"]
+            isOneToOne: false
+            referencedRelation: "groups"
+            referencedColumns: ["group_uuid"]
+          },
+          {
+            foreignKeyName: "signaling_data_user_uuid_fkey"
+            columns: ["user_uuid"]
+            isOneToOne: false
+            referencedRelation: "account"
+            referencedColumns: ["uuid"]
+          },
+        ]
       }
       spatial_ref_sys: {
         Row: {
@@ -598,6 +643,10 @@ export type Database = {
             }
             Returns: string
           }
+      close_expired_groups: {
+        Args: Record<PropertyKey, never>
+        Returns: undefined
+      }
       disablelongtransactions: {
         Args: Record<PropertyKey, never>
         Returns: string

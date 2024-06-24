@@ -12,6 +12,10 @@
         --background-3: hsl(0 0 90%);
         --white: hsl(0 0 100%);
         --error-1: hsl(0 88% 54%);
+        --success-1: hsl(94 72% 58%);
+        --activity-online: hsl(95 49% 43%);
+        --activity-idle: hsl(48 100% 50%);
+
         --secondary-1: hsl(212 100% 69%);
         --secondary-2: hsl(212 74% 45%);
         --secondary-3: hsl(220 76% 62%);
@@ -34,10 +38,14 @@
         --background-3: hsl(0 1% 35%);
         --white: hsl(0 0 100%);
         --error-1: hsl(0 100% 75%);
-        --secondary-1: hsl(212 54% 49%);
-        --secondary-2: hsl(227 48% 33%);
-        --secondary-3: hsl(219 48% 39%);
-        --secondary-4: hsl(212 87% 73%);
+        --success-1: hsl(94 72% 58%);
+        --activity-online: hsl(95 49% 43%);
+        --activity-idle: hsl(48 100% 50%);
+
+        --secondary-1: hsl(212 100% 69%);
+        --secondary-2: hsl(212 74% 45%);
+        --secondary-3: hsl(220 76% 62%);
+        --secondary-4: hsl(204 100% 95%);
         --text-1: hsl(0 0 100%);
         --text-2: hsl(0 0 93%);
         --text-3: hsl(0 0 85%);
