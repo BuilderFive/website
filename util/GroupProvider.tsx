@@ -123,11 +123,19 @@ export function GroupProvider(props: React.PropsWithChildren) {
         const fetchAllGroups = async () => {
             try {
                 // Fetch the user's group UUID(s). Replace this with your actual logic to get the user's group UUID(s).
-                const { data: groups, error: groupErrors } = await supabase
+                const { data: fetchedGroups, error: fetchedGroupErrors } = await supabase
                     .from('groups')
                     .select('*');
 
-                if (groupErrors) throw groupErrors;
+                if (fetchedGroupErrors) throw fetchedGroupErrors;
+
+                const groups = fetchedGroups as Tables<'groups'>[];
+                
+                const groupUUIDS = groups.map(gr => gr.group_uuid)
+                const { data: fetchedMembers, error: fetchedMembersError } = await supabase
+                    .from('group_members')
+                    .select('*');
+                if (fetchedGroupErrors) throw fetchedGroupErrors;
 
                 setLoadedGroups(groups)
             } catch (error) {

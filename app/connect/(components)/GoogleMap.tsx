@@ -24,6 +24,7 @@ export default function MapComponent({children}: {children: React.ReactNode}) {
     const RenderMarkers = () => {
       return <div className=''>
         {loadedGroups.map((group, index) => {
+          //so the only marker that actively changes location is your own
           return <Marker icon={"./animations/audio-room.gif"} key={index} position={{lat: group.location[0], lng: group.location[1]}}/>
         })}
       </div>

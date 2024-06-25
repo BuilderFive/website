@@ -56,8 +56,8 @@ export const Sidebar = () => {
             systemProcessGroupJoin(inputTopic)
         };
 
-        return <Button onClick={()=>handleChange(topic)} className='h-fit w-full p-[12px] rounded-[12px] bg-secondary1'>
-            {isLoading ? <FaSpinner className='animate-spin' color={"var(--text-4)"} /> : <p className='text-white font-semibold text-2xl'>Join a group</p>}
+        return <Button onClick={()=>handleChange(topic)} className='h-fit w-full p-[12px] h-[70px] rounded-[12px] bg-secondary1'>
+            {isLoading ? <FaSpinner size={"36px"} className='animate-spin' color={"white"} /> : <p className='text-white font-semibold text-2xl'>Join a group</p>}
         </Button>
     }
     const TopicDrawer = () => {    
@@ -68,7 +68,7 @@ export const Sidebar = () => {
     }
 
     const ActiveGroups = () => {
-        return <div id='active-groups' className='flex flex-col gap-[12px] w-fill h-fill'>
+        return <div id='active-groups' className='flex flex-col w-full h-full'>
             <RenderGroups filteredTopics={filteredTopics} userLocation={userLocation} />
         </div>
     }
@@ -149,7 +149,7 @@ const RenderGroups = ({ filteredTopics, userLocation }) => {
       const groupLocation = { latitude: group.location[0], longitude: group.location[1]}
   
       return (
-        <div key={group.group_uuid} className='flex flex-row gap-[12px] p-[12px] bg-background2 rounded-[12px] h-fit'>
+        <div key={group.group_uuid} className='flex flex-row gap-[12px] p-[12px] bg-background2 rounded-[12px] h-fit w-full'>
           <div className='bg-background3 p-[8px] rounded-full h-fit w-fit aspect-square'>
             <LuMegaphone size={24} color={"var(--text-2)"} />
           </div>
