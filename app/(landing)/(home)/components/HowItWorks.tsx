@@ -3,9 +3,10 @@
 
 import { Button } from "@nextui-org/react";
 import { ReactNode, useState, useRef, useEffect } from "react";
-import { FaMicrophone } from "react-icons/fa6";
+import { FaM, FaMicrophone } from "react-icons/fa6";
 import MapAnimation from '../../../../public/animations/map-animation.json'
 import Lottie from 'react-lottie-player'
+import { clear } from "console";
 
 
 
@@ -37,11 +38,8 @@ export default function HowItWorks() {
                     <div id="howitworks-item-2" className="hover:shadow-xl w-[240px] flex relative flex-col flex-grow px-[24px] py-[24px] bg-background2 rounded-[12px] space-y-[24px] max-md:w-full items-center justify-center">
                         <p className="text-3xl font-semibold max-md:text-lg text-text1">Select a topic space to call with like-minded people</p>
                         <RevealOnScroll>                
-                        <img loading="lazy"
-                            src="static/globe.svg"
-                            alt="Group of people collaborating"
-                            className="aspect-square w-[240px] max-md:w-[120px]"/>
-                            </RevealOnScroll>
+                            <ChooseTopicDrawer/>
+                        </RevealOnScroll>
                         <div className="flex items-center justify-center w-[48px] max-md:w-[24px] aspect-square absolute right-[12px] bottom-[12px] bg-secondary3 rounded-full">
                             <p className="text-text5 text-2xl font-bold max-md:text-sm">2</p>
                         </div>
@@ -51,10 +49,8 @@ export default function HowItWorks() {
                 <div id="howitworks-row-2" className="flex flex-row w-full flex-wrap justify-between gap-x-[24px] gap-y-[24px] max-md:space-y-[12px]">
                     <div id="howitworks-item-3" className="hover:shadow-xl w-[240px] flex relative flex-col flex-grow px-[24px] py-[24px] bg-background2 rounded-[12px] space-y-[24px] max-md:w-full items-center justify-center">
                         <p className="text-3xl font-semibold max-md:text-lg text-text1">Call with up to 5 people for 30 minutes and find new friends</p>
-                        <RevealOnScroll><img loading="lazy"
-                            src="static/group.svg"
-                            alt="Group of people collaborating"
-                            className="aspect-square w-[240px] max-md:w-[120px]"/></RevealOnScroll>
+                        <div className="h-full flex items-center"><RevealOnScroll><AvatarsJoins/></RevealOnScroll>
+                        </div>
                         <div className="flex items-center justify-center w-[48px] max-md:w-[24px] aspect-square absolute right-[12px] bottom-[12px] bg-secondary3 rounded-full">
                             <p className="text-text5 text-2xl font-bold max-md:text-sm">3</p>
                         </div>
@@ -74,6 +70,112 @@ export default function HowItWorks() {
             </div>
         </div>
     </div>
+}
+
+const ChooseTopicDrawer = () => {
+    const [open, setOpen] = useState(false)
+    const [topic, setTopic] = useState('Startups')
+    const topics = ['Startups', 'Tech', 'Design', 'Marketing']
+
+    const Drawer = () => {
+        return open && <div className='w-[200px] h-fit p-[12px] bg-secondary4 rounded-[12px]'>
+            
+            {topics.map((element, id) => <div key={id} onClick={()=>setTopic(element)} className="rounded-[12px] p-[12px] hover:cursor-pointer hover:bg-background3 bg-background2">
+                <p className='text-2xl max-lg:text-xl max-sm:text-lg text-text1 font-bold'>
+                    {element}
+                </p>
+            </div>)}
+            
+        </div>
+    }
+
+    return <div>
+        <Button onClick={()=>setOpen(!open)} className='relative flex flex-col bg-secondary1 p-[24px] h-[200px] aspect-square max-lg:h-[150px] max-sm:h-[120px] rounded-[24px] max-lg:rounded-[12px] shadow-md flex items-center justify-center'>
+            <p className='text-2xl max-lg:text-xl max-sm:text-lg text-background1 font-bold'>
+                {topic}
+            </p>
+        </Button>
+       
+        <div className="z-10 absolute top-[90%]">
+            <Drawer/>
+        </div>
+        
+    </div>
+}
+
+const AvatarsJoins = () => {    
+    const getRandomNumber = (): number => {
+        return Math.floor(Math.random() * (6 - 3 + 1)) + 3;
+    };
+    const [currentTime, setCurrentTime] = useState(new Date());
+    const endDate = useRef(new Date());
+    const [timeLeft, setTimeLeft] = useState({ seconds: 5 });
+    const [avatars, setAvatars] = useState(1)
+    const [currentlySpeaking, setCurrentlySpeaking] = useState<number[]>([])
+
+    const reset = () => {
+
+        //have a new avatar join or leave
+        if (avatars === 5) {
+            setAvatars(avatars - 1);
+        } else if (avatars === 1) {
+            setAvatars(avatars + 1);
+        } else {
+            const random = Math.random();
+            if (random < 0.5) {
+                setAvatars(avatars - 1);
+            } else {
+                setAvatars(avatars + 1);
+            }
+        }
+
+
+        //resets counter and make new delay time
+        setCurrentTime(new Date());
+        const newTimeLeft = getRandomNumber()
+        endDate.current = new Date();
+        endDate.current.setSeconds(endDate.current.getSeconds() + newTimeLeft);
+        setTimeLeft({ seconds: newTimeLeft });
+    }
+
+
+    
+    useEffect(() => {
+        const timer = setInterval(() => {
+            const newTime = new Date()
+            setCurrentTime(newTime);
+            setTimeLeft({ seconds: timeLeft.seconds-1 });
+            if (timeLeft.seconds === 0) {
+                reset()
+            }
+        }, 2000);
+        const currentSpeakers = setInterval(() => {
+            setCurrentlySpeaking(() => {
+                let newCurrentlySpeaking: number[] = [];
+                for (let i = 0; i < avatars; i++) {
+                    if (Math.random() < 0.35) {
+                        newCurrentlySpeaking.push(i);
+                    }
+                }
+                return newCurrentlySpeaking;
+            });
+        }, 1000);
+        
+        return () => {
+            clearInterval(currentSpeakers);
+            clearInterval(timer);
+        };
+    }, [currentTime]);
+
+    return <div className="flex flex-row gap-x-[12px] max-lg:gap-x-[8px] max-sm:gap-x-[2px] flex-wrap items-center justify-center">
+        {Array.from({length: avatars}, (_, i) => <div className="w-[90px] max-lg:w-[64px] max-sm:w-[36px] aspect-square flex items-center justify-center">
+            <div key={i} className={`p-[24px] max-lg:p-[12px] max-sm:p-[8px] rounded-full bg-secondary4 ${currentlySpeaking.includes(i) && "border-[4px] max-lg:border-[3px] max-sm:border-[1px] border-secondary1"}`}>
+                <FaMicrophone className="w-[36px] h-[36px] max-lg:w-[30px] max-lg:h-[30px] max-sm:w-[16px] max-sm:h-[16px]" color={"var(--secondary-1)"}/>
+            </div>
+        </div>
+        )}
+    </div>
+
 }
 
 const RevealOnScroll = ({ children }: {children: ReactNode}) => {
