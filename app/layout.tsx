@@ -28,7 +28,7 @@ export const metadata: Metadata = {
         default: 'BuilderFive',
         template: 'BuilderFive - %s',
     },
-    description: "Where builders collaborate in masterminds to turn ideas into products.",
+    description: "Where you can make friends with like-minded people near you online, and meetup at a local cafe offline.",
     icons: {
         icon: "/favicon.ico",
     },
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
         type: "website",
         url: "https://BuilderFive.com",
         title: "BuilderFive",
-        description: "Where builders collaborate in masterminds to turn ideas into products.",
+        description: "Where you can make friends with like-minded people near you online, and meetup at a local cafe offline.",
         siteName: "BuilderFive",
         images: [{
           url: "https://BuilderFive.com/static/logos/logo-image.png",
