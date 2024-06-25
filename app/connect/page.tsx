@@ -12,6 +12,7 @@ import { useSession } from "~/util/AuthProvider";
 
 import {calculateTimeRemaining} from "./../(landing)/(home)/components/Timer";
 import { useRouter } from "next/navigation";
+import { Header } from "./(components)/Header";
 
 export default function Page() {
   const { packagedGroup } = useGroup();
@@ -38,12 +39,14 @@ export default function Page() {
     }
   },[user])
 
-  return (<div className="flex flex-row w-screen h-screen">
+  return !user ? <div className="min-h-screen min-w-screen">
+    <Modal showModal={showModal} setShowModal={setShowModal}/>
+  </div> : <div className="flex flex-row w-screen h-screen">
+      <Header />
       <Sidebar/>
       <MapComponent>
         {packagedGroup && <Footer />}
       </MapComponent>
-      <Modal showModal={showModal} setShowModal={setShowModal}/>
     </div>
-  );
+  ;
 };

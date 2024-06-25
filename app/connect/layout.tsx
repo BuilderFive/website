@@ -7,7 +7,7 @@ import { ThemeProvider } from '~/components/ui/theme-provider';
 import "~/styles/globals.css";
 import "tailwindcss/tailwind.css"
 import Script from 'next/script';
-import { SessionProvider } from '~/util/AuthProvider';
+import { SessionProvider, useSession } from '~/util/AuthProvider';
 import { Header } from './(components)/Header';
 import { Footer } from './(components)/Footer';
 
@@ -16,9 +16,8 @@ export default function LandingLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
-    return (
-        <div className="relative flex min-h-screen flex-col bg-cover bg-twighlight">
-            <Header />
-            <div className="flex-1">{children}</div>
-        </div>);
+    return <div className="relative flex min-h-screen flex-col bg-cover bg-twighlight">
+        <div className="flex-1">{children}</div>
+    </div>;
 }
+
