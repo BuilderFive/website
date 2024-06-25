@@ -168,8 +168,8 @@ const AvatarsJoins = () => {
     }, [currentTime]);
 
     return <div className="flex flex-row gap-x-[12px] max-lg:gap-x-[8px] max-sm:gap-x-[2px] flex-wrap items-center justify-center">
-        {Array.from({length: avatars}, (_, i) => <div className="w-[90px] max-lg:w-[64px] max-sm:w-[36px] aspect-square flex items-center justify-center">
-            <div key={i} className={`p-[24px] max-lg:p-[12px] max-sm:p-[8px] rounded-full bg-secondary4 ${currentlySpeaking.includes(i) && "border-[4px] max-lg:border-[3px] max-sm:border-[1px] border-secondary1"}`}>
+        {Array.from({length: avatars}, (_, i) => <div key={i} className="w-[90px] max-lg:w-[64px] max-sm:w-[36px] aspect-square flex items-center justify-center">
+            <div className={`p-[24px] max-lg:p-[12px] max-sm:p-[8px] rounded-full bg-secondary4 ${currentlySpeaking.includes(i) && "border-[4px] max-lg:border-[3px] max-sm:border-[1px] border-secondary1"}`}>
                 <FaMicrophone className="w-[36px] h-[36px] max-lg:w-[30px] max-lg:h-[30px] max-sm:w-[16px] max-sm:h-[16px]" color={"var(--secondary-1)"}/>
             </div>
         </div>
