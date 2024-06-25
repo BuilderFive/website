@@ -15,10 +15,21 @@ export default function MapComponent({children}: {children: React.ReactNode}) {
     const { radius, setRadius, setUserLocation, userLocation } = useGroup();
     const [loading, setLoading] = React.useState(false)
     const { theme } = useTheme();
+    const { loadedGroups } = useGroup();
 
     useEffect(() => {
         getLocation()
     }, [])
+
+    const RenderMarkers = () => {
+      return <div className=''>
+        {loadedGroups.map((group, index) => {
+          return <Marker icon={"./animations/audio-room.gif"} key={index} position={{lat: group.location[0], lng: group.location[1]}}/>
+        })}
+      </div>
+        
+    }
+
     const handleChange = (value) => {
         if (isNaN(Number(value))) return;
         setRadius(value);
@@ -101,7 +112,7 @@ export default function MapComponent({children}: {children: React.ReactNode}) {
               zoom={10}>
               {userLocation && <Marker position={{ lat: userLocation.latitude, lng: userLocation.longitude }} />}
               <Circle options={{ fillColor: "hsl(212 100% 69%)", strokeColor: "hsl(212 100% 69%)"}} center={{ lat: userLocation.latitude, lng: userLocation.longitude }} radius={radius} /> {/* 2000 meters */}
-              
+              <RenderMarkers/>
           </GoogleMap>
         </div>
         ) : <></>
