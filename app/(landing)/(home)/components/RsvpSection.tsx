@@ -52,10 +52,10 @@ export const RsvpSection = ({setLoaded}) => {
     }
 
     return (
-        <section id="rsvp" className="max-w-[500px]"> 
+        <section id="rsvp" className="w-full"> 
             <div className="w-full space-y-[12px]">
                 <section className="flex flex-col self-start max-md:self-center">
-                    <p className="text-xl text-text5 w-full font-semibold">
+                    <p className="text-2xl text-text1 w-full font-semibold">
                         Join <a className='text-secondary1'>{rsvpCount}</a> others to get an email reminder
                     </p>
                 </section>
