@@ -18,7 +18,7 @@ export default function LandingLayout({
 }>) {
     return (<div className="relative flex min-h-screen flex-col bg-cover bg-twighlight">
         <Header />
-        <div className="flex flex-grow">{children}</div>
+        <div className="flex-1">{children}</div>
         <Footer />
     </div>);
 }

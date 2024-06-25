@@ -10,7 +10,8 @@ export default function Hero() {
 
     const [loaded, setLoaded] = useState(false);
 
-    return <div id="Hero" className="px-[48px] max-md:px-[12px] w-full h-full flex flex-row flex-wrap flex-grow py-[48px] justify-between max-md:items-center space-y-[48px]">
+    return <div className="min-h-screen">
+    <div id="Hero" className="px-[48px] max-md:px-[12px] w-full h-full flex flex-row max-md:flex-col flex-wrap flex-grow py-[48px] justify-between max-md:items-center space-y-[48px]">
         <section id="Column 1" className="flex flex-col max-md:items-center justify-between items-start w-fit max-md:w-full flex-1 space-y-[24px]">
             <div id="title" className="h-full max-w-[600px] space-y-[4px] max-md:text-center flex flex-col justify-center max-md:items-center">
                 <h1 className="text-8xl max-md:text-5xl text-secondary1 font-bold"><a className="max-md:truncate">Find friends</a> <a className="max-md:truncate">in an hour</a></h1>
@@ -25,15 +26,19 @@ export default function Hero() {
             </div>
             
         </section>
-        <section id="Column 2" className="flex flex-col max-md:items-center justify-start items-center flex-grow space-y-[48px] max-md:pl-[0px] pl-[48px] flex-1">
-            <div className=" max-w-[750px] w-full aspect-square relative">
+        <section id="Column 2" className="flex flex-col max-md:items-center justify-start items-center w-fit flex-1 space-y-[48px] max-md:pl-[0px] pl-[48px]">
+            <div className="relative max-w-[750px] w-full">
+                <div className="max-md:hidden max-w-[750px] w-full aspect-square">
+                    <Globe />
+                </div>
                 
-                <Globe />
-                <div className="absolute bottom-[10%] md:right-[0%] w-full">
+                <div className="md:absolute md:bottom-[10%] md:right-[0%] w-full">
                     <RsvpSection setLoaded={setLoaded} />
                 </div>
             </div>
         </section>
         
+    </div>
+    <div id="filler" className="flex-1"/>
     </div>
 }

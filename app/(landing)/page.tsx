@@ -15,11 +15,9 @@ import { Globe } from './(home)/components/globe/Globe';
 export default function Home() {
     return (
         <div className="w-full relative">
-            <div className='z-10 relative flex flex-col h-full'>
-                <Hero />
-                {/*<HowItWorks />
-                <FeatureGrid />*/}
-            </div>
+            <Hero/>
+            
+            <HowItWorks />
             {/*<FeatureFooter/>
             <CTA/>*/}
             
