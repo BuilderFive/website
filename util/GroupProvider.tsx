@@ -55,7 +55,7 @@ type PackagedGroup = {
  */
 export function GroupProvider(props: React.PropsWithChildren) {
     const { user } = useSession();
-    const [radius, setRadius] = useState(1000)
+    const [radius, setRadius] = useState(10000)
     const [userLocation, setUserLocation] = useState({latitude: 30.35736619550383, longitude: -97.73011964664344})
     const [packagedGroup, setPackagedGroup] = useState<PackagedGroup| null>(null) //current group that the user is in
     const [topic, setTopic] = useState("startups")

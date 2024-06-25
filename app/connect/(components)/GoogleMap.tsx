@@ -93,10 +93,10 @@ export default function MapComponent({children}: {children: React.ReactNode}) {
           <div className='absolute bottom-32 right-4 z-10 flex flex-row gap-[24px] items-center'>                
               <div className='w-[480px] h-fit text-text1'>
                   <Slider showSteps={true} size={"lg"} hideValue={true}
-                      step={5000} onChange={handleChange} value={radius}
-                      maxValue={100000} radius='full' aria-label='slider'
-                      minValue={5000} showTooltip={true}
-                      defaultValue={5000} disableThumbScale={true}
+                      step={10000} onChange={handleChange} value={radius}
+                      maxValue={20000000} radius='full' aria-label='slider'
+                      minValue={10000} showTooltip={true}
+                      defaultValue={10000} disableThumbScale={true}
                       className="font-semibold"
                   />
               </div>
