@@ -80,7 +80,10 @@ const ChooseTopicDrawer = () => {
     const Drawer = () => {
         return open && <div className='w-[200px] h-fit p-[12px] bg-secondary4 rounded-[12px]'>
             
-            {topics.map((element, id) => <div key={id} onClick={()=>setTopic(element)} className="rounded-[12px] p-[12px] hover:cursor-pointer hover:bg-background3 bg-background2">
+            {topics.map((element, id) => <div key={id} onClick={()=>{
+                setTopic(element)
+                setOpen(false)
+            }} className="rounded-[12px] p-[12px] hover:cursor-pointer hover:bg-background3 bg-background2">
                 <p className='text-2xl max-lg:text-xl max-sm:text-lg text-text1 font-bold'>
                     {element}
                 </p>
@@ -91,7 +94,7 @@ const ChooseTopicDrawer = () => {
 
     return <div>
         <Button onClick={()=>setOpen(!open)} className='relative flex flex-col bg-secondary1 p-[24px] h-[200px] aspect-square max-lg:h-[150px] max-sm:h-[120px] rounded-[24px] max-lg:rounded-[12px] shadow-md flex items-center justify-center'>
-            <p className='text-2xl max-lg:text-xl max-sm:text-lg text-background1 font-bold'>
+            <p className='text-3xl max-lg:text-2xl max-sm:text-lg text-background1 font-bold'>
                 {topic}
             </p>
         </Button>
