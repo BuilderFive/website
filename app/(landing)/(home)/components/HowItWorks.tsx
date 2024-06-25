@@ -1,8 +1,11 @@
 "use client"
 
 
+import { Button } from "@nextui-org/react";
 import { ReactNode, useState, useRef, useEffect } from "react";
-
+import { FaMicrophone } from "react-icons/fa6";
+import MapAnimation from '../../../../public/animations/map-animation.json'
+import Lottie from 'react-lottie-player'
 
 
 
@@ -19,82 +22,53 @@ import { ReactNode, useState, useRef, useEffect } from "react";
 export default function HowItWorks() {
     return <div className="max-w-container w-full flex items-center justify-center">
         <div id="howitworks-background" className="w-[1400px] text-text1 text-center px-[48px] py-[48px] max-md:p-[24px] max-md:w-full rounded-[12px]">
-            <p className="text-7xl font-bold max-md:text-5xl mb-[24px] text-text3 max-md:text-3xl text-white">HOW IT<br/> WORKS</p>
+            <p className="text-7xl font-bold mb-[24px] max-md:text-5xl text-secondary1">HOW IT WORKS</p>
 
-            <div id="howitworks-content" className="flex flex-col space-y-[24px] items-center">
-                <div className="flex flex-row items-center gap-[24px] flex-wrap">
-                    <h2 className="text-3xl max-md:text-xl text-white font-semibold text-start w-fit p-[12px] rounded-[12px]">
-                        Meet people in <a className="text-secondary1">group calls</a><br/> over a shared <a className="text-secondary1">interest</a>
-                    </h2>
-                    <h2 className="text-3xl max-md:text-xl text-white font-semibold text-start w-fit p-[12px] rounded-[12px]">
-                        and make <a className="text-secondary1">plans</a>  to meetup<br/>at a local <a className="text-secondary1">coffee shop</a> 
-                    </h2>
-                </div>
+            <div id="howitworks-content" className="flex flex-col space-y-[24px] items-center px-[48px]">
                 
                 <div id="howitworks-row-1" className="flex flex-row w-full flex-wrap gap-x-[24px] gap-y-[24px] justify-between max-md:space-y-[12px]">
-                    <RevealOnScroll><div id="howitworks-item-1" className="hover:shadow-xl flex relative flex-col flex-grow px-[24px] py-[24px] bg-background2 border-background3 rounded-[12px] space-y-[24px] max-md:space-y-[0px] max-md:w-full items-center justify-center max-md:flex-row max-md:space-x-[24px]">
-                        <p className="text-3xl w-[240px] font-semibold max-md:text-2xl">you want to<br/>make friends</p>
-                        <img loading="lazy"
-                            src="static/business-idea.svg"
-                            alt="Group of people collaborating"
-                            className="aspect-square w-[240px] max-md:w-[120px]"/>
+                    <div id="howitworks-item-1" className="hover:shadow-xl w-[240px] flex relative flex-col flex-grow px-[24px] py-[24px] bg-background1 rounded-[12px] space-y-[24px] max-md:w-full items-center justify-center">
+                        <p className="text-3xl font-semibold max-md:text-lg text-text1">Every week you have 6 hours to call with local people</p>
+                        <RevealOnScroll_Timer/>
                         <div className="flex items-center justify-center w-[48px] max-md:w-[24px] aspect-square absolute right-[12px] bottom-[12px] bg-secondary3 rounded-full">
                             <p className="text-text5 text-2xl font-bold max-md:text-sm">1</p>
                         </div>
-                    </div></RevealOnScroll>
-                    <RevealOnScroll><div id="howitworks-item-2" className="hover:shadow-xl flex relative flex-col flex-grow px-[24px] py-[24px] bg-background2 border-background3 rounded-[12px] space-y-[24px] max-md:space-y-[0px] max-md:w-full items-center justify-center max-md:flex-row max-md:space-x-[24px]">
-                        <p className="text-3xl w-[240px] font-semibold max-md:text-2xl">you join<br/>BuilderFive</p>
+                    </div>
+                    <div id="howitworks-item-2" className="hover:shadow-xl w-[240px] flex relative flex-col flex-grow px-[24px] py-[24px] bg-background2 rounded-[12px] space-y-[24px] max-md:w-full items-center justify-center">
+                        <p className="text-3xl font-semibold max-md:text-lg text-text1">Select a topic space to call with like-minded people</p>
+                        <RevealOnScroll>                
                         <img loading="lazy"
-                            src="static/download-app.svg"
+                            src="static/globe.svg"
                             alt="Group of people collaborating"
                             className="aspect-square w-[240px] max-md:w-[120px]"/>
+                            </RevealOnScroll>
                         <div className="flex items-center justify-center w-[48px] max-md:w-[24px] aspect-square absolute right-[12px] bottom-[12px] bg-secondary3 rounded-full">
                             <p className="text-text5 text-2xl font-bold max-md:text-sm">2</p>
                         </div>
-                    </div></RevealOnScroll>
-                    <RevealOnScroll><div id="howitworks-item-3" className="hover:shadow-xl flex relative flex-col flex-grow px-[24px] py-[24px] bg-background2 border-background3 rounded-[12px] space-y-[24px] max-md:space-y-[0px] max-md:w-full items-center justify-center max-md:flex-row max-md:space-x-[24px]">
-                        <p className="text-3xl w-[240px] font-semibold max-md:text-2xl">you select a<br/>topic of interest</p>
-                        <img loading="lazy"
-                            src="static/mountain-journey.svg"
+                    </div>
+                   
+                </div>
+                <div id="howitworks-row-2" className="flex flex-row w-full flex-wrap justify-between gap-x-[24px] gap-y-[24px] max-md:space-y-[12px]">
+                    <div id="howitworks-item-3" className="hover:shadow-xl w-[240px] flex relative flex-col flex-grow px-[24px] py-[24px] bg-background2 rounded-[12px] space-y-[24px] max-md:w-full items-center justify-center">
+                        <p className="text-3xl font-semibold max-md:text-lg text-text1">Call with up to 5 people for 30 minutes and find new friends</p>
+                        <RevealOnScroll><img loading="lazy"
+                            src="static/group.svg"
                             alt="Group of people collaborating"
-                            className="aspect-square w-[240px] max-md:w-[120px]"/>
+                            className="aspect-square w-[240px] max-md:w-[120px]"/></RevealOnScroll>
                         <div className="flex items-center justify-center w-[48px] max-md:w-[24px] aspect-square absolute right-[12px] bottom-[12px] bg-secondary3 rounded-full">
                             <p className="text-text5 text-2xl font-bold max-md:text-sm">3</p>
                         </div>
-                    </div></RevealOnScroll>
-                </div>
-                <div id="howitworks-row-2" className="flex flex-row w-full flex-wrap justify-between gap-x-[24px] gap-y-[24px] max-md:space-y-[12px]">
-                    <RevealOnScroll><div id="howitworks-item-4" className="hover:shadow-xl flex relative flex-col flex-grow px-[24px] py-[24px] bg-background2 border-background3 rounded-[12px] space-y-[24px] max-md:space-y-[0px] max-md:w-full items-center justify-center max-md:flex-row max-md:space-x-[24px]">
-                        <p className="text-3xl w-[240px] font-semibold max-md:text-2xl">you call with<br/>a local group</p>
-                        <img loading="lazy"
-                            src="static/answer-questions.svg"
+                    </div>
+                    <div id="howitworks-item-4" className="hover:shadow-xl w-[240px] flex relative flex-col flex-grow px-[24px] py-[24px] bg-background2 rounded-[12px] space-y-[24px] max-md:w-full items-center justify-center">
+                        <p className="text-3xl font-semibold max-md:text-lg text-text1">RSVP to meetup at a nearby cafe for coupons</p>
+                        <RevealOnScroll><img loading="lazy"
+                            src="static/cafe.svg"
                             alt="Group of people collaborating"
-                            className="aspect-square w-[240px] max-md:w-[120px]"/>
+                            className="aspect-square w-[240px] max-md:w-[120px]"/></RevealOnScroll>
                         <div className="flex items-center justify-center w-[48px] max-md:w-[24px] aspect-square absolute right-[12px] bottom-[12px] bg-secondary3 rounded-full">
                             <p className="text-text5 text-2xl font-bold max-md:text-sm">4</p>
                         </div>
-                    </div></RevealOnScroll>
-                    <RevealOnScroll><div id="howitworks-item-5" className="hover:shadow-xl flex relative flex-col flex-grow px-[24px] py-[24px] bg-background2 border-background3 rounded-[12px] space-y-[24px] max-md:space-y-[0px] max-md:w-full items-center justify-center max-md:flex-row max-md:space-x-[24px]">
-                        <p className="text-3xl w-[240px] font-semibold max-md:text-2xl">talk for up <br/>to 30 minutes</p>
-                        <img loading="lazy"
-                            src="static/get-tokens.svg"
-                            alt="Group of people collaborating"
-                            className="aspect-square w-[240px] max-md:w-[120px]"/>
-                        <div className="flex items-center justify-center w-[48px] max-md:w-[24px] aspect-square absolute right-[12px] bottom-[12px] bg-secondary3 rounded-full">
-                            <p className="text-text5 text-2xl font-bold max-md:text-sm">5</p>
-                        </div>
-                    </div></RevealOnScroll>
-                    <RevealOnScroll><div id="howitworks-item-6" className="hover:shadow-xl flex relative flex-col flex-grow px-[24px] py-[24px] bg-background2 border-background3 rounded-[12px] space-y-[24px] max-md:space-y-[0px] max-md:w-full items-center justify-center max-md:flex-row max-md:space-x-[24px]">
-                        <p className="text-3xl w-[240px] font-semibold max-md:text-2xl">select location<br/>to meet group</p>
-                        <img loading="lazy"
-                            src="static/join-group.svg"
-                            alt="Group of people collaborating"
-                            className="aspect-square w-[240px] max-md:w-[120px]"/>
-                        <div className="flex items-center justify-center w-[48px] max-md:w-[24px] aspect-square absolute right-[12px] bottom-[12px] bg-secondary3 rounded-full">
-                            <p className="text-text5 text-2xl font-bold max-md:text-sm">6</p>
-                        </div>
-                    </div></RevealOnScroll>
-                    
+                    </div>
                 </div>
                 
             </div>
@@ -129,6 +103,85 @@ const RevealOnScroll = ({ children }: {children: ReactNode}) => {
     return (
         <div ref={ref} className={classes}>
             {children}
+        </div>
+    );
+  };
+
+ const RevealOnScroll_Timer = () => {
+    const [isVisible, setIsVisible] = useState(false);
+    const ref = useRef<HTMLDivElement|null>(null);
+    const [currentTime, setCurrentTime] = useState(new Date());
+    const endDate = useRef(new Date());
+    const [timeLeft, setTimeLeft] = useState({ seconds: 5 });
+
+    const reset = () => {
+        setCurrentTime(new Date());
+        endDate.current = new Date();
+        endDate.current.setSeconds(endDate.current.getSeconds() + 5);
+        setTimeLeft({ seconds: 5 });
+    }
+    useEffect(() => {
+        const timer = setInterval(() => {
+            const newTime = new Date()
+            setCurrentTime(newTime);
+            setTimeLeft({ seconds: timeLeft.seconds-1 });
+            if (timeLeft.seconds === 0) {
+                setTimeout(() => {
+                    reset()
+                },3000)
+            }
+        }, 1000);
+
+        
+        return () => {
+            clearInterval(timer);
+        };
+    }, [currentTime]);
+
+    const formatTime = (time) => {
+        return Math.abs(time) < 10 ? `0${Math.abs(time)}` : Math.abs(time);
+    }
+
+    useEffect(() => {
+        const onWindScroll = () => {
+            const element = ref.current;
+            if (element) {
+                const { top } = element.getBoundingClientRect();
+                const isVisible = top < window.innerHeight;
+                if (!isVisible && timeLeft.seconds != 5) { //shouldn't be visible here
+                    
+                    reset()
+                }
+                setIsVisible(isVisible);
+            }
+        };
+  
+        window.addEventListener("scroll", onWindScroll);
+        return () => {
+            window.removeEventListener("scroll", onWindScroll);
+        };
+    }, []);
+  
+    const classes = `transition-opacity duration-1000 flex-grow
+        ${isVisible ? "opacity-100" : "opacity-0"
+        }`;
+  
+    return (
+        <div ref={ref} className={classes}>
+            {timeLeft.seconds > 0 ? <section className='relative bg-secondary1 p-[24px] h-[200px] aspect-square max-lg:h-[150px] max-sm:h-[120px] rounded-[24px] max-lg:rounded-[12px] shadow-md flex items-center justify-center'>
+                <p className='text-8xl max-lg:text-7xl max-sm:text-5xl text-background1 font-black'>
+                    {formatTime(timeLeft.seconds)}
+                </p>
+                <p className="text-2xl max-lg:text-lg max-sm:text-sm text-background3 absolute bottom-1">
+                    SECONDS
+                </p>
+            </section>
+            : <Button onClick={()=>reset()} className='relative flex flex-col bg-secondary1 p-[24px] h-[200px] aspect-square max-lg:h-[150px] max-sm:h-[120px] rounded-[24px] max-lg:rounded-[12px] shadow-md flex items-center justify-center'>
+                <FaMicrophone size="64px" color='var(--background-1)' />
+                <p className='text-4xl max-lg:text-3xl max-sm:text-2xl text-background1 font-black'>
+                    JOIN
+                </p>
+            </Button>}
         </div>
     );
   };
