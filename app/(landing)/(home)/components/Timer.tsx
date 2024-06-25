@@ -35,35 +35,35 @@ export default function Timer({loaded}) {
     const sign = (timeLeft.days < 0 || timeLeft.hours < 0 || timeLeft.minutes < 0 || timeLeft.seconds < 0) ? "-" : "";
 
     return <section className="w-fit h-fit flex gap-[24px] flex items-center max-md:grid max-md:grid-cols-2">
-    <section className='relative bg-secondary1 p-[24px] h-[200px] aspect-square max-lg:h-[150px] rounded-[24px] max-lg:rounded-[12px] shadow-md flex items-center justify-center'>
-        <p className='text-9xl max-lg:text-7xl text-background1 font-black'>
+    <section className='relative bg-secondary1 p-[24px] h-[200px] aspect-square max-lg:h-[150px] max-sm:h-[120px] rounded-[24px] max-lg:rounded-[12px] shadow-md flex items-center justify-center'>
+        <p className='text-8xl max-lg:text-7xl max-sm:text-5xl text-background1 font-black'>
             {sign}{formatTime(timeLeft.days)}
         </p>
-        <p className="text-2xl max-lg:text-lg text-background3 absolute bottom-1">
+        <p className="text-2xl max-lg:text-lg max-sm:text-sm text-background3 absolute bottom-1">
             DAYS
         </p>
     </section>
-    <section className='relative bg-secondary1 p-[24px] h-[200px] aspect-square max-lg:h-[150px] rounded-[24px] max-lg:rounded-[12px] shadow-md flex items-center justify-center'>
-        <p className='text-9xl max-lg:text-7xl text-background1 font-black'>
+    <section className='relative bg-secondary1 p-[24px] h-[200px] aspect-square max-lg:h-[150px] max-sm:h-[120px] rounded-[24px] max-lg:rounded-[12px] shadow-md flex items-center justify-center'>
+        <p className='text-8xl max-lg:text-7xl max-sm:text-5xl text-background1 font-black'>
             {sign}{formatTime(timeLeft.hours)}
         </p>
-        <p className="text-2xl max-lg:text-lg text-background3 absolute bottom-1">
+        <p className="text-2xl max-lg:text-lg max-sm:text-sm text-background3 absolute bottom-1">
             HOURS
         </p>
     </section>
-    <section className='relative bg-secondary1 p-[24px] h-[200px] aspect-square max-lg:h-[150px] rounded-[24px] max-lg:rounded-[12px] shadow-md flex items-center justify-center'>
-        <p className='text-9xl max-lg:text-7xl text-background1 font-black'>
+    <section className='relative bg-secondary1 p-[24px] h-[200px] aspect-square max-lg:h-[150px] max-sm:h-[120px] rounded-[24px] max-lg:rounded-[12px] shadow-md flex items-center justify-center'>
+        <p className='text-8xl max-lg:text-7xl max-sm:text-5xl text-background1 font-black'>
             {sign}{formatTime(timeLeft.minutes)}
         </p>
-        <p className="text-2xl max-lg:text-lg text-background3 absolute bottom-1">
+        <p className="text-2xl max-lg:text-lg max-sm:text-sm text-background3 absolute bottom-1">
             MINUTES
         </p>
     </section>
-    <section className='relative bg-secondary1 p-[24px] h-[200px] aspect-square max-lg:h-[150px] rounded-[24px] max-lg:rounded-[12px] shadow-md flex items-center justify-center'>
-        <p className='text-9xl max-lg:text-7xl text-background1 font-black'>
+    <section className='relative bg-secondary1 p-[24px] h-[200px] aspect-square max-lg:h-[150px] max-sm:h-[120px] rounded-[24px] max-lg:rounded-[12px] shadow-md flex items-center justify-center'>
+        <p className='text-8xl max-lg:text-7xl max-sm:text-5xl text-background1 font-black'>
             {sign}{formatTime(timeLeft.seconds)}
         </p>
-        <p className="text-2xl max-lg:text-lg text-background3 absolute bottom-1">
+        <p className="text-2xl max-lg:text-lg max-sm:text-sm text-background3 absolute bottom-1">
             SECONDS
         </p>
     </section>
