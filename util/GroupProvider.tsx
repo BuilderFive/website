@@ -129,15 +129,7 @@ export function GroupProvider(props: React.PropsWithChildren) {
 
                 if (fetchedGroupErrors) throw fetchedGroupErrors;
 
-                const groups = fetchedGroups as Tables<'groups'>[];
-                
-                const groupUUIDS = groups.map(gr => gr.group_uuid)
-                const { data: fetchedMembers, error: fetchedMembersError } = await supabase
-                    .from('group_members')
-                    .select('*');
-                if (fetchedGroupErrors) throw fetchedGroupErrors;
-
-                setLoadedGroups(groups)
+                setLoadedGroups(fetchedGroups)
             } catch (error) {
                 console.error('Error fetching group data:', error);
             }

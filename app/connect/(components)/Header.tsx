@@ -31,12 +31,12 @@ export const Header: React.FC = () => {
             
             
             <div className="flex md:justify-end w-fit items-center space-x-[24px]">
-                <nav className="flex items-center max-md:hidden">
+                {/*<nav className="flex items-center max-md:hidden">
                     <CurrentlySearching/>
                 </nav>
                 <nav className="flex items-center max-md:hidden">
                     <CurrentlyCalling/>
-                </nav>
+                </nav>*/}
                 <AccountDrawer/>
             </div>
         </div>

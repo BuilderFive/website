@@ -66,7 +66,7 @@ export const Sidebar = () => {
             {open ? <FaAngleLeft size="20px" className='text-text2'/> : <FaAngleRight size="20px" className='text-text2'/>}
         </div>)
     }
-
+    //I'm building an audio based social network and meetup platform to call with local like-minded over shared interests to meetup in person at a nearby cafe
     const ActiveGroups = () => {
         return <div id='active-groups' className='flex flex-col w-full h-full'>
             <RenderGroups filteredTopics={filteredTopics} userLocation={userLocation} />
