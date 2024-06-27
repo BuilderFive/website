@@ -18,7 +18,7 @@ import { Tables } from '~/util/supabase-types';
 import { Spinner } from '@nextui-org/react';
 
 export const Sidebar = () => {
-    const { topic, setTopic, userLocation, loadedGroups, availableTopics, packagedGroup, leaveGroup, systemProcessGroupJoin, isLoading } = useGroup();
+    const { topic, setTopic, userLocation, loadedGroups, availableTopics, packagedGroup, leaveGroup, systemProcessGroupJoin, isLoading, radius } = useGroup();
     const [open, setOpen] = useState(false);
     const filteredTopics = loadedGroups.filter(group => group.topic == topic);
 
@@ -30,15 +30,22 @@ export const Sidebar = () => {
     };
 
     const Title = () => {
+        const formatRadius = (radius: number): string => {
+            const newRad = radius/1000
+            const numberRad = newRad < 1 ? newRad.toFixed(2) : newRad.toFixed(0)
+            const formattedDistance = numberRad.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            return `${formattedDistance}km radius`
+        };
         return <div className='flex flex-row gap-[12px] pt-[12px] pb-[24px] justify-start items-center w-full h-fit'>
             <img src="/static/logos/blue-logo.svg" alt="BuilderFive" className="aspect-square h-[64px] rounded-full" />
             <div id="sidebar-title" className='flex flex-col h-fit w-full'>
                 <p className='font-bold text-2xl text-secondary1'>BuilderFive</p>
                 <div className='flex flex-row w-fit gap-[4px] items-center justify-center'>
-                    <svg height="16" width="16" xmlns="http://www.w3.org/2000/svg">
+                    {/*<svg height="16" width="16" xmlns="http://www.w3.org/2000/svg">
                         <circle r="6" cx="6" cy="8" fill="var(--activity-online)" />
                     </svg>
-                    <p className='font-regular text-lg text-text1 truncate w-full'>32 online</p>
+                    <p className='font-regular text-lg text-text1 truncate w-full'>32 online</p>*/}
+                    <p className='font-regular text-md text-text1 truncate w-full'>{formatRadius(radius)}</p>
                 </div>
             </div>
        </div>
