@@ -41,7 +41,10 @@ export const Footer = () => {
         if (typeof number !== 'number') {
             throw new TypeError('The input must be a number');
         }
-        return number.toLocaleString('en-US');
+        const newRad = radius/1000
+        const numberRad = newRad < 1 ? newRad.toFixed(2) : newRad.toFixed(0)
+        const formattedDistance = numberRad.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        return `${formattedDistance}km radius`
     }
 
     return <footer className="w-full bg-background1 text-text1">
@@ -53,7 +56,7 @@ export const Footer = () => {
                 
             <AudioConference className='flex flex-row text-text1 w-full justify-between items-center'/>
             <div id="details" className="flex flex-col text-text1 text-sm">
-                <p className='font-semibold text-lg truncate'>{formatNumberWithCommas(radius)} meters</p>
+                <p className='font-semibold text-text1 text-lg truncate'>{formatNumberWithCommas(radius)}</p>
             </div>
         </LiveKitRoom>
     </footer>

@@ -246,6 +246,10 @@ export function GroupProvider(props: React.PropsWithChildren) {
             if (response.ok) {
                 const data = await response.json();
                 setPackagedGroup(data.result);
+                //update loadedGroups for fast update
+                const notLoaded = loadedGroups.find(group => group.group_uuid !== data.result.group.group_uuid);
+                if (notLoaded) setLoadedGroups((prev)=>[...prev, data.result.group]);
+                setPackagedGroup(null)
                 setLoading(false)
                 return (data.result as PackagedGroup).group.group_uuid;
             } else {
@@ -293,13 +297,28 @@ export function GroupProvider(props: React.PropsWithChildren) {
     }
 
     //called if group timer is up or everyone has left
-    const disbandGroup = (merge: boolean = false) => {
+    const disbandGroup = async() => {
         //should perform cleanup like checking group members table to remove everyone
-    }
-
-    //on the event that the group disbands by timer end
-    const mergetoNewGroup = () => {
-
+        try {
+            const response = await fetch('../api/group/deleteGroup/', {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ group_uuid: packagedGroup?.group.group_uuid }),
+            });
+        
+            const data = await response.json();
+            if (response.ok) {
+                console.log('deleted')
+                console.log(data.result)
+                return data
+            } else {
+                console.error('Error deleting group:', data.error);
+            }
+        } catch (error) {
+            console.error('Error deleting group:', error);
+        }
     }
 
     const contextObject = {
