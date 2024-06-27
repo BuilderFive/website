@@ -30,15 +30,15 @@ export const Sidebar = () => {
     };
 
     const Title = () => {
-        return <div className='flex flex-row gap-[12px] py-[24px] justify-start items-center w-full h-fit'>
+        return <div className='flex flex-row gap-[12px] pt-[12px] pb-[24px] justify-start items-center w-full h-fit'>
             <img src="/static/logos/blue-logo.svg" alt="BuilderFive" className="aspect-square h-[64px] rounded-full" />
             <div id="sidebar-title" className='flex flex-col h-fit w-full'>
-                <p className='font-bold text-[30px] text-secondary1'>BuilderFive</p>
+                <p className='font-bold text-2xl text-secondary1'>BuilderFive</p>
                 <div className='flex flex-row w-fit gap-[4px] items-center justify-center'>
                     <svg height="16" width="16" xmlns="http://www.w3.org/2000/svg">
                         <circle r="6" cx="6" cy="8" fill="var(--activity-online)" />
                     </svg>
-                    <p className='font-regular text-[18px] text-text1 truncate w-full'>32 online</p>
+                    <p className='font-regular text-lg text-text1 truncate w-full'>32 online</p>
                 </div>
             </div>
        </div>
@@ -57,14 +57,14 @@ export const Sidebar = () => {
         };
 
         return <Button onClick={()=>handleChange(topic)} className='h-fit w-full p-[12px] h-[70px] rounded-[12px] bg-secondary1'>
-            {isLoading ? <FaSpinner size={"36px"} className='animate-spin' color={"white"} /> : <p className='text-white font-semibold text-2xl'>Join a group</p>}
+            {isLoading ? <FaSpinner size={"24px"} className='animate-spin' color={"white"} /> : <p className='text-white font-semibold text-xl'>Join a group</p>}
         </Button>
     }
     const TopicDrawer = () => {    
-        return (<div onClick={()=>setOpen(!open)} className="flex flex-row h-fit w-full p-[12px] rounded-[12px] bg-background3 justify-between items-center hover:cursor-pointer hover:bg-secondary4">
+        return (<Button onClick={()=>setOpen(!open)} className="flex flex-row h-fit w-full p-[12px] rounded-[12px] bg-background3 justify-between items-center hover:bg-background2">
             <p className='text-text2 font-semibold text-lg'>{topic ? topic : "select topic"}</p>
             {open ? <FaAngleLeft size="20px" className='text-text2'/> : <FaAngleRight size="20px" className='text-text2'/>}
-        </div>)
+        </Button>)
     }
     //I'm building an audio based social network and meetup platform to call with local like-minded over shared interests to meetup in person at a nearby cafe
     const ActiveGroups = () => {

@@ -44,15 +44,11 @@ export default function MapComponent({children}: {children: React.ReactNode}) {
       return <div className=''>
         {loadedGroups.map((group, index) => {
           const inGroup = group.group_uuid == packagedGroup?.group.group_uuid
+          console.log(group)
           return inGroup && (center != null) ? <Marker icon={"./animations/active-mic.gif"} key={index} position={{lat: center.lat, lng: center.lng}} /> : <Marker icon={"./animations/group-mic.gif"} key={index} position={{lat: group.location[0], lng: group.location[1]}}/>
         })}
       </div>
     }
-
-    const handleChange = (value) => {
-        if (isNaN(Number(value))) return;
-        setRadius(value);
-      };
 
     function getLocation() {
         if (navigator.geolocation) {
@@ -104,12 +100,10 @@ export default function MapComponent({children}: {children: React.ReactNode}) {
         </div>
     }
     const handleCircleRadius = () => {
-      console.log('1')
       if (refCircle.current == null) return;
       
       const newRadius = refCircle.current.state.circle?.getRadius();
       if (newRadius == null) return;
-      console.log(newRadius)
       setRadius(newRadius)
     };
 
@@ -127,9 +121,12 @@ export default function MapComponent({children}: {children: React.ReactNode}) {
                   styles: theme == "dark" ? nightModeMapStyles : [],
                   
               }}
-              center={{ lat: userLocation.latitude, lng: userLocation.longitude }}
+
+              center={userLocation.latitude && userLocation.longitude ? 
+                { lat: userLocation.latitude, lng: userLocation.longitude } :
+                { lat: 30.35736619550383, lng: -97.73011964664344 }}
               zoom={10}>
-              {!loading && <>
+              {!loading && (userLocation.latitude && userLocation.longitude) && <>
               <Marker position={{ lat: userLocation.latitude, lng: userLocation.longitude }} />
               <Circle ref={(ref) => {refCircle.current = ref}}
                 onRadiusChanged={handleCircleRadius} 
