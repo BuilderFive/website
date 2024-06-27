@@ -56,7 +56,7 @@ export const RsvpSection = ({setLoaded}) => {
             <div className="w-full space-y-[12px]">
                 <section className="flex flex-col self-start max-md:self-center">
                     <p className="text-2xl text-text1 w-full font-semibold">
-                        Join <a className='text-secondary1'>{rsvpCount}</a> others to get an email reminder
+                        Join <a className='text-secondary1'>{rsvpCount}</a> others to get an email reminder on the next audio event
                     </p>
                 </section>
                 <form name='email-input' onSubmit={e => e.preventDefault()} className="flex items-center max-md:flex-col space-x-[12px] max-md:space-x-[0px] h-fit max-md:space-y-[12px]">

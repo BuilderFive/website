@@ -56,7 +56,7 @@ module.exports = {
           "linear-gradient(to bottom, rgba(0, 0, 0, 0.8), rgba(255, 255, 255, 0)), url('/static/Twighlight.svg')",
         "landscape": "url('/static/bottom-background.svg')",
         "landscape-2": "url('/static/landscape-alien.svg')",
-
+        "sunset": "url('/static/Sunset.svg')",
       },
     extend: {
       

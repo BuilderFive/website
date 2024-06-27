@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect, useMemo, useRef } from 'react'
 import { Circle, GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
 import { Button } from '~/components/ui/button';
 import { FaLocationArrow, FaSpinner } from "react-icons/fa";
@@ -9,20 +9,46 @@ import { useTheme } from 'next-themes';
 import { useGroup } from '~/util/GroupProvider';
 
 export default function MapComponent({children}: {children: React.ReactNode}) {
-    const { isLoaded } = useJsApiLoader({
-        googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ""
-    })
     const { radius, setRadius, setUserLocation, userLocation } = useGroup();
-    const [loading, setLoading] = React.useState(false)
+    const [loading, setLoading] = React.useState(true)
     const { theme } = useTheme();
+    const { loadedGroups, packagedGroup } = useGroup();
+    const refCircle = useRef<Circle | null>(null)
 
     useEffect(() => {
         getLocation()
     }, [])
-    const handleChange = (value) => {
-        if (isNaN(Number(value))) return;
-        setRadius(value);
+
+    const RenderMarkers = () => {
+      const calculateCenter = (members: { location: { lat: number; lng: number } }[]) => {
+        if (members.length === 0) {
+          return null;
+        }
+
+        let sumLat = 0;
+        let sumLng = 0;
+
+        for (const member of members) {
+          sumLat += member.location.lat;
+          sumLng += member.location.lng;
+        }
+
+        const centerLat = sumLat / members.length;
+        const centerLng = sumLng / members.length;
+
+        return { lat: centerLat, lng: centerLng };
       };
+      const members = packagedGroup?.members.map((member) => ({ location: { lat: member.location[0], lng: member.location[1] } })) || [];
+      const center = calculateCenter(members);
+      
+      return <div className=''>
+        {loadedGroups.map((group, index) => {
+          const inGroup = group.group_uuid == packagedGroup?.group.group_uuid
+          console.log(group)
+          return inGroup && (center != null) ? <Marker icon={"./animations/active-mic.gif"} key={index} position={{lat: center.lat, lng: center.lng}} /> : <Marker icon={"./animations/group-mic.gif"} key={index} position={{lat: group.location[0], lng: group.location[1]}}/>
+        })}
+      </div>
+    }
 
     function getLocation() {
         if (navigator.geolocation) {
@@ -73,22 +99,20 @@ export default function MapComponent({children}: {children: React.ReactNode}) {
             <CenterLocation/>
         </div>
     }
+    const handleCircleRadius = () => {
+      if (refCircle.current == null) return;
+      
+      const newRadius = refCircle.current.state.circle?.getRadius();
+      if (newRadius == null) return;
+      setRadius(newRadius)
+    };
 
-    return isLoaded ? (
+    return (
         <div className='h-full w-full relative'>
           <div className='absolute z-40 bottom-0 w-full'>
             {children}
           </div>
           <div className='absolute bottom-32 right-4 z-10 flex flex-row gap-[24px] items-center'>                
-              <div className='w-[480px] h-fit text-text1'>
-                  <Slider showSteps={true} size={"lg"} hideValue={true}
-                      step={5000} onChange={handleChange} value={radius}
-                      maxValue={100000} radius='full' aria-label='slider'
-                      minValue={5000} showTooltip={true}
-                      defaultValue={5000} disableThumbScale={true}
-                      className="font-semibold"
-                  />
-              </div>
               <Options/>
           </div>
           <GoogleMap mapContainerStyle={{ height: "100%", width: "100%" }}
@@ -97,14 +121,23 @@ export default function MapComponent({children}: {children: React.ReactNode}) {
                   styles: theme == "dark" ? nightModeMapStyles : [],
                   
               }}
-              center={{ lat: userLocation.latitude, lng: userLocation.longitude }}
+
+              center={userLocation.latitude && userLocation.longitude ? 
+                { lat: userLocation.latitude, lng: userLocation.longitude } :
+                { lat: 30.35736619550383, lng: -97.73011964664344 }}
               zoom={10}>
-              {userLocation && <Marker position={{ lat: userLocation.latitude, lng: userLocation.longitude }} />}
-              <Circle options={{ fillColor: "hsl(212 100% 69%)", strokeColor: "hsl(212 100% 69%)"}} center={{ lat: userLocation.latitude, lng: userLocation.longitude }} radius={radius} /> {/* 2000 meters */}
-              
+              {!loading && (userLocation.latitude && userLocation.longitude) && <>
+              <Marker position={{ lat: userLocation.latitude, lng: userLocation.longitude }} />
+              <Circle ref={(ref) => {refCircle.current = ref}}
+                onRadiusChanged={handleCircleRadius} 
+                editable={true} 
+                options={{ fillColor: "hsl(212 100% 69%)", strokeColor: "hsl(212 100% 69%)"}} 
+                center={{ lat: userLocation.latitude, lng: userLocation.longitude }} 
+                radius={radius} /></>}
+              <RenderMarkers/>
           </GoogleMap>
         </div>
-        ) : <></>
+        )
 }
 
 const nightModeMapStyles = [

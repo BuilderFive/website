@@ -12,7 +12,7 @@ interface GroupContextProps {
     radius: number;
     setRadius: (radius: number) => void;
     isLoading: boolean;
-    userLocation: {latitude: number, longitude: number};
+    userLocation: {latitude: number | null, longitude: number | null};
     setUserLocation: (location: {latitude: number, longitude: number}) => void;
     packagedGroup: PackagedGroup | null;
     topic: string;
@@ -28,7 +28,7 @@ const GroupContext = createContext<GroupContextProps>({
     radius: 1000,
     setRadius: () => {},
     isLoading: true,
-    userLocation: {latitude: 30.35736619550383, longitude: -97.73011964664344},
+    userLocation: {latitude: null, longitude: null},
     setUserLocation: () => {},
     packagedGroup: null,
     topic: "startups",
@@ -55,8 +55,8 @@ type PackagedGroup = {
  */
 export function GroupProvider(props: React.PropsWithChildren) {
     const { user } = useSession();
-    const [radius, setRadius] = useState(1000)
-    const [userLocation, setUserLocation] = useState({latitude: 30.35736619550383, longitude: -97.73011964664344})
+    const [radius, setRadius] = useState(10000)
+    const [userLocation, setUserLocation] = useState<{latitude: number | null, longitude: number | null}>({latitude: null, longitude: null})
     const [packagedGroup, setPackagedGroup] = useState<PackagedGroup| null>(null) //current group that the user is in
     const [topic, setTopic] = useState("startups")
     const [isLoading, setLoading] = useState<boolean>(false);
@@ -123,13 +123,13 @@ export function GroupProvider(props: React.PropsWithChildren) {
         const fetchAllGroups = async () => {
             try {
                 // Fetch the user's group UUID(s). Replace this with your actual logic to get the user's group UUID(s).
-                const { data: groups, error: groupErrors } = await supabase
+                const { data: fetchedGroups, error: fetchedGroupErrors } = await supabase
                     .from('groups')
                     .select('*');
 
-                if (groupErrors) throw groupErrors;
+                if (fetchedGroupErrors) throw fetchedGroupErrors;
 
-                setLoadedGroups(groups)
+                setLoadedGroups(fetchedGroups)
             } catch (error) {
                 console.error('Error fetching group data:', error);
             }
@@ -147,6 +147,7 @@ export function GroupProvider(props: React.PropsWithChildren) {
                 event: 'INSERT', schema: 'public', table: 'groups'
             }, (payload)=> {
                 const newGroup = {payload}.payload.new as { created_at: string; end_at: string | null; group_uuid: string; location: number[]; max_members: number; topic: string; }
+                console.log(newGroup)
                 setLoadedGroups([...loadedGroups, newGroup])
             })
             .on('postgres_changes', {
@@ -222,6 +223,11 @@ export function GroupProvider(props: React.PropsWithChildren) {
 
     const systemProcessGroupJoin = async(newTopic: string) => {
         setLoading(true)
+        if (userLocation.latitude === null || userLocation.longitude === null) {
+            alert('Please enable location services to join a group.');
+            setLoading(false)
+            return;
+        }
         try {
             const response = await fetch('../api/group/joinFromTopic/', { 
                 method: 'POST',
@@ -245,10 +251,12 @@ export function GroupProvider(props: React.PropsWithChildren) {
             } else {
                 const errorData = await response.json();
                 setLoading(false)
+                alert(`Failed to join or create group: ${errorData.error}`);
                 console.error(`Failed to join or create group: ${errorData.error}`);
             }
         } catch (error) {
             setLoading(false)
+            alert(`Failed to join or create group: ${error}`);
             console.error('Error joining or creating group:', error);
         }
     }

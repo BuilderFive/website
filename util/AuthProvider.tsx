@@ -79,6 +79,29 @@ export function SessionProvider(props: React.PropsWithChildren) {
     }
 
     /**
+     * Updates the last_joined field in the account table to the current date and time.
+     */
+    const updateLastJoined = async (uuid: string) => {
+        try {
+            const { data, error } = await supabase
+                .from('account')
+                .update({ last_joined: new Date() })
+                .eq('uuid', uuid);
+            if (error) {
+                throw error;
+            }
+        } catch (error) {
+            console.error('Error updating last joined:', error);
+        }
+    };
+
+    useEffect(() => {
+        if (user) {
+            updateLastJoined(user.id);
+        }
+    },[user]);
+
+    /**
      * When supabase updates, request for the supabase session and replace the current session
      */
     useEffect(() => {
@@ -147,6 +170,18 @@ export function SessionProvider(props: React.PropsWithChildren) {
         return true
     }
     
+    //FIX THIS
+    async function getSessionsCount() {
+        const { data, error } = await supabase.auth.admin.listUsers()
+
+        if (error) {
+            console.error('Error:', error);
+            return;
+        }
+
+        console.log('Total sessions:', data);
+        return data.total;
+    }
 
     const contextObject = {
         user,

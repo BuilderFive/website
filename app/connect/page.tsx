@@ -12,6 +12,8 @@ import { useSession } from "~/util/AuthProvider";
 
 import {calculateTimeRemaining} from "./../(landing)/(home)/components/Timer";
 import { useRouter } from "next/navigation";
+import { Header } from "./(components)/Header";
+import { useJsApiLoader } from "@react-google-maps/api";
 
 export default function Page() {
   const { packagedGroup } = useGroup();
@@ -19,7 +21,9 @@ export default function Page() {
   const [showModal, setShowModal] = useState(false);
   const { days, hours, minutes, seconds } = calculateTimeRemaining(new Date());
   const router = useRouter()
-
+  const { isLoaded } = useJsApiLoader({
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ""
+})
   /*
   useEffect(() => {
     if (!(weeks < 0 && days < 0 && hours < 0)) {
@@ -38,12 +42,14 @@ export default function Page() {
     }
   },[user])
 
-  return (<div className="flex flex-row w-screen h-screen">
+  return !user ? <div className="min-h-screen min-w-screen">
+    <Modal showModal={showModal} setShowModal={setShowModal}/>
+  </div> : <div className="flex flex-row w-screen h-screen">
+      {isLoaded && <><Header />
       <Sidebar/>
       <MapComponent>
         {packagedGroup && <Footer />}
-      </MapComponent>
-      <Modal showModal={showModal} setShowModal={setShowModal}/>
+      </MapComponent></>}
     </div>
-  );
+  ;
 };
