@@ -44,7 +44,8 @@ export default function MapComponent({children}: {children: React.ReactNode}) {
       return <div className=''>
         {loadedGroups.map((group, index) => {
           const inGroup = group.group_uuid == packagedGroup?.group.group_uuid
-          console.log(group)
+          console.log(group, packagedGroup)
+          console.log(inGroup, center)
           return inGroup && (center != null) ? <Marker icon={"./animations/active-mic.gif"} key={index} position={{lat: center.lat, lng: center.lng}} /> : <Marker icon={"./animations/group-mic.gif"} key={index} position={{lat: group.location[0], lng: group.location[1]}}/>
         })}
       </div>
@@ -119,8 +120,17 @@ export default function MapComponent({children}: {children: React.ReactNode}) {
               options={{
                   disableDefaultUI: true,
                   styles: theme == "dark" ? nightModeMapStyles : [],
-                  
+                  restriction: {
+                    latLngBounds: {
+                        north: 85,
+                        south: -85,
+                        east: 180,
+                        west: -180
+                    },
+                    strictBounds: true,
+                }
               }}
+              
 
               center={userLocation.latitude && userLocation.longitude ? 
                 { lat: userLocation.latitude, lng: userLocation.longitude } :

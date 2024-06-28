@@ -67,6 +67,7 @@ export function GroupProvider(props: React.PropsWithChildren) {
      * On initial load, fetch the user's group data.
      */
     useEffect(() => {
+        if (!user) return;
         const fetchGroupData = async () => {
             try {
                 if (!user) return;
@@ -114,12 +115,6 @@ export function GroupProvider(props: React.PropsWithChildren) {
                 console.error('Error fetching group data:', error);
             }
         };
-
-        fetchGroupData();
-    }, [user]);
-
-    //loads group data on load
-    useEffect(() => {
         const fetchAllGroups = async () => {
             try {
                 // Fetch the user's group UUID(s). Replace this with your actual logic to get the user's group UUID(s).
@@ -134,12 +129,9 @@ export function GroupProvider(props: React.PropsWithChildren) {
                 console.error('Error fetching group data:', error);
             }
         };
-            
-        if (user) {
-            fetchAllGroups();
-        }
-        
-    }, [user])
+        fetchAllGroups();
+        fetchGroupData();
+    }, [user]);
 
     useEffect(()=> {
         const channel = supabase.channel('topic groups')
@@ -221,13 +213,66 @@ export function GroupProvider(props: React.PropsWithChildren) {
     //get members of the group
     //update packaged group object after receiving handleSetTopic
 
-    const systemProcessGroupJoin = async(newTopic: string) => {
-        setLoading(true)
+    const joinGroup = async(newTopic: string) => {        
         if (userLocation.latitude === null || userLocation.longitude === null) {
             alert('Please enable location services to join a group.');
-            setLoading(false)
             return;
         }
+        setLoading(true)
+        const userLatitude = userLocation.latitude;
+        const userLongitude = userLocation.longitude;
+
+        // Check for an existing eligible group in loadedGroups
+        const eligibleGroup = loadedGroups
+            .filter(group => group.topic === newTopic)
+            .find(group => {             
+                const distance = Math.sqrt(
+                    Math.pow(group.location[0] - userLatitude, 2) +
+                    Math.pow(group.location[1] - userLongitude, 2)
+                );
+                return distance <= radius;
+        });
+
+        if (eligibleGroup) {
+            // Insert the user as a new group member
+            const { data: newMemberData, error: newMemberError } = await supabase
+                .from('group_members')
+                .insert([
+                    {
+                        group_uuid: eligibleGroup.group_uuid,
+                        user_uuid: user?.id,
+                    },
+                ]);
+            if (newMemberError) {
+                setLoading(false);
+                console.error('Error inserting new member:', newMemberError);
+                return;
+            }
+            
+            // If an eligible group is found, set it as the packagedGroup
+            const { data: membersData, error: membersError } = await supabase
+                .from('group_members')
+                .select('*')
+                .eq('group_uuid', eligibleGroup.group_uuid);
+
+            if (membersError) {
+                setLoading(false);
+                console.error('Error fetching members data:', membersError);
+                return;
+            }
+
+            const newPackagedGroup = {
+                group: eligibleGroup,
+                members: membersData,
+            };
+            console.log(newPackagedGroup)
+
+            setPackagedGroup(newPackagedGroup);
+            setLoading(false);
+            return eligibleGroup.group_uuid;
+        }
+
+
         try {
             const response = await fetch('../api/group/joinFromTopic/', { 
                 method: 'POST',
@@ -249,7 +294,6 @@ export function GroupProvider(props: React.PropsWithChildren) {
                 //update loadedGroups for fast update
                 const notLoaded = loadedGroups.find(group => group.group_uuid !== data.result.group.group_uuid);
                 if (notLoaded) setLoadedGroups((prev)=>[...prev, data.result.group]);
-                setPackagedGroup(null)
                 setLoading(false)
                 return (data.result as PackagedGroup).group.group_uuid;
             } else {
@@ -266,6 +310,7 @@ export function GroupProvider(props: React.PropsWithChildren) {
     }
 
     const leaveGroup = async() => {
+        setLoading(true)
         
         //update loadedGroups for fast update
         const newGroups = loadedGroups.filter(group => group.group_uuid !== packagedGroup?.group.group_uuid);
@@ -286,11 +331,14 @@ export function GroupProvider(props: React.PropsWithChildren) {
             const data = await response.json();
             if (response.ok) {
                 console.log('deleted')
+                setLoading(false)
                 return data
             } else {
+                setLoading(false)
                 console.error('Error leaving group:', data.error);
             }
         } catch (error) {
+            setLoading(false)
             console.error('Error leaving group:', error);
         }
         
@@ -328,7 +376,7 @@ export function GroupProvider(props: React.PropsWithChildren) {
         userLocation,
         setUserLocation,
         packagedGroup,
-        topic, systemProcessGroupJoin, setTopic,
+        topic, systemProcessGroupJoin: joinGroup, setTopic,
         availableTopics, leaveGroup, loadedGroups,
         setLoading
     };
