@@ -7,7 +7,7 @@ import { Tables } from './supabase-types';
 import {v4 as uuidv4} from 'uuid';
 import { useRouter } from 'next/router';
 
-interface Event {
+export interface Event {
     start_at: Date;
     end_at: Date;
     isActive: boolean;

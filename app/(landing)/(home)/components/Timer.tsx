@@ -3,10 +3,10 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { FaArrowUpFromBracket, FaSpinner } from "react-icons/fa6";
-import { useSession } from "~/util/AuthProvider";
+import { Event, useSession } from "~/util/AuthProvider";
+import { Tables } from "~/util/supabase-types";
 
-export const calculateTimeRemaining = (now: Date) => {
-    const { event } = useSession();
+export const calculateTimeRemaining = (now: Date, event: Event | null) => {
     const currentDate = now;
     const futureDate = (event ? (event.isActive ? event!!.end_at : event!!.start_at) : now);
 
@@ -36,7 +36,7 @@ export default function Timer({loaded}) {
         return Math.abs(time) < 10 ? `0${Math.abs(time)}` : Math.abs(time);
     }
 
-    const timeLeft = !loaded ? {days: 0, hours:0, minutes:0, seconds:0} : calculateTimeRemaining(currentTime);
+    const timeLeft = !loaded ? {days: 0, hours:0, minutes:0, seconds:0} : calculateTimeRemaining(currentTime, event);
     const sign = (timeLeft.days < 0 || timeLeft.hours < 0 || timeLeft.minutes < 0 || timeLeft.seconds < 0) ? "-" : "";
 
     const SoonComponent = () => (
@@ -82,7 +82,7 @@ export default function Timer({loaded}) {
             return Math.abs(time) < 10 ? `0${Math.abs(time)}` : Math.abs(time);
         }
     
-        const timeLeft = !loaded ? {days: 0, hours:0, minutes:0, seconds:0} : calculateTimeRemaining(currentTime);
+        const timeLeft = !loaded ? {days: 0, hours:0, minutes:0, seconds:0} : calculateTimeRemaining(currentTime, event);
         const sign = (timeLeft.days < 0 || timeLeft.hours < 0 || timeLeft.minutes < 0 || timeLeft.seconds < 0) ? "-" : "";
     
         return <div className="flex flex-col gap-[12px] items-start justify-start w-fit h-fit">

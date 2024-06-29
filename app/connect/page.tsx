@@ -19,7 +19,6 @@ export default function Page() {
   const { packagedGroup } = useGroup();
   const { user } = useSession();
   const [showModal, setShowModal] = useState(false);
-  const { days, hours, minutes, seconds } = calculateTimeRemaining(new Date());
   const router = useRouter()
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ""
