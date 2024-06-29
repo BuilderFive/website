@@ -6,7 +6,10 @@ import Timer from "./Timer";
 import { Globe } from "./globe/Globe";
 import { FaMicrophone } from "react-icons/fa6";
 import {Tooltip} from "@nextui-org/tooltip";
+import { useSession } from "~/util/AuthProvider";
 export default function Hero({loaded, setLoaded}) {
+
+    const { event } = useSession();
 
     return <div className="min-h-screen">
     <div id="Hero" className="px-[48px] max-md:px-[12px] w-full h-full flex flex-row max-md:flex-col flex-wrap flex-grow py-[48px] justify-between max-md:items-center space-y-[48px]">
@@ -17,8 +20,14 @@ export default function Hero({loaded, setLoaded}) {
             </div>
             <div id="timer" className="flex flex-col space-y-[12px]">
                 <div className="flex flex-row gap-x-[8px] items-center w-fit">
-                    <FaMicrophone size="30px" color='var(--secondary-1)' />
-                    <p className="text-4xl max-md:text-2xl text-secondary1 font-bold">Next Event</p>
+                    {event?.isActive ? <>
+                        <FaMicrophone size="30px" color='var(--secondary-1)' />
+                        <p className="text-4xl max-md:text-2xl text-secondary1 font-bold">Currently active!</p></> :
+                    <>
+                        <FaMicrophone size="30px" color='white' />
+                        <p className="text-4xl max-md:text-2xl text-white font-bold">Next Event . . .</p>
+                    </>}
+
                 </div>
                 <Timer loaded={loaded} /> 
             </div>

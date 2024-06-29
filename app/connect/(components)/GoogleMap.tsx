@@ -19,33 +19,51 @@ export default function MapComponent({children}: {children: React.ReactNode}) {
         getLocation()
     }, [])
 
-    const RenderMarkers = () => {
-      const calculateCenter = (members: { location: { lat: number; lng: number } }[]) => {
-        if (members.length === 0) {
+    const calculateCenter = (members: { location: { lat: number; lng: number } }[]) => {
+      if (members.length === 0) {
           return null;
-        }
-
-        let sumLat = 0;
-        let sumLng = 0;
-
-        for (const member of members) {
-          sumLat += member.location.lat;
-          sumLng += member.location.lng;
-        }
-
-        const centerLat = sumLat / members.length;
-        const centerLng = sumLng / members.length;
-
-        return { lat: centerLat, lng: centerLng };
+      }
+  
+      let x = 0;
+      let y = 0;
+      let z = 0;
+  
+      for (const member of members) {
+          const latitude = (member.location.lat * Math.PI) / 180;
+          const longitude = (member.location.lng * Math.PI) / 180;
+  
+          x += Math.cos(latitude) * Math.cos(longitude);
+          y += Math.cos(latitude) * Math.sin(longitude);
+          z += Math.sin(latitude);
+      }
+  
+      const total = members.length;
+  
+      x /= total;
+      y /= total;
+      z /= total;
+  
+      const centralLongitude = Math.atan2(y, x);
+      const centralSquareRoot = Math.sqrt(x * x + y * y);
+      const centralLatitude = Math.atan2(z, centralSquareRoot);
+  
+      return {
+          lat: (centralLatitude * 180) / Math.PI,
+          lng: (centralLongitude * 180) / Math.PI,
       };
+    };
+  
+  
+
+    const RenderMarkers = () => {
+      
       const members = packagedGroup?.members.map((member) => ({ location: { lat: member.location[0], lng: member.location[1] } })) || [];
       const center = calculateCenter(members);
-      
+
       return <div className=''>
         {loadedGroups.map((group, index) => {
-          const inGroup = group.group_uuid == packagedGroup?.group.group_uuid
-          console.log(group)
-          return inGroup && (center != null) ? <Marker icon={"./animations/active-mic.gif"} key={index} position={{lat: center.lat, lng: center.lng}} /> : <Marker icon={"./animations/group-mic.gif"} key={index} position={{lat: group.location[0], lng: group.location[1]}}/>
+          const isActive = (group.group_uuid == packagedGroup?.group.group_uuid) && (center != null)
+          return isActive ? <Marker icon={"./animations/active-mic.gif"} key={index} position={{lat: center.lat, lng: center.lng}} /> : <Marker icon={"./animations/group-mic.gif"} key={index} position={{lat: group.location[0], lng: group.location[1]}}/>
         })}
       </div>
     }
@@ -95,7 +113,7 @@ export default function MapComponent({children}: {children: React.ReactNode}) {
         </Button>
     }
     function Options () {
-        return <div className='w-fit h-fit rounded-[99px]'>
+        return <div className='w-fit h-fit rounded-full bg-background1'>
             <CenterLocation/>
         </div>
     }
@@ -119,8 +137,17 @@ export default function MapComponent({children}: {children: React.ReactNode}) {
               options={{
                   disableDefaultUI: true,
                   styles: theme == "dark" ? nightModeMapStyles : [],
-                  
+                  restriction: {
+                    latLngBounds: {
+                        north: 85,
+                        south: -85,
+                        east: 180,
+                        west: -180
+                    },
+                    strictBounds: true,
+                }
               }}
+              
 
               center={userLocation.latitude && userLocation.longitude ? 
                 { lat: userLocation.latitude, lng: userLocation.longitude } :

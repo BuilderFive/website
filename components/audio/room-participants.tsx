@@ -15,7 +15,6 @@ const Avatars = ({ ...props }: RoomParticipantsProps) => {
 
     return <div {...props}>
       {audioTracks.map((trackReference) => {
-        console.log(trackReference.participant.audioLevel)
         return (
           <TrackRefContext.Provider key={trackReference.participant.identity} value={trackReference}>
             <AudioTrack trackRef={trackReference} />
