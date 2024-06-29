@@ -78,12 +78,35 @@ const Modal = ({ showModal, setShowModal }) => {
             options: {
                 data: { first_name: firstname, last_name: lastname },
             },
+            
         });
         setLoading(false);
         if (error) {
             alert(error.message);
             return
         }
+        //send email here
+        const sendWelcomeEmail = async(inputEmail: string) => {
+            try {
+                const response = await fetch('../api/email/welcome/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email: inputEmail }),
+                });
+            
+                const data = await response.json();
+                if (response.ok) {
+                    return data
+                } else {
+                    console.error('Error sending email:', data.error);
+                }
+            } catch (error) {
+                console.error('Error sending email:', error);
+            }
+        }
+        sendWelcomeEmail(email)
         setFinishedSignup(true)
         clearForm()
     };
@@ -95,6 +118,7 @@ const Modal = ({ showModal, setShowModal }) => {
             password: password,
         });
         if (error) {
+            setLoading(false)
             alert(error.message);
             return
         }

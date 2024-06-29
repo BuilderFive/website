@@ -18,14 +18,16 @@ import { useJsApiLoader } from "@react-google-maps/api";
 export default function Page() {
   const { packagedGroup } = useGroup();
   const { user } = useSession();
+  const { event } = useSession()
   const [showModal, setShowModal] = useState(false);
+  const { days, hours, minutes, seconds } = calculateTimeRemaining(new Date(), event);
   const router = useRouter()
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ""
 })
   /*
   useEffect(() => {
-    if (!(weeks < 0 && days < 0 && hours < 0)) {
+    if (!(days < 0 && hours < 0 && minutes < 0 && seconds < 0)) {
       router.push('/')
       setTimeout(() => {
         alert(`The audio call event has not started yet. Please come back in ${weeks} weeks, ${days} days, and ${hours} hours`)
