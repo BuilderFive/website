@@ -7,6 +7,11 @@ import { Tables } from './supabase-types';
 import {v4 as uuidv4} from 'uuid';
 import { useRouter } from 'next/router';
 
+interface Event {
+    start_at: Date;
+    end_at: Date;
+    isActive: boolean;
+}
 interface SessionContextProps {
     user: User | null;
     session: Session | null;
@@ -14,6 +19,7 @@ interface SessionContextProps {
     isLoading: boolean;
     isInvited: boolean;
     signout: () => void;
+    event: Event | null;
 }
 
 const SessionContext = createContext<SessionContextProps>({
@@ -22,7 +28,8 @@ const SessionContext = createContext<SessionContextProps>({
     supabase: supabase,
     isLoading: false,
     isInvited: false,
-    signout: () => {}
+    signout: () => {},
+    event: null
 });
 
 export const useSession = () => useContext(SessionContext);
@@ -46,7 +53,7 @@ export function SessionProvider(props: React.PropsWithChildren) {
     const [session, setSession] = useState<any>(null);
     const [user, setUser] = useState<any>(null);
     const supabase = useContext(SessionContext).supabase;
-
+    const [event, setEvent] = useState<Event | null>(null);
     const [isInvited, setIsInvited] = useState<boolean>(false);
     const [isLoading, setLoading] = useState<boolean>(true);
     
@@ -100,6 +107,54 @@ export function SessionProvider(props: React.PropsWithChildren) {
             updateLastJoined(user.id);
         }
     },[user]);
+
+    useEffect(() => {
+        const getCurrentOrNextEvent = (events: Tables<'events'>[]) => {
+            const now = new Date();
+            
+            let currentEvent: Event | null  = null;
+            let nextEvent: Event | null  = null;
+        
+            events.forEach(event => {
+                const startAt = new Date(event.start_at);
+                const endAt = new Date(event.end_at);
+        
+                if (startAt <= now && endAt >= now) {
+                    currentEvent = {
+                        start_at: startAt,
+                        end_at: endAt,
+                        isActive: true
+                    };
+                } else if (startAt > now && (!nextEvent || startAt < new Date(nextEvent.start_at))) {
+                    nextEvent = {
+                        start_at: startAt,
+                        end_at: endAt,
+                        isActive: false
+                    };
+                }
+            });
+        
+            return currentEvent || nextEvent;
+        };
+        const fetchEvents = async () => {
+            try {
+                const { data, error } = await supabase.from('events').select('*');
+                if (error) {
+                    throw error;
+                }
+
+                console.log(data)
+                if (data.length == 0) return
+
+                const chosenEvent = getCurrentOrNextEvent(data);
+                setEvent(chosenEvent);
+            } catch (error) {
+                console.error('Error fetching events:', error);
+            }
+        };
+
+        fetchEvents();
+    }, []);
 
     /**
      * When supabase updates, request for the supabase session and replace the current session
@@ -189,7 +244,7 @@ export function SessionProvider(props: React.PropsWithChildren) {
         supabase,
         isLoading,
         isInvited,
-        signout
+        signout, event
     };
 
     return (

@@ -50,6 +50,24 @@ export type Database = {
           },
         ]
       }
+      events: {
+        Row: {
+          end_at: string
+          id: number
+          start_at: string
+        }
+        Insert: {
+          end_at?: string
+          id?: number
+          start_at?: string
+        }
+        Update: {
+          end_at?: string
+          id?: number
+          start_at?: string
+        }
+        Relationships: []
+      }
       friendship: {
         Row: {
           created_at: string
@@ -1119,6 +1137,10 @@ export type Database = {
           "": number
         }
         Returns: string
+      }
+      get_sessions_count: {
+        Args: Record<PropertyKey, never>
+        Returns: number
       }
       gettransactionid: {
         Args: Record<PropertyKey, never>
