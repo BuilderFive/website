@@ -31,7 +31,7 @@ const PropDefaults: WelcomeEmailProps = {
       Description: (
         <li className="mb-20" key={1}>
           <strong>Get the calendar invite.</strong>{" "}
-          If you're seeing this, we haven't added it yet, but soon all new 
+          If you&apos;re seeing this, we haven&apos;t added it yet, but soon all new 
           members will receive google calendar invites to each weekly event 
           (Sunday from 12pm to 2pm) for scheduling convenience.
         </li>
@@ -42,8 +42,8 @@ const PropDefaults: WelcomeEmailProps = {
       Description: (
         <li className="mb-20" key={2}>
           <strong>Time to be on online.</strong>{" "}
-          You won't be able to join before or after the event timeframe, so
-          there's only a limited time to join <Link href="https://builderfive.com/connect">BuilderFive</Link>
+          You won&apos;t be able to join before or after the event timeframe, so
+          there&apos;s only a limited time to join <Link href="https://builderfive.com/connect">BuilderFive</Link>
           for the week!
         </li>
       ),
@@ -66,8 +66,8 @@ const PropDefaults: WelcomeEmailProps = {
           You might be interested in meeting in person with the people you called with.
           If so, BuilderFive helps you locate safe and convenient coffee shops to meetup at.
           Plus you get free coupons for coffee! All you need to do is send a meetup request
-          for a timeslot on one of the coffee shops you'll find on the map. Once your recipients
-          accept the request, you'll each get redeemable coupon codes for just that scheduled time.
+          for a timeslot on one of the coffee shops you&apos;ll find on the map. Once your recipients
+          accept the request, you&apos;ll each get redeemable coupon codes for just that scheduled time.
         </li>
       ),
     },
@@ -113,12 +113,12 @@ export const WelcomeEmail = () => {
             <Section>
               <Row>
                 <Text className="text-base">
-                  Happy to have you on board! You're joining an audio and meetup 
-                  platform where you'll meet local like-minded people in voice calls 
+                  Happy to have you on board! You&apos;re joining an audio and meetup 
+                  platform where you&apos;ll meet local like-minded people in voice calls 
                   for just a few hours every week. 
                 </Text>
 
-                <Text className="text-base">Here's how it works:</Text>
+                <Text className="text-base">Here&apos;s how it works:</Text>
               </Row>
             </Section>
 
