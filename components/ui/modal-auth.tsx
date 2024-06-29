@@ -118,6 +118,7 @@ const Modal = ({ showModal, setShowModal }) => {
             password: password,
         });
         if (error) {
+            setLoading(false)
             alert(error.message);
             return
         }

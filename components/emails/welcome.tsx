@@ -125,8 +125,8 @@ export const WelcomeEmail = () => {
             <ul>{PropDefaults.steps?.map(({ Description }) => Description)}</ul>
 
             <Section className="text-center">
-              <Button className="bg-brand text-white rounded-lg py-3 px-[18px]"> 
-                <Link href="https://builderfive.com/map">Visit the map</Link>
+              <Button href="https://builderfive.com/connect" className="bg-brand text-white rounded-lg py-3 px-[18px]"> 
+                Visit the map
               </Button>
             </Section>
           </Container>
