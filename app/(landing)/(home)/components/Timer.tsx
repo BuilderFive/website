@@ -105,5 +105,5 @@ export default function Timer({loaded}) {
         </div>
     }
 
-    return !event?.isActive ? <ActiveComponent/> : <SoonComponent/>
+    return event?.isActive ? <ActiveComponent/> : <SoonComponent/>
 }
