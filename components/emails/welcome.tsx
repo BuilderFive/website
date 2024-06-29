@@ -23,17 +23,22 @@ interface WelcomeEmailProps {
   }[];
   links?: string[];
 }
-
 const PropDefaults: WelcomeEmailProps = {
   steps: [
     {
       id: 1,
       Description: (
         <li className="mb-20" key={1}>
-          <strong>Get the calendar invite.</strong>{" "}
-          If you&apos;re seeing this, we haven&apos;t added it yet, but soon all new 
-          members will receive google calendar invites to each weekly event 
-          (Sunday from 12pm to 2pm) for scheduling convenience.
+          <strong>Subscribe to our calendar.</strong>{" "}
+          <Link href="https://calendar.google.com/calendar/event?action=TEMPLATE&amp;tmeid=NGE1Z3N1aHRsYTNkdGM4Mms5b2dhYmprM2IgY18yNzk2ODA4NmViMDk0NDUxZmNkY2NhMzBlNTg2NTA1N2JmMzA1ZTBhYTczZDZiZWQ2MTVhMDllZjcxMjJhZjVlQGc&amp;tmsrc=c_27968086eb094451fcdcca30e5865057bf305e0aa73d6bed615a09ef7122af5e%40group.calendar.google.com">
+            <Img
+              src={`https://www.google.com/calendar/images/ext/gc_button1_en.gif`}
+              width="75"
+              height="75"
+              alt="Google Calendar"
+            />
+            Weekly event
+          </Link>
         </li>
       ),
     },
