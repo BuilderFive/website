@@ -30,11 +30,9 @@ const PropDefaults: WelcomeEmailProps = {
       Description: (
         <li className="mb-20" key={1}>
           <strong>Subscribe to our calendar.</strong>{" "}
-          <Link href="https://calendar.google.com/calendar/event?action=TEMPLATE&amp;tmeid=NGE1Z3N1aHRsYTNkdGM4Mms5b2dhYmprM2IgY18yNzk2ODA4NmViMDk0NDUxZmNkY2NhMzBlNTg2NTA1N2JmMzA1ZTBhYTczZDZiZWQ2MTVhMDllZjcxMjJhZjVlQGc&amp;tmsrc=c_27968086eb094451fcdcca30e5865057bf305e0aa73d6bed615a09ef7122af5e%40group.calendar.google.com">
+          <Link href="https://calendar.google.com/calendar/event?action=TEMPLATE&tmeid=N3NldG11bnYzajFidjdpc2Qxb2E5bDAwdm5fMjAyNDA3MDdUMTYwMDAwWiBjXzI3OTY4MDg2ZWIwOTQ0NTFmY2RjY2EzMGU1ODY1MDU3YmYzMDVlMGFhNzNkNmJlZDYxNWEwOWVmNzEyMmFmNWVAZw&tmsrc=c_27968086eb094451fcdcca30e5865057bf305e0aa73d6bed615a09ef7122af5e%40group.calendar.google.com&scp=ALL">
             <Img
               src={`https://www.google.com/calendar/images/ext/gc_button1_en.gif`}
-              width="75"
-              height="75"
               alt="Google Calendar"
             />
             Weekly event
