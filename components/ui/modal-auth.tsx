@@ -1,4 +1,4 @@
-import { redirect } from 'next/navigation'
+import { redirect, useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 import { supabase } from "~/util/supabaseClient"
 import { IoMdClose, IoMdEye, IoMdEyeOff } from "react-icons/io";
@@ -12,7 +12,7 @@ import LottiePlayer from '@lottiefiles/lottie-player';
 const Modal = ({ showModal, setShowModal }) => {
     const [firstname, setFirstname] = useState('')
     const [lastname, setLastname] = useState('')
-
+    const router = useRouter()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [isSignUp, setIsSignUp] = useState(false)
@@ -142,6 +142,7 @@ const Modal = ({ showModal, setShowModal }) => {
                     onClick={()=>{
                         setFinishedSignup(false)
                         setShowModal(!showModal)
+                        router.push('/connect')
                     }}>
                     Okay
                 </Button>
