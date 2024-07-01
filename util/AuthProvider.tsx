@@ -143,7 +143,6 @@ export function SessionProvider(props: React.PropsWithChildren) {
                     throw error;
                 }
 
-                console.log(data)
                 if (data.length == 0) return
 
                 const chosenEvent = getCurrentOrNextEvent(data);

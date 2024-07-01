@@ -1,10 +1,20 @@
+"use client"
 
-
-import MyMap from "./MyMap";
+import { useGroup } from "~/util/GroupProvider";
+import { Sidebar } from "../connect/(components)/Sidebar";
+import Globe from "./Globe";
+import { Footer } from "../connect/(components)/Footer";
+import { useEffect, useState } from "react";
 
 export default function Page() {
-  return (
-    
-      <MyMap />
+  const { packagedGroup } = useGroup()
+
+  return (<div className="flex flex-row w-screen h-screen">
+      <Sidebar/>
+      
+      <Globe>
+        {packagedGroup && <Footer/>}
+      </Globe>
+    </div>
   );
 }

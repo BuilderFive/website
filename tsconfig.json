@@ -33,7 +33,7 @@
         "**/*.ts",
         "**/*.tsx",
         ".next/types/**/*.ts"
-, "util/calls/hooks/usePlayer.ts", "util/calls/hooks/usePeer.ts", "util/SocketProvider.ts", "util/calls/context.js", "app/connect/page.tsx"    ],
+, "util/calls/hooks/usePlayer.ts", "util/calls/hooks/usePeer.ts", "util/SocketProvider.ts", "util/calls/context.js", "app/connect/page.tsx", "app/cars/page.js"    ],
     "exclude": [
         "node_modules"
     ]
