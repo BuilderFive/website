@@ -46,10 +46,10 @@ export default function Page() {
 
   return !user ? <div className="min-h-screen min-w-screen">
     <Modal showModal={showModal} setShowModal={setShowModal}/>
-  </div> : <div className="flex flex-row w-screen h-screen">
+  </div> : <div className="flex flex-row w-screen h-screen relative">
       {isLoaded && <><Header />
-      <Sidebar/>
       <Globe>
+        <Sidebar/>
         {packagedGroup && <Footer />}
       </Globe></>}
     </div>

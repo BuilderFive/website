@@ -11,6 +11,7 @@ import { useProfile } from '~/util/ProfileProvider';
 import { ControlBar, AudioVisualizer, LiveKitRoom, TrackRefContext, useEnsureTrackRef, useParticipantTile, useTracks } from '@livekit/components-react';
 import { AudioConference } from '~/components/audio/room-conference';
 import { Track } from 'livekit-client';
+import { useTheme } from 'next-themes';
 
 export const Footer = () => {
     const { radius, packagedGroup, topic, leaveGroup, setLoading, isLoading } = useGroup();
@@ -20,6 +21,7 @@ export const Footer = () => {
     const [token, setToken] = useState("");
     const room = packagedGroup?.group.group_uuid;
     const [timeRemaining, setTimeRemaining] = useState({ minutes: 0, seconds: 0 });
+    const { theme } = useTheme()
     
     useEffect(() => {
         if (!first_name || !last_name) return;
@@ -47,7 +49,7 @@ export const Footer = () => {
         return `${formattedDistance}km radius`
     }
 
-    return <footer className="w-full bg-background1 text-text1">
+    return <footer className={`w-full ${theme == "light" ? "bg-background1" : "bg-transparent"} text-text1`}>
         <LiveKitRoom audio={true}
             token={token} className="w-full h-[80px] flex flex-row justify-between py-[12px] px-[12px] gap-[24px] items-center justify-center"
             serverUrl={process.env.NEXT_PUBLIC_LIVEKIT_URL}

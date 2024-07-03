@@ -16,11 +16,13 @@ import { FaAngleDown, FaAngleLeft, FaAngleRight, FaAngleUp, FaSpinner } from "re
 import { LuMegaphone } from "react-icons/lu";
 import { Tables } from '~/util/supabase-types';
 import { Spinner } from '@nextui-org/react';
+import { useTheme } from 'next-themes';
 
 export const Sidebar = () => {
     const { topic, setTopic, userLocation, loadedGroups, availableTopics, packagedGroup, leaveGroup, systemProcessGroupJoin, isLoading, radius } = useGroup();
     const [open, setOpen] = useState(false);
     const filteredTopics = loadedGroups.filter(group => group.topic == topic);
+    const { theme } = useTheme()
 
     const handleTopicChange = async (inputTopic: string) => {
         setOpen(false)
@@ -84,17 +86,17 @@ export const Sidebar = () => {
     }
     
 
-    return <div className='flex flex-row relative'>
-        <div className='z-1 flex flex-col shadow-md min-w-[280px] max-w-[360px] w-fit bg-background1 px-[12px] py-[24px] gap-[12px] items-center justify-start'>
+    return <div className='flex flex-row relative h-full'>
+        <div className={`z-1 flex flex-col min-w-[280px] max-w-[360px] w-fit ${theme == "light" ? "bg-background1" : "bg-transparent"} px-[12px] pt-[24px] gap-[12px] items-center rounded-br-[12px] justify-start`}>
             <Title/>
             <JoinButton/>
             <TopicDrawer/>
             <ActiveGroups/>
         </div>
-        {open && <div className='absolute z-10 left-[280px] shadow-md h-full bg-background2 px-[12px] py-[24px] flex flex-col w-[240px]'>
+        {open && <div className={`absolute z-10 left-[280px] h-fit ${theme == "light" ? "bg-background1" : "bg-transparent"} px-[12px] pt-[24px] flex flex-col w-[240px] rounded-b-[12px]`}>
             <p className='font-bold text-[24px] text-text1'>Topics</p>
             <div className='flex flex-col'>
-                {availableTopics.map((subj, id) => <div key={id} id="row-#" onClick={()=> handleTopicChange(subj)} className="hover:cursor-pointer hover:bg-background3 p-[8px]">
+                {availableTopics.map((subj, id) => <div key={id} id="row-#" onClick={()=> handleTopicChange(subj)} className="hover:cursor-pointer hover:bg-background3 p-[8px] rounded-[12px]">
                     <p className='text-text1'>{subj}</p>
                 </div>)}
             </div>

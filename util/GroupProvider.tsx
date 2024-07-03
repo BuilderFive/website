@@ -113,7 +113,7 @@ export function GroupProvider(props: React.PropsWithChildren) {
         };
         
         fetchGroupData();
-    }, []);
+    }, [user]);
 
     //fires every time user or topic changes
     useEffect(() => {
@@ -134,7 +134,7 @@ export function GroupProvider(props: React.PropsWithChildren) {
             }
         };
         fetchTopicGroups();
-    }, [topic]);
+    }, [user, topic]);
 
     //fires every time loadedGroups changes
     useEffect(()=> {

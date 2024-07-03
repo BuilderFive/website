@@ -15,12 +15,8 @@ export default function Globe({children}: {children: React.ReactNode}) {
     const { radius, setRadius, setUserLocation, userLocation, packagedGroup, loadedGroups } = useGroup();
     const [loading, setLoading] = useState(true)
     const markers = useRef<any>([])
-
-    useEffect(()=>{
-        getLocation()
-    },[])
     
-      function getLocation() {
+    function getLocation() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(getCoordinates, handleLocationError);
     
@@ -56,7 +52,7 @@ export default function Globe({children}: {children: React.ReactNode}) {
 
     useEffect(()=> {
         mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAP_BOX_TOKEN;
-
+        getLocation()
         if (globe.current) {
             mapbox.current = new mapboxgl.Map({
               container: globe.current,
@@ -76,17 +72,16 @@ export default function Globe({children}: {children: React.ReactNode}) {
                   'star-intensity': 0.5 // Background star brightness (default 0.35 at low zoooms )
                 });
               });
-
-
             
-            /*
             mapbox.current.addControl(new mapboxgl.GeolocateControl({
                 positionOptions: {
                     enableHighAccuracy: false
                 },
                 trackUserLocation: false,
                 showUserHeading: true,
-            }));*/
+            }), 'bottom-right'); 
+
+            
 
             // Clean up on unmount
             return () => mapbox.current.remove();
@@ -96,20 +91,39 @@ export default function Globe({children}: {children: React.ReactNode}) {
     useEffect(()=> {
         // Add your custom markers and lines here
         markers.current.forEach((marker: mapboxgl.Marker)=>marker.remove());
+
         loadedGroups.forEach((group: Tables<'groups'>) => {
-            const marker = new mapboxgl.Marker({
-                color: "#59A4E0",
-                draggable: false
-            }).setLngLat([group.location[1], group.location[0]])
+
+            const isActive = (group.group_uuid == packagedGroup?.group.group_uuid)
+            const element = document.createElement('div');
+            element.className = isActive ? 'your-active-group-marker' : 'other-active-group-marker';
+            
+            const marker = new mapboxgl.Marker(element)
+                .setLngLat([group.location[1], group.location[0]])
                 .addTo(mapbox.current);
+                
+            marker.getElement().addEventListener('click', () => {
+                mapbox.current.flyTo({
+                    center: [group.location[1], group.location[0]],
+                    zoom: 10,
+                    essential: true
+                });
+            });
+
             markers.current.push(marker)
         })
     },[loadedGroups])
 
     return(<div className="w-screen h-screen relative">
         <div ref={globe} className="h-full w-full"/>
-        <div className='absolute z-40 bottom-0 w-full'>
-            {children}
+        <div className='relative'>
+            <div className="fixed z-1 left-0 top-0">
+                <Sidebar/>
+            </div>
+            <div className="fixed z-2 bottom-0 w-full">
+                {packagedGroup && <Footer />}
+            </div>
+            
         </div>
     </div>)
 }

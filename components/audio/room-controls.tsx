@@ -7,6 +7,7 @@ import { StartMediaButton } from './StartMediaButton';
 import { SettingsMenuToggle } from './room-settings';
 import { DisconnectButton } from './disconnect-button';
 import { useGroup } from '~/util/GroupProvider';
+import { useTheme } from 'next-themes';
 /** @public */
 export type ControlBarControls = {
   microphone?: boolean;
@@ -57,7 +58,7 @@ export function ControlBar({
   variation ??= defaultVariation;
 
   const visibleControls = { leave: true, microphone: true, ...controls };
-
+  const { theme } = useTheme()
   const localPermissions = useLocalParticipantPermissions();
 
   if (!localPermissions) {
@@ -101,7 +102,7 @@ export function ControlBar({
   return (
     <div {...htmlProps}>
       {visibleControls.microphone && (
-        <div className="aspect-square h-[48px] w-[48px] rounded-[12px] text-secondary1 flex items-center justify-center bg-background1 hover:bg-background2 hover:cursor-pointer">
+        <div className={`aspect-square h-[64px] w-[64px] rounded-full text-secondary1 flex items-center justify-center ${theme == "light" ? "bg-background1" : "bg-transparent"} hover:bg-background2 hover:cursor-pointer`}>
           <TrackToggle className='flex flex-col items-center justify-center'
             source={Track.Source.Microphone}
             showIcon={showIcon}
@@ -111,7 +112,7 @@ export function ControlBar({
         </div>
       )}
       {visibleControls.camera && (
-        <div className="aspect-square h-[48px] w-[48px] rounded-[12px] text-secondary1 flex items-center justify-center bg-background1 hover:bg-background2 hover:cursor-pointer">
+        <div className={`aspect-square h-[64px] w-[64px] rounded-full text-secondary1 flex items-center justify-center ${theme == "light" ? "bg-background1" : "bg-transparent"} hover:bg-background2 hover:cursor-pointer`}>
           <TrackToggle source={Track.Source.Camera} showIcon={showIcon} onChange={cameraOnChange}>
             {showText && 'Camera'}
           </TrackToggle>
@@ -124,7 +125,7 @@ export function ControlBar({
         </div>
       )}
       {visibleControls.leave && (
-        <div className="aspect-square h-[48px] w-[48px] rounded-[12px] text-error1 flex items-center justify-center bg-background1 hover:bg-background2 hover:cursor-pointer">
+        <div className={`aspect-square h-[64px] w-[64px] rounded-full text-error1 flex items-center justify-center ${theme == "light" ? "bg-background1" : "bg-transparent"} hover:bg-background2 hover:cursor-pointer`}>
           <DisconnectButton onClick={()=>leaveGroup()} className='flex flex-col items-center justify-center'>
             {showIcon && <LeaveIcon />}
             {showText && <p className='text-md'>Leave</p>}
