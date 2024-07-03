@@ -68,8 +68,6 @@ export function GroupProvider(props: React.PropsWithChildren) {
         if (!user) return;
         const fetchGroupData = async () => {
             try {
-                if (!user) return;
-
                 // Fetch the user's group UUID(s). Replace this with your actual logic to get the user's group UUID(s).
                 const { data: userGroups, error: userGroupsError } = await supabase
                     .from('group_members')
@@ -84,7 +82,7 @@ export function GroupProvider(props: React.PropsWithChildren) {
                 }
 
                 const groupUUID = userGroups[0].group_uuid; // Assuming a single group for simplicity.
-
+                
                 // Fetch group data
                 const { data: groupData, error: groupError } = await supabase
                     .from('groups')
@@ -115,22 +113,21 @@ export function GroupProvider(props: React.PropsWithChildren) {
         };
         
         fetchGroupData();
-    }, [user]);
+    }, []);
 
     //fires every time user or topic changes
     useEffect(() => {
         if (!user) return;
-
         const fetchTopicGroups = async () => {
-            console.log('1')
             try {
                 // Fetch the user's group UUID(s). Replace this with your actual logic to get the user's group UUID(s).
                 const { data: fetchedGroups, error: fetchedGroupErrors } = await supabase
                     .from('groups')
-                    .select('*').eq('topic', topic);
-                console.log('2')
+                    .select('*')
+                    .eq('topic', topic);
+                
                 if (fetchedGroupErrors) throw fetchedGroupErrors;
-                console.log(fetchedGroups)
+
                 setLoadedGroups(fetchedGroups)
             } catch (error) {
                 console.error('Error fetching group data:', error);
@@ -141,26 +138,28 @@ export function GroupProvider(props: React.PropsWithChildren) {
 
     //fires every time loadedGroups changes
     useEffect(()=> {
+        if (!user) return
         const channel = supabase.channel('topic groups')
             .on('postgres_changes', {
                 event: 'INSERT', schema: 'public', table: 'groups', filter: `topic=eq.${topic}`
             }, (payload)=> {
+                console.log(payload)
                 const newGroup = {payload}.payload.new as Tables<'groups'>;
                 setLoadedGroups([...loadedGroups, newGroup])
             })
             .on('postgres_changes', {
                 event: 'DELETE', schema: 'public', table: 'groups', filter: `topic=eq.${topic}`
             }, (payload)=> {
-                
+                console.log(payload)
                 const oldGroup = {payload}.payload.old as Tables<'groups'>;
                 const newGroups = loadedGroups.filter(group => group.group_uuid !== oldGroup.group_uuid);
                 setLoadedGroups(newGroups);
             }).subscribe()
-
+        console.log(channel)
         return () => {
             if (channel) supabase.removeChannel(channel)
         }
-    },[user])
+    },[user, topic])
 
 
     //update group members when a new member joins/leaves

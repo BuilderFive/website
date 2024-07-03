@@ -14,6 +14,7 @@ import {calculateTimeRemaining} from "./../(landing)/(home)/components/Timer";
 import { useRouter } from "next/navigation";
 import { Header } from "./(components)/Header";
 import { useJsApiLoader } from "@react-google-maps/api";
+import Globe from "./(components)/Globe";
 
 export default function Page() {
   const { packagedGroup } = useGroup();
@@ -48,9 +49,9 @@ export default function Page() {
   </div> : <div className="flex flex-row w-screen h-screen">
       {isLoaded && <><Header />
       <Sidebar/>
-      <MapComponent>
+      <Globe>
         {packagedGroup && <Footer />}
-      </MapComponent></>}
+      </Globe></>}
     </div>
   ;
 };
