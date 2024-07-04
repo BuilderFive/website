@@ -87,13 +87,13 @@ export const Sidebar = () => {
     
 
     return <div className='flex flex-row relative h-full'>
-        <div className={`z-1 flex flex-col min-w-[280px] max-w-[360px] w-fit ${theme == "light" ? "bg-background1" : "bg-transparent"} px-[12px] pt-[24px] gap-[12px] items-center rounded-br-[12px] justify-start`}>
+        <div className={`z-1 h-fit flex flex-col min-w-[280px] max-w-[360px] w-fit ${theme == "light" ? "bg-background1" : "bg-transparent"} px-[12px] pt-[24px] gap-[12px] items-center rounded-[12px] justify-start`}>
             <Title/>
             <JoinButton/>
             <TopicDrawer/>
             <ActiveGroups/>
         </div>
-        {open && <div className={`absolute z-10 left-[280px] h-fit ${theme == "light" ? "bg-background1" : "bg-transparent"} px-[12px] pt-[24px] flex flex-col w-[240px] rounded-b-[12px]`}>
+        {open && <div className={`ml-[8px] h-fit ${theme == "light" ? "bg-background1" : "bg-transparent"} px-[12px] pt-[24px] flex flex-col w-[240px] rounded-[12px]`}>
             <p className='font-bold text-[24px] text-text1'>Topics</p>
             <div className='flex flex-col'>
                 {availableTopics.map((subj, id) => <div key={id} id="row-#" onClick={()=> handleTopicChange(subj)} className="hover:cursor-pointer hover:bg-background3 p-[8px] rounded-[12px]">

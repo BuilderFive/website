@@ -61,7 +61,8 @@ export function GroupProvider(props: React.PropsWithChildren) {
     const [topic, setTopic] = useState("startups")
     const [isLoading, setLoading] = useState<boolean>(false);
     const availableTopics = ["startups","productivity","academics", "careers", "science","history"]
-    const [loadedGroups, setLoadedGroups] = useState<Tables<'groups'>[]>([]) //cache
+    const [loadedGroups, setLoadedGroups] = useState<Tables<'groups'>[]>([]);
+    
     
     //fires every time user changes
     useEffect(() => {

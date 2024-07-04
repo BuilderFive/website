@@ -5,11 +5,9 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest, res: NextResponse) {
     const { email } = await req.json();
-    console.log(email)
-
  
     const data = await resend.emails.send({
-        from: 'My Phung <admin@builderfive.com>',
+        from: 'BuilderFive <admin@builderfive.com>',
         to: [email],
         subject: 'Welcome to BuilderFive!',
         react: WelcomeEmail(),

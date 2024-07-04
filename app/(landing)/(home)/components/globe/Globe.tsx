@@ -54,7 +54,6 @@ const generateRandomPointsWithinCountries = (numPoints: number) => {
         const maxLat = Math.max(...latitudes);
         const minLon = Math.min(...longitudes);
         const maxLon = Math.max(...longitudes);
-        console.log(minLat, maxLat, minLon, maxLon)
         
         const randomLat = Math.random() * (maxLat - minLat) + minLat;
         const randomLon = Math.random() * (maxLon - minLon) + minLon;
