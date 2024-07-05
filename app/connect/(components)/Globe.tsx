@@ -19,6 +19,7 @@ export default function Globe({children}: {children: React.ReactNode}) {
         mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAP_BOX_TOKEN;
         const longitude = userLocation.longitude;
         const latitude = userLocation.latitude;
+
         if (longitude == null || latitude == null) {
             return
         }
@@ -86,7 +87,6 @@ export default function Globe({children}: {children: React.ReactNode}) {
         markers.current.forEach((marker: mapboxgl.Marker)=>marker.remove());
 
         loadedGroups.forEach((group: Tables<'groups'>) => {
-
             const isActive = (group.group_uuid == packagedGroup?.group.group_uuid)
             const element = document.createElement('div');
             element.className = isActive ? 'your-active-group-marker' : 'other-active-group-marker';
@@ -105,7 +105,7 @@ export default function Globe({children}: {children: React.ReactNode}) {
 
             markers.current.push(marker)
         })
-    },[loadedGroups])
+    },[loadedGroups, packagedGroup])
 
     return(<div className="w-screen h-screen relative">
         <div ref={globe} className="h-full w-full"/>

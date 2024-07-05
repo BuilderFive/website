@@ -49,7 +49,7 @@ export const Footer = () => {
         return `${formattedDistance}km radius`
     }
 
-    return <footer className={`w-full ${theme == "light" ? "bg-background1" : "bg-transparent"} text-text1`}>
+    return <footer className={`w-full ${theme == "light" ? "bg-background1" : "bg-background3"} text-text1`}>
         <LiveKitRoom audio={true}
             token={token} className="w-full h-[80px] flex flex-row justify-between py-[12px] px-[12px] gap-[24px] items-center justify-center"
             serverUrl={process.env.NEXT_PUBLIC_LIVEKIT_URL}
