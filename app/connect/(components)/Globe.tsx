@@ -78,7 +78,6 @@ export default function Globe({children}: {children: React.ReactNode}) {
         if (!mapbox.current) return;
         const circle = mapbox.current.getSource('circle')
         if(!circle) return;
-        console.log('1')
         const geoJSON = createGeoJSONCircle([userLocation.longitude, userLocation.latitude], radius/1000, 64)
         circle.setData(geoJSON.data)
 
