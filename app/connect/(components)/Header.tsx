@@ -3,14 +3,33 @@
 import { ButtonIcon, MoonIcon, SunIcon } from "@radix-ui/react-icons";
 import { useTheme } from "next-themes";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaMicrophone, FaSearchLocation } from "react-icons/fa";
 import { ThemeSwitcher } from "~/components/nav/ThemeSwitcher";
 import { useSession } from "~/util/AuthProvider";
 import { ImExit } from "react-icons/im";
 import {Slider} from "@nextui-org/slider";
+import Timer, { calculateTimeRemaining } from "~/app/(landing)/(home)/components/Timer";
 
 export const Header: React.FC = () => {
+    const { event } = useSession();
+    const { days, hours, minutes, seconds } = calculateTimeRemaining(new Date(), event);
+    const [currentTime, setCurrentTime] = useState(new Date());
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            setCurrentTime(new Date());
+        }, 1000);
+  
+      return () => clearInterval(intervalId);
+    }, []);
+  
+    const formatTime = (time) => {
+        return Math.abs(time) < 10 ? `0${Math.abs(time)}` : Math.abs(time);
+    }
+    const timeLeft = calculateTimeRemaining(currentTime, event);
+
     const CurrentlySearching = () => (
         <div className="p-[12px] flex flex-row gap-[8px] bg-background3 items-center rounded-[8px]">
             <FaSearchLocation color={"var(--text-2)" } size={20} />
@@ -25,12 +44,27 @@ export const Header: React.FC = () => {
         </div>
     )
 
+    //to the public
+    const ActiveEvent = () => {
+        return (
+            <div className="p-[12px] flex flex-row gap-[8px] text-text1 bg-background3 items-center rounded-[8px]">
+                <p></p>{formatTime(timeLeft.days)} days {formatTime(timeLeft.hours)} hours {formatTime(timeLeft.minutes)} minutes {formatTime(timeLeft.seconds)} seconds
+            </div>
+        );
+    };
+
+    //this only shows if you're a developer
+    const ComingEvent = () => {
+
+    }
+
     return (<header className="absolute top-0 right-0 z-10 w-fit">
         <div className="flex flex-row w-full justify-end max-md:h-16 py-[24px] px-[24px] items-start text-white">
             
             
             
             <div className="flex md:justify-end w-fit items-center space-x-[24px]">
+                {event?.isActive ? "Event is live" : <ActiveEvent/>}
                 {/*<nav className="flex items-center max-md:hidden">
                     <CurrentlySearching/>
                 </nav>

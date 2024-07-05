@@ -19,10 +19,11 @@ import { Spinner } from '@nextui-org/react';
 import { useTheme } from 'next-themes';
 
 export const Sidebar = () => {
-    const { topic, setTopic, userLocation, loadedGroups, availableTopics, packagedGroup, leaveGroup, systemProcessGroupJoin, isLoading, radius } = useGroup();
+    const { topic, setTopic, userLocation, loadedGroups, availableTopics, packagedGroup, leaveGroup, systemProcessGroupJoin, isLoading, radius, setRadius } = useGroup();
     const [open, setOpen] = useState(false);
     const filteredTopics = loadedGroups.filter(group => group.topic == topic);
     const { theme } = useTheme()
+    const [radiusDropdownOpen, setRadiusDropdownOpen] = useState(false);
 
     const handleTopicChange = async (inputTopic: string) => {
         setOpen(false)
@@ -38,18 +39,44 @@ export const Sidebar = () => {
             const formattedDistance = numberRad.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             return `${formattedDistance}km radius`
         };
-        return <div className='flex flex-row gap-[12px] pt-[12px] pb-[24px] justify-start items-center w-full h-fit'>
+        const RadiusDropdown = () => {
+            const radiusOptions = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50]
+            return <div className='relative w-fit'>
+                <div onClick={()=>setRadiusDropdownOpen(!radiusDropdownOpen)} className='flex flex-row items-center justify-center p-[12px] rounded-[12px] bg-background3 gap-x-[12px] hover:bg-background2 hover:cursor-pointer'>
+                    <p className='font-regular text-md text-text1 truncate w-full'>{formatRadius(radius)}</p>
+                    {!radiusDropdownOpen ? <FaAngleDown size="16px" className='text-text1'/> : <FaAngleUp size="16px" className='text-text1'/>}
+                </div>
+                {radiusDropdownOpen && <div className={`absolute mt-[12px] w-full h-fit bg-background1 p-[12px] flex flex-col rounded-[12px]`}>
+                    <div className='flex flex-col'>
+                        {radiusOptions.map((rad, id) => <div key={id} onClick={()=> {
+                            setRadius(rad*1000)
+                            setRadiusDropdownOpen(false)
+                        }} className="hover:cursor-pointer hover:bg-background3 p-[8px] rounded-[12px]">
+                            <p className='text-text1'>{rad}km</p>
+                        </div>)}
+                    </div>
+                </div>}
+            </div>
+        }
+
+        return <div className='relative flex flex-row gap-[12px] pt-[12px] pb-[24px] justify-start items-center w-full h-fit'>
             <img src="/static/logos/blue-logo.svg" alt="BuilderFive" className="aspect-square h-[64px] rounded-full" />
             <div id="sidebar-title" className='flex flex-col h-fit w-full'>
                 <p className='font-bold text-2xl text-secondary1'>BuilderFive</p>
-                <div className='flex flex-row w-fit gap-[4px] items-center justify-center'>
-                    {/*<svg height="16" width="16" xmlns="http://www.w3.org/2000/svg">
-                        <circle r="6" cx="6" cy="8" fill="var(--activity-online)" />
-                    </svg>
-                    <p className='font-regular text-lg text-text1 truncate w-full'>32 online</p>*/}
-                    <p className='font-regular text-md text-text1 truncate w-full'>{formatRadius(radius)}</p>
+                <div className='flex flex-col w-fit gap-[4px] items-center justify-center'>
+                    
+                    {/*<div className='flex flex-row gap-[4px] items-center justify-center'>
+                        <svg height="16" width="16" xmlns="http://www.w3.org/2000/svg">
+                            <circle r="6" cx="6" cy="8" fill="var(--activity-online)" />
+                        </svg>
+                        <p className='font-regular text-lg text-text1 truncate w-full'>32 online</p>
+    </div>*/}
+                    
+                   <RadiusDropdown/>
+                    
                 </div>
             </div>
+            
        </div>
     }
     const JoinButton = () => {

@@ -62,9 +62,14 @@ export function GroupProvider(props: React.PropsWithChildren) {
     const [isLoading, setLoading] = useState<boolean>(false);
     const availableTopics = ["startups","productivity","academics", "careers", "science","history"]
     const [loadedGroups, setLoadedGroups] = useState<Tables<'groups'>[]>([]);
+
+    //could get packagedgroup from local storage, 
+    //but would need to figure out how to take precedence 
+    //over grabbing from supabase, then clearing it up
     
     
     //fires every time user changes
+    //should fire on initial load to fetch up to date info on user's group
     useEffect(() => {
         if (!user) return;
         const fetchGroupData = async () => {
@@ -137,26 +142,23 @@ export function GroupProvider(props: React.PropsWithChildren) {
         fetchTopicGroups();
     }, [user, topic]);
 
-    //fires every time loadedGroups changes
+    //updates to get realtime updates from select topic space
     useEffect(()=> {
         if (!user) return
         const channel = supabase.channel('topic groups')
             .on('postgres_changes', {
                 event: 'INSERT', schema: 'public', table: 'groups', filter: `topic=eq.${topic}`
             }, (payload)=> {
-                console.log(payload)
                 const newGroup = {payload}.payload.new as Tables<'groups'>;
                 setLoadedGroups([...loadedGroups, newGroup])
             })
             .on('postgres_changes', {
                 event: 'DELETE', schema: 'public', table: 'groups', filter: `topic=eq.${topic}`
             }, (payload)=> {
-                console.log(payload)
                 const oldGroup = {payload}.payload.old as Tables<'groups'>;
                 const newGroups = loadedGroups.filter(group => group.group_uuid !== oldGroup.group_uuid);
                 setLoadedGroups(newGroups);
             }).subscribe()
-        console.log(channel)
         return () => {
             if (channel) supabase.removeChannel(channel)
         }
@@ -170,14 +172,12 @@ export function GroupProvider(props: React.PropsWithChildren) {
                 event: 'INSERT', schema: 'public', table: 'group_members', filter: `group_uuid=eq.${packagedGroup?.group.group_uuid}`
             }, (payload)=> {
                 const newMember = {payload}.payload.new as Tables<'group_members'>
-                console.log(newMember)
                 handleInsertMember(newMember);
             })
             .on('postgres_changes', {
                 event: 'DELETE', schema: 'public', table: 'group_members', filter: `group_uuid=eq.${packagedGroup?.group.group_uuid}`
             }, (payload)=> {
                 const removedMember = payload.old.user_uuid
-                console.log(payload.old)
                 handleRemoveMember(removedMember)
             })
         .subscribe()
@@ -246,7 +246,6 @@ export function GroupProvider(props: React.PropsWithChildren) {
                     Math.pow(group.location[0] - userLatitude, 2) +
                     Math.pow(group.location[1] - userLongitude, 2)
                 );
-                console.log(distance <= radius, distance, radius)
                 return distance <= radius;
         });
 

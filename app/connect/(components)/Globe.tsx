@@ -17,12 +17,6 @@ export default function Globe({children}: {children: React.ReactNode}) {
 
     useEffect(() => {
         mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAP_BOX_TOKEN;
-        const longitude = userLocation.longitude;
-        const latitude = userLocation.latitude;
-
-        if (longitude == null || latitude == null) {
-            return
-        }
 
         if (globe.current) {
             mapbox.current = new mapboxgl.Map({
@@ -42,7 +36,7 @@ export default function Globe({children}: {children: React.ReactNode}) {
                   'space-color': 'rgb(11, 11, 25)', // Background color
                   'star-intensity': 0.5 // Background star brightness (default 0.35 at low zoooms )
                 });
-
+                //gotta figure out how to scale this si
                 mapbox.current.addSource('circle', createGeoJSONCircle([userLocation.longitude, userLocation.latitude], radius/1000, 64));
                 mapbox.current.addLayer({
                     id: 'circle-fill',
@@ -55,8 +49,6 @@ export default function Globe({children}: {children: React.ReactNode}) {
                     }
                 });
             });
-            
-            
             const geolocate = new mapboxgl.GeolocateControl({
                 positionOptions: {
                     enableHighAccuracy: false
@@ -81,13 +73,26 @@ export default function Globe({children}: {children: React.ReactNode}) {
             return () => mapbox.current.remove();
         }
     },[])
+
+    useEffect(() => {
+        if (!mapbox.current) return;
+        const circle = mapbox.current.getSource('circle')
+        if(!circle) return;
+        console.log('1')
+        const geoJSON = createGeoJSONCircle([userLocation.longitude, userLocation.latitude], radius/1000, 64)
+        circle.setData(geoJSON.data)
+
+    },[radius])
     
     useEffect(()=> {
+        if (!mapbox.current) return;
         // Add your custom markers and lines here
         markers.current.forEach((marker: mapboxgl.Marker)=>marker.remove());
 
         loadedGroups.forEach((group: Tables<'groups'>) => {
             const isActive = (group.group_uuid == packagedGroup?.group.group_uuid)
+            console.log(isActive)
+            console.log(group.group_uuid, packagedGroup?.group.group_uuid)
             const element = document.createElement('div');
             element.className = isActive ? 'your-active-group-marker' : 'other-active-group-marker';
             
