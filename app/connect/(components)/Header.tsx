@@ -10,20 +10,13 @@ import { useSession } from "~/util/AuthProvider";
 import { ImExit } from "react-icons/im";
 import {Slider} from "@nextui-org/slider";
 import Timer, { calculateTimeRemaining } from "~/app/(landing)/(home)/components/Timer";
+import { useTimer } from "~/util/TimerProvider";
 
 export const Header: React.FC = () => {
     const { event } = useSession();
     const { days, hours, minutes, seconds } = calculateTimeRemaining(new Date(), event);
-    const [currentTime, setCurrentTime] = useState(new Date());
-    const [loading, setLoading] = useState(false);
+    const { currentTime } = useTimer();
 
-    useEffect(() => {
-        const intervalId = setInterval(() => {
-            setCurrentTime(new Date());
-        }, 1000);
-  
-      return () => clearInterval(intervalId);
-    }, []);
   
     const formatTime = (time) => {
         return Math.abs(time) < 10 ? `0${Math.abs(time)}` : Math.abs(time);

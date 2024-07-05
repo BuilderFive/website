@@ -36,18 +36,6 @@ export default function Globe({children}: {children: React.ReactNode}) {
                   'space-color': 'rgb(11, 11, 25)', // Background color
                   'star-intensity': 0.5 // Background star brightness (default 0.35 at low zoooms )
                 });
-                //gotta figure out how to scale this si
-                mapbox.current.addSource('circle', createGeoJSONCircle([userLocation.longitude, userLocation.latitude], radius/1000, 64));
-                mapbox.current.addLayer({
-                    id: 'circle-fill',
-                    type: 'fill',
-                    source: 'circle',
-                    layout: {},
-                    paint: {
-                        'fill-color': 'rgb(97, 171, 255)',
-                        'fill-opacity': 0.5
-                    }
-                });
             });
             const geolocate = new mapboxgl.GeolocateControl({
                 positionOptions: {
@@ -66,7 +54,18 @@ export default function Globe({children}: {children: React.ReactNode}) {
             });
             mapbox.current.on('load', () => {
                 geolocate.trigger();
-
+                //gotta figure out how to scale this si
+                mapbox.current.addSource('circle', createGeoJSONCircle([userLocation.longitude, userLocation.latitude], radius/1000, 64));
+                mapbox.current.addLayer({
+                    id: 'circle-fill',
+                    type: 'fill',
+                    source: 'circle',
+                    layout: {},
+                    paint: {
+                        'fill-color': 'rgb(97, 171, 255)',
+                        'fill-opacity': 0.5
+                    }
+                });
             })
 
             // Clean up on unmount

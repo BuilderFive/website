@@ -17,6 +17,7 @@ import { LuMegaphone } from "react-icons/lu";
 import { Tables } from '~/util/supabase-types';
 import { Spinner } from '@nextui-org/react';
 import { useTheme } from 'next-themes';
+import { useTimer } from '~/util/TimerProvider';
 
 export const Sidebar = () => {
     const { topic, setTopic, userLocation, loadedGroups, availableTopics, packagedGroup, leaveGroup, systemProcessGroupJoin, isLoading, radius, setRadius } = useGroup();
@@ -133,14 +134,8 @@ export const Sidebar = () => {
 
 const RenderGroups = ({ filteredTopics, userLocation }) => {
     const { leaveGroup } = useGroup()
-    const [currentTime, setCurrentTime] = useState(new Date());
-    useEffect(() => {
-        const intervalId = setInterval(() => {
-            setCurrentTime(new Date());
-        }, 1000);
-  
-      return () => clearInterval(intervalId);
-    }, []);
+    const { currentTime } = useTimer();
+
   
     function getTimeRemaining(group) {
       const endAt = group.end_at;
