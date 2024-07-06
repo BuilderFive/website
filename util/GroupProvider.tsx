@@ -390,23 +390,21 @@ export function GroupProvider(props: React.PropsWithChildren) {
         const group_uuid = packagedGroup.group.group_uuid;
         const user_uuid = user?.id;
 
+        //delete user from group_members table
+        //check if group is empty, if so delete group
+
         try {
-            const response = await fetch('../api/group/leaveClick/', {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ group_uuid, user_uuid }),
+            const { data, error } = await supabase.rpc('leave_group', {
+                group_id: group_uuid,
+                user_id: user_uuid,
             });
-        
-            const data = await response.json();
-            if (response.ok) {
+            if (!error) {
                 setLoading(false)
                 setPackagedGroup(null)
                 return data
             } else {
                 setLoading(false)
-                console.error('Error leaving group:', data.error);
+                console.error('Error leaving group:', error);
             }
         } catch (error) {
             setLoading(false)

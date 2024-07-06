@@ -25,6 +25,7 @@ export const Sidebar = () => {
     const filteredTopics = loadedGroups.filter(group => group.topic == topic);
     const { theme } = useTheme()
     const [radiusDropdownOpen, setRadiusDropdownOpen] = useState(false);
+    const { event } = useSession()
 
     const handleTopicChange = async (inputTopic: string) => {
         setOpen(false)
@@ -96,7 +97,7 @@ export const Sidebar = () => {
         return <Button onClick={()=>{ 
             if (isLoading) return;
             handleChange(topic)
-        }} className='h-fit w-full p-[12px] h-[70px] rounded-[12px] bg-secondary1'>
+        }} disabled={event?.isActive ? false : false} className='h-fit w-full p-[12px] h-[70px] rounded-[12px] bg-secondary1'>
             {isLoading ? <FaSpinner size={"24px"} className='animate-spin' color={"white"} /> : <p className='text-white font-semibold text-xl'>Join a group</p>}
         </Button>
     }

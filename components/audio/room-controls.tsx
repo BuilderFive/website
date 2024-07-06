@@ -126,7 +126,7 @@ export function ControlBar({
       )}
       {visibleControls.leave && (
         <div className={`aspect-square h-[64px] w-[64px] rounded-full text-error1 flex items-center justify-center ${theme == "light" ? "bg-background1" : "bg-transparent"} hover:bg-background2 hover:cursor-pointer`}>
-          <DisconnectButton onClick={()=>leaveGroup()} className='flex flex-col items-center justify-center'>
+          <DisconnectButton className='flex flex-col items-center justify-center'>
             {showIcon && <LeaveIcon />}
             {showText && <p className='text-md'>Leave</p>}
           </DisconnectButton>
