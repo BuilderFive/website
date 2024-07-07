@@ -65,7 +65,7 @@ export const Sidebar = () => {
             <img src="/static/logos/blue-logo.svg" alt="BuilderFive" className="aspect-square h-[64px] rounded-full" />
             <div id="sidebar-title" className='flex flex-col h-fit w-full'>
                 <p className='font-bold text-2xl text-secondary1'>BuilderFive</p>
-                <div className='flex flex-col w-fit gap-[4px] items-center justify-center'>
+                <div className='flex flex-col w-fit gap-[4px] items-center justify-center z-20'>
                     
                     {/*<div className='flex flex-row gap-[4px] items-center justify-center'>
                         <svg height="16" width="16" xmlns="http://www.w3.org/2000/svg">
@@ -115,8 +115,8 @@ export const Sidebar = () => {
     }
     
 
-    return <div className='flex flex-row relative h-full'>
-        <div className={`z-1 h-fit flex flex-col min-w-[280px] max-w-[360px] w-fit ${theme == "light" ? "bg-background1" : "bg-transparent"} px-[12px] pt-[24px] gap-[12px] items-center rounded-[12px] justify-start`}>
+    return <div className='z-20 flex flex-row relative h-full'>
+        <div className={`h-fit flex flex-col min-w-[280px] max-w-[360px] w-fit ${theme == "light" ? "bg-background1" : "bg-transparent"} px-[12px] pt-[24px] gap-[12px] items-center rounded-[12px] justify-start`}>
             <Title/>
             <JoinButton/>
             <TopicDrawer/>

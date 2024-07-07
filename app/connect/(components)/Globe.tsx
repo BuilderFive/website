@@ -112,11 +112,11 @@ export default function Globe({children}: {children: React.ReactNode}) {
 
     return(<div className="w-screen h-screen relative">
         <div ref={globe} className="h-full w-full"/>
-        <div className='relative'>
-            <div className="fixed z-1 left-2 top-2">
+        <div className='relative z-20'>
+            <div className="fixed z-20 left-2 top-2">
                 <Sidebar/>
             </div>
-            <div className="fixed z-2 bottom-0 w-full">
+            <div className="fixed z-20 bottom-0 w-full">
                 {packagedGroup && <Footer />}
             </div>
             
