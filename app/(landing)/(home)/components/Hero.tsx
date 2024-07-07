@@ -7,10 +7,11 @@ import { Globe } from "./globe/Globe";
 import { FaMicrophone } from "react-icons/fa6";
 import {Tooltip} from "@nextui-org/tooltip";
 import { useSession } from "~/util/AuthProvider";
+import { useRouter } from "next/navigation";
 export default function Hero({loaded, setLoaded}) {
 
     const { event } = useSession();
-
+    const router = useRouter()
     return <div className="min-h-screen">
     <div id="Hero" className="px-[48px] max-md:px-[12px] w-full h-full flex flex-row max-md:flex-col flex-wrap flex-grow py-[48px] justify-between max-md:items-center space-y-[48px]">
         <section id="Column 1" className="flex flex-col max-md:items-center justify-between items-start w-fit max-md:w-full flex-1 space-y-[24px]">
@@ -35,7 +36,7 @@ export default function Hero({loaded, setLoaded}) {
         </section>
         <section id="Column 2" className="flex flex-col max-md:items-center justify-start items-center w-fit flex-1 space-y-[48px] max-md:pl-[0px] pl-[48px]">
             <div className="relative max-w-[750px] w-full">
-                <div className="max-md:hidden max-w-[750px] w-full aspect-square">
+                <div onClick={()=>router.push('/connect')} className="max-md:hidden max-w-[750px] w-full aspect-square">
                     <Globe />
                 </div>
                 

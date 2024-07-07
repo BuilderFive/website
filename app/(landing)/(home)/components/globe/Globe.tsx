@@ -7,7 +7,7 @@ import { OrbitControls, Point } from '@react-three/drei';
 import { GeoJsonGeometry } from 'three-geojson-geometry';
 
 import geoJson from './countries.geojson.json';
-import { ArrowHelper, Color, Quaternion, Vector3 } from 'three';
+import { ArrowHelper, Color, Quaternion, TextureLoader, Vector3 } from 'three';
 
 interface ThreePropWithTheme {
     theme: string;
@@ -104,19 +104,17 @@ const latLonToCartesian = (lat: number, lon: number, radius: number = 1) => {
 export const Globe = () => {
     const { theme } = useTheme();
     const randomPoints = generateRandomPointsWithinCountries(1000);
-
+    
+    
     return (
         <Canvas
             camera={{
                 fov: 57,
                 position: [0, 0, 2.1]
             }}
-            style={{
-                cursor: 'move'
-            }}
-        >
+            className='hover:cursor-pointer'>
             <OrbitControls enableRotate={true} enableZoom={false} enablePan={false} />
-            <ambientLight intensity={1.3} />
+            <ambientLight intensity={.3} />
             <GlobeMesh theme={theme || 'dark'} />
             {/*<GlobeGraticule theme={theme || 'dark'} />*/}
             <Countries theme={theme || 'dark'} />
@@ -130,7 +128,6 @@ export const Globe = () => {
                     return (
                         <mesh key={index} position={[point.x, point.y, point.z]} quaternion={quaternion}>
                             <cylinderGeometry args={[0.001, 0.001, 0.1, 32]} />
-                            <meshBasicMaterial color={"#61abff"} />
                         </mesh>
                     );
                 })
