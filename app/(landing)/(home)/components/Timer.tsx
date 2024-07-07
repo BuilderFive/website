@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { FaArrowUpFromBracket, FaSpinner } from "react-icons/fa6";
 import { Event, useSession } from "~/util/AuthProvider";
+import { useTimer } from "~/util/TimerProvider";
 import { Tables } from "~/util/supabase-types";
 
 export const calculateTimeRemaining = (now: Date, event: Event | null) => {
@@ -20,17 +21,10 @@ export const calculateTimeRemaining = (now: Date, event: Event | null) => {
 };
 
 export default function Timer({loaded}) {
-    const [currentTime, setCurrentTime] = useState(new Date());
+    const { currentTime } = useTimer();
     const [loading, setLoading] = useState(false);
     const { event } = useSession();
     const router = useRouter();
-    useEffect(() => {
-        const intervalId = setInterval(() => {
-            setCurrentTime(new Date());
-        }, 1000);
-  
-      return () => clearInterval(intervalId);
-    }, []);
   
     const formatTime = (time) => {
         return Math.abs(time) < 10 ? `0${Math.abs(time)}` : Math.abs(time);

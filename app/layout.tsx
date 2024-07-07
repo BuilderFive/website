@@ -13,6 +13,7 @@ import { SessionProvider } from '~/util/AuthProvider';
 import {NextUIProvider} from "@nextui-org/react";
 import { GroupProvider } from '~/util/GroupProvider';
 import { ProfileProvider } from '~/util/ProfileProvider';
+import { TimerProvider } from '~/util/TimerProvider';
 
 const sans = Inter({ subsets: ["latin"], variable: "--font-sans" });
 const mono = Roboto_Mono({ subsets: ["latin"], variable: '--font-mono' });
@@ -72,6 +73,7 @@ export default function RootLayout({
             <head>
                 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
                 <link rel="icon" href="https://www.builderfive.com/favicon.ico?v=2" />
+                <link href='https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.css' rel='stylesheet' />
             </head>
             <body className={css("min-h-screen font-poppins antialiased", sans.variable, mono.variable, poppins.variable)}>
                 <ThemeProvider attribute="class" defaultTheme="dark">
@@ -79,7 +81,9 @@ export default function RootLayout({
                 <SessionProvider>
                 <GroupProvider>
                 <ProfileProvider>
+                <TimerProvider>
                     <div className="flex-1">{children}</div>
+                </TimerProvider>
                 </ProfileProvider>
                 </GroupProvider>
                 </SessionProvider>

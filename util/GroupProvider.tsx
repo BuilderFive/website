@@ -61,15 +61,19 @@ export function GroupProvider(props: React.PropsWithChildren) {
     const [topic, setTopic] = useState("startups")
     const [isLoading, setLoading] = useState<boolean>(false);
     const availableTopics = ["startups","productivity","academics", "careers", "science","history"]
-    const [loadedGroups, setLoadedGroups] = useState<Tables<'groups'>[]>([]) //cache
+    const [loadedGroups, setLoadedGroups] = useState<Tables<'groups'>[]>([]);
+
+    //could get packagedgroup from local storage, 
+    //but would need to figure out how to take precedence 
+    //over grabbing from supabase, then clearing it up
+    
     
     //fires every time user changes
+    //should fire on initial load to fetch up to date info on user's group
     useEffect(() => {
         if (!user) return;
         const fetchGroupData = async () => {
             try {
-                if (!user) return;
-
                 // Fetch the user's group UUID(s). Replace this with your actual logic to get the user's group UUID(s).
                 const { data: userGroups, error: userGroupsError } = await supabase
                     .from('group_members')
@@ -84,7 +88,7 @@ export function GroupProvider(props: React.PropsWithChildren) {
                 }
 
                 const groupUUID = userGroups[0].group_uuid; // Assuming a single group for simplicity.
-
+                
                 // Fetch group data
                 const { data: groupData, error: groupError } = await supabase
                     .from('groups')
@@ -120,14 +124,14 @@ export function GroupProvider(props: React.PropsWithChildren) {
     //fires every time user or topic changes
     useEffect(() => {
         if (!user) return;
-
         const fetchTopicGroups = async () => {
             try {
                 // Fetch the user's group UUID(s). Replace this with your actual logic to get the user's group UUID(s).
                 const { data: fetchedGroups, error: fetchedGroupErrors } = await supabase
                     .from('groups')
-                    .select('*').eq('topic', topic);
-
+                    .select('*')
+                    .eq('topic', topic);
+                
                 if (fetchedGroupErrors) throw fetchedGroupErrors;
 
                 setLoadedGroups(fetchedGroups)
@@ -138,8 +142,9 @@ export function GroupProvider(props: React.PropsWithChildren) {
         fetchTopicGroups();
     }, [user, topic]);
 
-    //fires every time loadedGroups changes
+    //updates to get realtime updates from select topic space
     useEffect(()=> {
+        if (!user) return
         const channel = supabase.channel('topic groups')
             .on('postgres_changes', {
                 event: 'INSERT', schema: 'public', table: 'groups', filter: `topic=eq.${topic}`
@@ -150,16 +155,14 @@ export function GroupProvider(props: React.PropsWithChildren) {
             .on('postgres_changes', {
                 event: 'DELETE', schema: 'public', table: 'groups', filter: `topic=eq.${topic}`
             }, (payload)=> {
-                
                 const oldGroup = {payload}.payload.old as Tables<'groups'>;
                 const newGroups = loadedGroups.filter(group => group.group_uuid !== oldGroup.group_uuid);
                 setLoadedGroups(newGroups);
             }).subscribe()
-
         return () => {
             if (channel) supabase.removeChannel(channel)
         }
-    },[])
+    },[user, topic])
 
 
     //update group members when a new member joins/leaves
@@ -169,21 +172,19 @@ export function GroupProvider(props: React.PropsWithChildren) {
                 event: 'INSERT', schema: 'public', table: 'group_members', filter: `group_uuid=eq.${packagedGroup?.group.group_uuid}`
             }, (payload)=> {
                 const newMember = {payload}.payload.new as Tables<'group_members'>
-                console.log(newMember)
                 handleInsertMember(newMember);
             })
             .on('postgres_changes', {
                 event: 'DELETE', schema: 'public', table: 'group_members', filter: `group_uuid=eq.${packagedGroup?.group.group_uuid}`
             }, (payload)=> {
                 const removedMember = payload.old.user_uuid
-                console.log(payload.old)
                 handleRemoveMember(removedMember)
             })
         .subscribe()
         return () => {
             if (channel) supabase.removeChannel(channel)
         }
-    },[])
+    },[user])
 
     /*
     * Handles removing a member from personal cache "packagedGroup"
@@ -245,11 +246,59 @@ export function GroupProvider(props: React.PropsWithChildren) {
                     Math.pow(group.location[0] - userLatitude, 2) +
                     Math.pow(group.location[1] - userLongitude, 2)
                 );
-                console.log(distance <= radius, distance, radius)
                 return distance <= radius;
         });
 
         const createGroup = async() => {
+            //create a group
+            const { data: newGroup, error: newGroupError } = await supabase
+                .from('groups')
+                .insert([
+                    {
+                        location: [userLocation.latitude, userLocation.longitude],
+                        topic: topic
+                    },
+                ]).select().single();
+            
+            if (newGroupError) {
+                setLoading(false);
+                console.error('Error inserting new group:', newGroupError);
+                return;
+            }
+
+            const group: Tables<'groups'> = newGroup
+            const group_uuid = group.group_uuid
+
+            //insert user into new group
+            const { data: newMember, error: newMemberError } = await supabase
+                .from('group_members')
+                .insert([
+                    {
+                        group_uuid: group_uuid,
+                        user_uuid: user?.id,
+                        location: [userLocation.latitude, userLocation.longitude],
+                    },
+                ]).select().single();
+            
+            if (newMemberError) {
+                setLoading(false);
+                console.error('Error inserting new member:', newMemberError);
+                return;
+            }
+
+
+            const membersData = await fetchMembers(group_uuid)
+
+            const newPackagedGroup = {
+                group: group,
+                members: membersData,
+            };
+
+            setPackagedGroup(newPackagedGroup);
+            setLoading(false)
+            return group_uuid;
+
+            /*
             try {
                 const response = await fetch('../api/group/joinFromTopic/', { 
                     method: 'POST',
@@ -280,7 +329,7 @@ export function GroupProvider(props: React.PropsWithChildren) {
                 setLoading(false)
                 alert(`Failed to join or create group: ${error}`);
                 console.error('Error joining or creating group:', error);
-            }
+            }*/
         }
 
         const insertMember = async(foundGroup: Tables<'groups'>) => {
@@ -300,17 +349,7 @@ export function GroupProvider(props: React.PropsWithChildren) {
                 return;
             }
             
-            // If an eligible group is found, set it as the packagedGroup
-            const { data: membersData, error: membersError } = await supabase
-                .from('group_members')
-                .select('*')
-                .eq('group_uuid', foundGroup.group_uuid);
-
-            if (membersError) {
-                setLoading(false);
-                console.error('Error fetching members data:', membersError);
-                return;
-            }
+            const membersData = await fetchMembers(foundGroup.group_uuid)
 
             const newPackagedGroup = {
                 group: foundGroup,
@@ -329,29 +368,43 @@ export function GroupProvider(props: React.PropsWithChildren) {
         }
     }
 
+    const fetchMembers = async(group_uuid: string) => {
+        const { data: members, error: error } = await supabase
+            .from('group_members')
+            .select('*')
+            .eq('group_uuid', group_uuid);
+
+        if (error) {
+            setLoading(false);
+            console.error('Error fetching members data:', error);
+            return [];
+        }
+        return members as Tables<'group_members'>[]
+
+    }
+
     const leaveGroup = async() => {
+        if (!packagedGroup) return null
         setLoading(true)
 
-        const group_uuid = packagedGroup?.group.group_uuid;
+        const group_uuid = packagedGroup.group.group_uuid;
         const user_uuid = user?.id;
-        
+
+        //delete user from group_members table
+        //check if group is empty, if so delete group
+
         try {
-            const response = await fetch('../api/group/leaveClick/', {
-                method: 'DELETE',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ group_uuid, user_uuid }),
+            const { data, error } = await supabase.rpc('leave_group', {
+                group_id: group_uuid,
+                user_id: user_uuid,
             });
-        
-            const data = await response.json();
-            if (response.ok) {
+            if (!error) {
                 setLoading(false)
                 setPackagedGroup(null)
                 return data
             } else {
                 setLoading(false)
-                console.error('Error leaving group:', data.error);
+                console.error('Error leaving group:', error);
             }
         } catch (error) {
             setLoading(false)

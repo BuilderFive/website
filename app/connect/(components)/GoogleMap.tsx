@@ -134,6 +134,7 @@ export default function MapComponent({children}: {children: React.ReactNode}) {
               <Options/>
           </div>
           <GoogleMap mapContainerStyle={{ height: "100%", width: "100%" }}
+              
               options={{
                   disableDefaultUI: true,
                   styles: theme == "dark" ? nightModeMapStyles : [],

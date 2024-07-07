@@ -16,11 +16,16 @@ import { FaAngleDown, FaAngleLeft, FaAngleRight, FaAngleUp, FaSpinner } from "re
 import { LuMegaphone } from "react-icons/lu";
 import { Tables } from '~/util/supabase-types';
 import { Spinner } from '@nextui-org/react';
+import { useTheme } from 'next-themes';
+import { useTimer } from '~/util/TimerProvider';
 
 export const Sidebar = () => {
-    const { topic, setTopic, userLocation, loadedGroups, availableTopics, packagedGroup, leaveGroup, systemProcessGroupJoin, isLoading, radius } = useGroup();
+    const { topic, setTopic, userLocation, loadedGroups, availableTopics, packagedGroup, leaveGroup, systemProcessGroupJoin, isLoading, radius, setRadius } = useGroup();
     const [open, setOpen] = useState(false);
     const filteredTopics = loadedGroups.filter(group => group.topic == topic);
+    const { theme } = useTheme()
+    const [radiusDropdownOpen, setRadiusDropdownOpen] = useState(false);
+    const { event } = useSession()
 
     const handleTopicChange = async (inputTopic: string) => {
         setOpen(false)
@@ -36,18 +41,44 @@ export const Sidebar = () => {
             const formattedDistance = numberRad.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
             return `${formattedDistance}km radius`
         };
-        return <div className='flex flex-row gap-[12px] pt-[12px] pb-[24px] justify-start items-center w-full h-fit'>
+        const RadiusDropdown = () => {
+            const radiusOptions = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50]
+            return <div className='relative w-fit'>
+                <div onClick={()=>setRadiusDropdownOpen(!radiusDropdownOpen)} className='flex flex-row items-center justify-center p-[12px] rounded-[12px] bg-background3 gap-x-[12px] hover:bg-background2 hover:cursor-pointer'>
+                    <p className='font-regular text-md text-text1 truncate w-full'>{formatRadius(radius)}</p>
+                    {!radiusDropdownOpen ? <FaAngleDown size="16px" className='text-text1'/> : <FaAngleUp size="16px" className='text-text1'/>}
+                </div>
+                {radiusDropdownOpen && <div className={`absolute mt-[12px] w-full h-fit bg-background1 p-[12px] flex flex-col rounded-[12px]`}>
+                    <div className='flex flex-col'>
+                        {radiusOptions.map((rad, id) => <div key={id} onClick={()=> {
+                            setRadius(rad*1000)
+                            setRadiusDropdownOpen(false)
+                        }} className="hover:cursor-pointer hover:bg-background3 p-[8px] rounded-[12px]">
+                            <p className='text-text1'>{rad}km</p>
+                        </div>)}
+                    </div>
+                </div>}
+            </div>
+        }
+
+        return <div className='relative flex flex-row gap-[12px] pt-[12px] pb-[24px] justify-start items-center w-full h-fit'>
             <img src="/static/logos/blue-logo.svg" alt="BuilderFive" className="aspect-square h-[64px] rounded-full" />
             <div id="sidebar-title" className='flex flex-col h-fit w-full'>
                 <p className='font-bold text-2xl text-secondary1'>BuilderFive</p>
-                <div className='flex flex-row w-fit gap-[4px] items-center justify-center'>
-                    {/*<svg height="16" width="16" xmlns="http://www.w3.org/2000/svg">
-                        <circle r="6" cx="6" cy="8" fill="var(--activity-online)" />
-                    </svg>
-                    <p className='font-regular text-lg text-text1 truncate w-full'>32 online</p>*/}
-                    <p className='font-regular text-md text-text1 truncate w-full'>{formatRadius(radius)}</p>
+                <div className='flex flex-col w-fit gap-[4px] items-center justify-center'>
+                    
+                    {/*<div className='flex flex-row gap-[4px] items-center justify-center'>
+                        <svg height="16" width="16" xmlns="http://www.w3.org/2000/svg">
+                            <circle r="6" cx="6" cy="8" fill="var(--activity-online)" />
+                        </svg>
+                        <p className='font-regular text-lg text-text1 truncate w-full'>32 online</p>
+    </div>*/}
+                    
+                   <RadiusDropdown/>
+                    
                 </div>
             </div>
+            
        </div>
     }
     const JoinButton = () => {
@@ -66,7 +97,7 @@ export const Sidebar = () => {
         return <Button onClick={()=>{ 
             if (isLoading) return;
             handleChange(topic)
-        }} className='h-fit w-full p-[12px] h-[70px] rounded-[12px] bg-secondary1'>
+        }} disabled={event?.isActive ? false : false} className='h-fit w-full p-[12px] h-[70px] rounded-[12px] bg-secondary1'>
             {isLoading ? <FaSpinner size={"24px"} className='animate-spin' color={"white"} /> : <p className='text-white font-semibold text-xl'>Join a group</p>}
         </Button>
     }
@@ -84,17 +115,17 @@ export const Sidebar = () => {
     }
     
 
-    return <div className='flex flex-row relative'>
-        <div className='z-1 flex flex-col shadow-md min-w-[280px] max-w-[360px] w-fit bg-background1 px-[12px] py-[24px] gap-[12px] items-center justify-start'>
+    return <div className='flex flex-row relative h-full'>
+        <div className={`z-1 h-fit flex flex-col min-w-[280px] max-w-[360px] w-fit ${theme == "light" ? "bg-background1" : "bg-transparent"} px-[12px] pt-[24px] gap-[12px] items-center rounded-[12px] justify-start`}>
             <Title/>
             <JoinButton/>
             <TopicDrawer/>
             <ActiveGroups/>
         </div>
-        {open && <div className='absolute z-10 left-[280px] shadow-md h-full bg-background2 px-[12px] py-[24px] flex flex-col w-[240px]'>
+        {open && <div className={`ml-[8px] h-fit ${theme == "light" ? "bg-background1" : "bg-transparent"} px-[12px] pt-[24px] flex flex-col w-[240px] rounded-[12px]`}>
             <p className='font-bold text-[24px] text-text1'>Topics</p>
             <div className='flex flex-col'>
-                {availableTopics.map((subj, id) => <div key={id} id="row-#" onClick={()=> handleTopicChange(subj)} className="hover:cursor-pointer hover:bg-background3 p-[8px]">
+                {availableTopics.map((subj, id) => <div key={id} id="row-#" onClick={()=> handleTopicChange(subj)} className="hover:cursor-pointer hover:bg-background3 p-[8px] rounded-[12px]">
                     <p className='text-text1'>{subj}</p>
                 </div>)}
             </div>
@@ -104,14 +135,8 @@ export const Sidebar = () => {
 
 const RenderGroups = ({ filteredTopics, userLocation }) => {
     const { leaveGroup } = useGroup()
-    const [currentTime, setCurrentTime] = useState(new Date());
-    useEffect(() => {
-        const intervalId = setInterval(() => {
-            setCurrentTime(new Date());
-        }, 1000);
-  
-      return () => clearInterval(intervalId);
-    }, []);
+    const { currentTime } = useTimer();
+
   
     function getTimeRemaining(group) {
       const endAt = group.end_at;

@@ -1,16 +1,13 @@
 'use client';
 
-import { css } from '~/util';
-import { Button, buttonVariants } from '../../../components/ui/button';
-import { InstagramLogoIcon, LinkedInLogoIcon } from '@radix-ui/react-icons';
 import React, { useEffect, useRef, useState } from 'react';
 import { useSession } from '~/util/AuthProvider';
 import { useGroup } from '~/util/GroupProvider';
-import { MediaConnection } from 'peerjs';
 import { useProfile } from '~/util/ProfileProvider';
-import { ControlBar, AudioVisualizer, LiveKitRoom, TrackRefContext, useEnsureTrackRef, useParticipantTile, useTracks } from '@livekit/components-react';
+import { ControlBar, AudioVisualizer, LiveKitRoom, TrackRefContext, useEnsureTrackRef, useParticipantTile, useTracks, useLiveKitRoom } from '@livekit/components-react';
 import { AudioConference } from '~/components/audio/room-conference';
-import { Track } from 'livekit-client';
+import { Track, Room } from 'livekit-client';
+import { useTheme } from 'next-themes';
 
 export const Footer = () => {
     const { radius, packagedGroup, topic, leaveGroup, setLoading, isLoading } = useGroup();
@@ -18,8 +15,11 @@ export const Footer = () => {
     const { user } = useSession();
     const name = `${first_name} ${last_name}`;
     const [token, setToken] = useState("");
-    const room = packagedGroup?.group.group_uuid;
+    const roomId = packagedGroup?.group.group_uuid;
     const [timeRemaining, setTimeRemaining] = useState({ minutes: 0, seconds: 0 });
+    const { theme } = useTheme()
+    const serverUrl = process.env.NEXT_PUBLIC_LIVEKIT_URL;
+
     
     useEffect(() => {
         if (!first_name || !last_name) return;
@@ -27,7 +27,7 @@ export const Footer = () => {
         (async () => {
         try {
             const resp = await fetch(
-            `/api/get-participant-token?room=${room}&username=${name}`
+            `/api/get-participant-token?room=${roomId}&username=${name}`
             );
             const data = await resp.json();
             setToken(data.token);
@@ -35,7 +35,11 @@ export const Footer = () => {
             console.error(e);
         }
         })();
-    }, [first_name, last_name, room]);
+    }, [first_name, last_name, roomId]);
+
+
+    //create listeners to automatically leaveGroup if you disconnect your audio
+    
     
     function formatNumberWithCommas(number) {
         if (typeof number !== 'number') {
@@ -47,11 +51,13 @@ export const Footer = () => {
         return `${formattedDistance}km radius`
     }
 
-    return <footer className="w-full bg-background1 text-text1">
+    return <footer className={`w-full ${theme == "light" ? "bg-background1" : "bg-background3"} text-text1`}>
         <LiveKitRoom audio={true}
+            onDisconnected={() => {
+                leaveGroup();
+            }}
             token={token} className="w-full h-[80px] flex flex-row justify-between py-[12px] px-[12px] gap-[24px] items-center justify-center"
-            serverUrl={process.env.NEXT_PUBLIC_LIVEKIT_URL}
-            // Use the default LiveKit theme for nice styles.
+            serverUrl={serverUrl}
             data-lk-theme="default">
                 
             <AudioConference className='flex flex-row text-text1 w-full justify-between items-center'/>

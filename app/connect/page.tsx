@@ -14,14 +14,15 @@ import {calculateTimeRemaining} from "./../(landing)/(home)/components/Timer";
 import { useRouter } from "next/navigation";
 import { Header } from "./(components)/Header";
 import { useJsApiLoader } from "@react-google-maps/api";
+import Globe from "./(components)/Globe";
 
 export default function Page() {
-  const { packagedGroup } = useGroup();
-  const { user } = useSession();
-  const { event } = useSession()
+  const { packagedGroup, setUserLocation } = useGroup();
+  const { user, event } = useSession();
   const [showModal, setShowModal] = useState(false);
   const { days, hours, minutes, seconds } = calculateTimeRemaining(new Date(), event);
   const router = useRouter()
+  const [ loading, setLoading ] = useState(false)
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY || ""
 })
@@ -34,6 +35,57 @@ export default function Page() {
       }, 1000)
     }
   }, []);*/
+
+  
+    const [locationPermission, setLocationPermission] = useState<PermissionState>("denied")
+   
+    useEffect(()=> {
+        const fetchLocationPermission = async () => {
+            const permission = await navigator.permissions.query({ name: "geolocation" })
+            setLocationPermission(permission.state)
+        }
+        fetchLocationPermission()
+    },[])
+
+    function getLocation() {
+      if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(getCoordinates, handleLocationError);
+  
+      } else {
+          alert("Geolocation is not supported by this browser.");
+      }
+  }
+  
+  function getCoordinates(position) {
+      setUserLocation({latitude: position.coords.latitude, longitude: position.coords.longitude})
+      setLoading(false)
+  }
+  
+  function handleLocationError(error) {
+      switch (error.code) {
+          case error.PERMISSION_DENIED:
+              console.log("User denied the request for Geolocation.");
+              break;
+          case error.POSITION_UNAVAILABLE:
+              console.log("Location information is unavailable.");
+              break;
+          case error.TIMEOUT:
+              console.log("The request to get user location timed out.");
+              break;
+          case error.UNKNOWN_ERROR:
+              console.log("An unknown error occurred.");
+              break;
+          default:
+              console.log("An unknown error occurred.");
+              break;
+      }
+  }
+
+  useEffect(() => {
+    if ( locationPermission == null || locationPermission != "granted" ) {
+      getLocation()
+    }
+  },[])
   
   useEffect(()=> {
     if (!user) {
@@ -45,12 +97,14 @@ export default function Page() {
 
   return !user ? <div className="min-h-screen min-w-screen">
     <Modal showModal={showModal} setShowModal={setShowModal}/>
-  </div> : <div className="flex flex-row w-screen h-screen">
+  </div> : (locationPermission == "granted" ? <div className="flex flex-row w-screen h-screen relative">
       {isLoaded && <><Header />
-      <Sidebar/>
-      <MapComponent>
+      <Globe>
+        <Sidebar/>
         {packagedGroup && <Footer />}
-      </MapComponent></>}
-    </div>
+      </Globe></>}
+    </div> : <div className="flex items-center justify-center min-h-screen min-w-screen">
+      <p className="text-background1 text-[36px] font-semibold text-center">Please enable location services<br/> and refresh your page</p>
+    </div>)
   ;
 };
