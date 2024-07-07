@@ -7,15 +7,16 @@ import { Globe } from "./globe/Globe";
 import { FaMicrophone } from "react-icons/fa6";
 import {Tooltip} from "@nextui-org/tooltip";
 import { useSession } from "~/util/AuthProvider";
+import { useRouter } from "next/navigation";
 export default function Hero({loaded, setLoaded}) {
 
     const { event } = useSession();
-
+    const router = useRouter()
     return <div className="min-h-screen">
     <div id="Hero" className="px-[48px] max-md:px-[12px] w-full h-full flex flex-row max-md:flex-col flex-wrap flex-grow py-[48px] justify-between max-md:items-center space-y-[48px]">
         <section id="Column 1" className="flex flex-col max-md:items-center justify-between items-start w-fit max-md:w-full flex-1 space-y-[24px]">
             <div id="title" className="h-full max-w-[600px] space-y-[4px] max-md:text-center flex flex-col justify-center max-md:items-center">
-                <h1 className="text-8xl max-md:text-5xl text-secondary1 font-bold"><a className="max-md:truncate">Make new</a> <a className="max-md:truncate">friends</a></h1>
+                <h1 className="text-8xl max-md:text-5xl text-secondary1 font-bold"><a className="max-md:truncate">From audio</a> <a className="max-md:truncate">to meetup</a></h1>
                 <h2 className="text-4xl max-md:text-xl text-secondary4 font-regular max-md:w-full">Join thousands meeting local like-minded strangers in voice calls every week, and meetup at a local cafe</h2>
             </div>
             <div id="timer" className="flex flex-col space-y-[12px]">
@@ -35,7 +36,7 @@ export default function Hero({loaded, setLoaded}) {
         </section>
         <section id="Column 2" className="flex flex-col max-md:items-center justify-start items-center w-fit flex-1 space-y-[48px] max-md:pl-[0px] pl-[48px]">
             <div className="relative max-w-[750px] w-full">
-                <div className="max-md:hidden max-w-[750px] w-full aspect-square">
+                <div onClick={()=>router.push('/connect')} className="max-md:hidden max-w-[750px] w-full aspect-square">
                     <Globe />
                 </div>
                 

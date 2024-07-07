@@ -3,6 +3,9 @@
 import { Navigation } from '../nav/Navigation';
 import { ThemeSwitcher } from '../nav/ThemeSwitcher';
 import { MobileNavigation } from '../nav/NavigationMobile';
+import Link from 'next/link';
+import { FaGlobe } from 'react-icons/fa';
+import { FaEarthAmericas } from 'react-icons/fa6';
 
 export const Header: React.FC = () => (
     <header className="top-3 z-40 w-full">
@@ -11,7 +14,11 @@ export const Header: React.FC = () => (
             <MobileNavigation />
             
             <div className="flex md:justify-end w-fit items-center space-x-[24px]">
-                <nav className="flex items-center">
+                <Link href="/connect" className="flex flex-row gap-[12px] items-center hover:cursor-pointer p-[12px] rounded-[12px] hover:font-semibold">
+                    <p className='text-white text-[14px] font-regular'>Go to Globe</p>
+                    <FaEarthAmericas/>
+                </Link>
+               <nav className="flex items-center">
                     <ThemeSwitcher />
                 </nav>
             </div>

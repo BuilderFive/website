@@ -39,25 +39,45 @@ export const Header: React.FC = () => {
 
     //to the public
     const ActiveEvent = () => {
-        return (
-            <div className="p-[12px] flex flex-row gap-[8px] text-text1 bg-background3 items-center rounded-[8px]">
-                <p></p>{formatTime(timeLeft.days)} days {formatTime(timeLeft.hours)} hours {formatTime(timeLeft.minutes)} minutes {formatTime(timeLeft.seconds)} seconds
+        return (<div className="flex flex-col items-center">
+            <div className="flex flex-row justify-center w-full items-center">
+                <p className="text-secondary1 text-[36px] font-bold">ACTIVE</p> 
+
             </div>
+            <p className="text-error1 font-regular text-[24px]">
+                {timeLeft.days > 0 && `${formatTime(timeLeft.days)} days `}
+                {timeLeft.hours > 0 && `${formatTime(timeLeft.hours)} hours `}
+                {timeLeft.minutes > 0 && `${formatTime(timeLeft.minutes)} minutes `}
+                {timeLeft.seconds > 0 && `${formatTime(timeLeft.seconds)} seconds`}
+            </p>
+        </div>
         );
     };
 
     //this only shows if you're a developer
     const ComingEvent = () => {
+        return (<div className="flex flex-col items-center">
+            <div className="flex flex-row justify-center w-full items-center">
+                <p className="text-secondary1 text-[36px] font-bold">STARTING SOON</p> 
 
+            </div>
+            <p className="text-white font-regular text-[24px]">
+                {timeLeft.days > 0 && `${formatTime(timeLeft.days)} days `}
+                {timeLeft.hours > 0 && `${formatTime(timeLeft.hours)} hours `}
+                {timeLeft.minutes > 0 && `${formatTime(timeLeft.minutes)} minutes `}
+                {timeLeft.seconds > 0 && `${formatTime(timeLeft.seconds)} seconds`}
+            </p>
+        </div>
+        );
     }
 
-    return (<header className="absolute top-0 right-0 z-10 w-fit">
+    return (<header className="fixed top-0 right-0 z-10 w-full">
         <div className="flex flex-row w-full justify-end max-md:h-16 py-[24px] px-[24px] items-start text-white">
-            
-            
+            <div className="absolute w-full flex items-center justify-center">
+                {event?.isActive ? <ActiveEvent/> : <ComingEvent/>}
+            </div>
             
             <div className="flex md:justify-end w-fit items-center space-x-[24px]">
-                {event?.isActive ? "Event is live" : <ActiveEvent/>}
                 {/*<nav className="flex items-center max-md:hidden">
                     <CurrentlySearching/>
                 </nav>
