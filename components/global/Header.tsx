@@ -14,8 +14,8 @@ export const Header: React.FC = () => (
             <MobileNavigation />
             
             <div className="flex md:justify-end w-fit items-center space-x-[24px]">
-                <Link href="/connect" className="flex flex-row gap-[12px] items-center hover:cursor-pointer hover:bg-background1 p-[12px] rounded-[12px]">
-                    <p className='text-white text-[14px] font-regular '>Go to Globe</p>
+                <Link href="/connect" className="flex flex-row gap-[12px] items-center hover:cursor-pointer p-[12px] rounded-[12px] hover:font-semibold">
+                    <p className='text-white text-[14px] font-regular'>Go to Globe</p>
                     <FaEarthAmericas/>
                 </Link>
                <nav className="flex items-center">
