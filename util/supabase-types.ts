@@ -128,44 +128,47 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "group_members_group_uuid_fkey"
+            columns: ["group_uuid"]
+            isOneToOne: false
+            referencedRelation: "groups"
+            referencedColumns: ["group_uuid"]
+          },
+          {
             foreignKeyName: "group_members_user_uuid_fkey"
             columns: ["user_uuid"]
             isOneToOne: true
             referencedRelation: "account"
             referencedColumns: ["uuid"]
           },
-          {
-            foreignKeyName: "MVP_members_group_uuid_fkey"
-            columns: ["group_uuid"]
-            isOneToOne: false
-            referencedRelation: "groups"
-            referencedColumns: ["group_uuid"]
-          },
         ]
       }
       groups: {
         Row: {
           created_at: string
-          end_at: string | null
+          end_at: string
           group_uuid: string
           location: number[]
           max_members: number
+          title: string
           topic: string
         }
         Insert: {
           created_at?: string
-          end_at?: string | null
+          end_at?: string
           group_uuid?: string
           location?: number[]
           max_members?: number
+          title?: string
           topic?: string
         }
         Update: {
           created_at?: string
-          end_at?: string | null
+          end_at?: string
           group_uuid?: string
           location?: number[]
           max_members?: number
+          title?: string
           topic?: string
         }
         Relationships: []
@@ -243,13 +246,6 @@ export type Database = {
           user_uuid?: string | null
         }
         Relationships: [
-          {
-            foreignKeyName: "signaling_data_group_uuid_fkey"
-            columns: ["group_uuid"]
-            isOneToOne: false
-            referencedRelation: "groups"
-            referencedColumns: ["group_uuid"]
-          },
           {
             foreignKeyName: "signaling_data_user_uuid_fkey"
             columns: ["user_uuid"]

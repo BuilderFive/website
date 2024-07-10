@@ -20,7 +20,7 @@ import { useTheme } from 'next-themes';
 import { useTimer } from '~/util/TimerProvider';
 
 export const Sidebar = () => {
-    const { topic, setTopic, userLocation, loadedGroups, availableTopics, packagedGroup, leaveGroup, systemProcessGroupJoin, isLoading, radius, setRadius } = useGroup();
+    const { topic, setTopic, userLocation, loadedGroups, availableTopics, packagedGroup, leaveGroup, joinRandomGroup, isLoading, radius, setRadius } = useGroup();
     const [open, setOpen] = useState(false);
     const filteredTopics = loadedGroups.filter(group => group.topic == topic);
     const { theme } = useTheme()
@@ -91,7 +91,7 @@ export const Sidebar = () => {
                 //not here rn because we don't know want successful response is
             }
             //check if user is already in a group, if so call leaveGroup and await for user confirmation
-            systemProcessGroupJoin(inputTopic)
+            joinRandomGroup(inputTopic)
         };
 
         return <Button onClick={()=>{ 
