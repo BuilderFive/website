@@ -130,6 +130,23 @@ const Modal = ({ showModal, setShowModal }) => {
         clearForm()
     }
 
+    const handleGoogleSignin = async () => {
+        const { data, error } = await supabase.auth.signInWithOAuth({
+            provider: 'google',
+            options: {
+              queryParams: {
+                access_type: 'offline',
+                prompt: 'consent',
+              },
+            },
+          })
+        if (error) {
+            console.error('Error signing in with Google:', error);
+        } else {
+            console.log('Signed in with Google:', data);
+        }
+    }
+
     const Verification = () => {
         return <div className="w-[540px] h-[540px] flex flex-col gap-[24px] bg-white items-center justify-center rounded-[12px] p-[24px]">
         <div className='flex flex-row justify-center items-center text-center'>
@@ -212,7 +229,10 @@ const Modal = ({ showModal, setShowModal }) => {
 
         <div className='flex flex-col gap-[12px]'>
             
-           <GoogleSignUp/>
+            <div onClick={handleGoogleSignin} className='w-full flex flex-row py-[12px] gap-[12px] rounded-[12px] items-center justify-center bg-background1 hover:cursor-pointer hover:bg-background3'>
+                <img className='w-6 h-6' src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google logo"/>
+                <p className='text-text1 '>Sign up with google</p>
+            </div>
 
             {!loading ? 
                 <Button variant="default" className='text-text1 text-xl font-semibold rounded-[12px] w-full bg-secondary1 py-[36px]'
@@ -264,7 +284,10 @@ const Modal = ({ showModal, setShowModal }) => {
         <div className='flex flex-col gap-[12px]'>
             
 
-            <GoogleSignIn/>
+            <div onClick={handleGoogleSignin} className='w-full flex flex-row py-[12px] gap-[12px] rounded-[12px] items-center justify-center bg-background1 hover:cursor-pointer hover:bg-background3'>
+                <img className='w-6 h-6' src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google logo"/>
+                <p className='text-text1 '>Sign in with google</p>
+            </div>
 
             {!loading ? 
             <Button variant="default" className='text-text1 text-xl font-semibold rounded-[12px] w-full bg-secondary1 py-[36px]'
