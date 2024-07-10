@@ -7,6 +7,7 @@ import { Tables } from './supabase-types';
 import { useSession } from './AuthProvider';
 import { group } from 'console';
 import { m } from 'framer-motion';
+import { title } from 'process';
 
 interface GroupContextProps {
     radius: number;
@@ -19,7 +20,7 @@ interface GroupContextProps {
     systemProcessGroupJoin: (newTopic: string) => void;
     availableTopics: string[];
     leaveGroup: () => void;
-    createGroup: () => void;
+    createGroup: (discussionPrompt: string) => void;
     setTopic: (topic: string) => void;
     loadedGroups: Tables<'groups'>[];
     setLoading: (loading: boolean) => void;
@@ -282,12 +283,10 @@ export function GroupProvider(props: React.PropsWithChildren) {
 
         if (eligibleGroup) {
             insertMember(eligibleGroup);
-        } else {
-            createGroup();
         }
     }
 
-    const createGroup = async() => {
+    const createGroup = async(discussionPrompt: string) => {
         if (userLocation.latitude === null || userLocation.longitude === null) {
             alert('Please enable location services to join a group.');
             return;
@@ -297,6 +296,7 @@ export function GroupProvider(props: React.PropsWithChildren) {
             .from('groups')
             .insert([
                 {
+                    title: discussionPrompt,
                     location: [userLocation.latitude, userLocation.longitude],
                     topic: topic
                 },

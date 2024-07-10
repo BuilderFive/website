@@ -161,15 +161,15 @@ function EmptyBubble({topic, packagedGroup, createGroup, leaveGroup}) {
         setCharacterCount(e.target.value.length)
     }
 
-    const handleSubmit = async(e: KeyboardEvent<HTMLTextAreaElement>) => {
-        setPrompt("")
-        setCharacterCount(0)
+    const handleSubmit = async(e: KeyboardEvent<HTMLTextAreaElement>) => {        
         if (packagedGroup) {
             //means user is currently in a call. Leave the group
             const response = await leaveGroup();
         }
         //check if user is already in a group, if so call leaveGroup and await for user confirmation
-        createGroup()
+        createGroup(prompt)
+        setPrompt("")
+        setCharacterCount(0)
     }
 
     return <div className="flex flex-col w-[240px] h-[280px]">
