@@ -56,7 +56,7 @@ export default function HowItWorks() {
                         </div>
                     </div>
                     <div id="howitworks-item-4" className="hover:shadow-xl w-[240px] flex relative flex-col flex-grow px-[24px] py-[24px] bg-background2 rounded-[12px] space-y-[24px] max-md:w-full items-center justify-center">
-                        <p className="text-3xl font-semibold text-text1">RSVP to meetup at a nearby cafe for coupons</p>
+                        <p className="text-3xl font-semibold text-text1">Schedule a meetup at a nearby cafe</p>
                         <RevealOnScroll><img loading="lazy"
                             src="static/cafe.svg"
                             alt="Group of people collaborating"

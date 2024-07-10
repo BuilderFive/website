@@ -7,6 +7,9 @@ import { Button } from './button';
 import { MdiIcon } from '~/util';
 import { mdiLoading } from '@mdi/js';
 import LottiePlayer from '@lottiefiles/lottie-player';
+import GoogleSignIn from './google-sign-in';
+import GoogleSignUp from './google-sign-up';
+import { Sign } from 'crypto';
 
 
 const Modal = ({ showModal, setShowModal }) => {
@@ -127,152 +130,170 @@ const Modal = ({ showModal, setShowModal }) => {
         clearForm()
     }
 
+    const Verification = () => {
+        return <div className="w-[540px] h-[540px] flex flex-col gap-[24px] bg-white items-center justify-center rounded-[12px] p-[24px]">
+        <div className='flex flex-row justify-center items-center text-center'>
+            <p className='text-2xl font-semibold text-background1'>Check your email to verify your account</p>
+        </div>
+        <div className='flex-1'/>
+        <img src="./animations/email-verification.gif" height={150} width={150} className='self-center'/>
+        <div className='flex-1'/>
+        <Button variant="default" className='text-text1 text-xl font-semibold rounded-[12px] w-full bg-secondary1 py-[36px]'
+            onClick={()=>{
+                setFinishedSignup(false)
+                setShowModal(!showModal)
+                router.push('/connect')
+            }}>
+            Okay
+        </Button>
+    </div>
+    }
+
+    const SignUpModal = () => {
+        return <div className="w-[540px] min-h-[540px] flex flex-col gap-[24px] bg-background1 rounded-[12px] p-[24px]">
+        <div className='flex flex-col'>
+            <div className='flex flex-row justify-between'>
+                <p className='text-4xl font-semibold text-text1'>Sign Up</p>
+                {/*<IoMdClose color={"var(--text-1)"} className='text-4xl hover:cursor-pointer' onClick={() => setShowModal(false)} />*/}
+            </div>
+            <p className='text-xl font-regular text-text3 text-start'>Join communities of real people</p>
+        </div>
+
+        <form onSubmit={e => e.preventDefault()}
+            className="items-center gap-[12px] w-full flex flex-col justify-center h-fit">
+            
+            <Input type="email"
+                value={email}
+                className="bg-white p-[12px] rounded-[8px] text-text6 text-lg invalid:border-red-400 h-fit"
+                placeholder="Email"
+                onChange={e => { 
+                    setEmail(e.target.value) 
+                }}/>
+            <div className='flex flex-row w-full space-x-[12px]'>
+                <Input type="text"
+                    value={firstname}
+                    className="bg-white w-full p-[12px] rounded-[8px] text-text6 text-lg invalid:border-red-400 h-fit"
+                    placeholder="First name"
+                    onChange={e => setFirstname(e.target.value)}/>
+                <Input type="text"
+                    value={lastname}
+                    className="bg-white w-full p-[12px] rounded-[8px] text-text6 text-lg invalid:border-red-400 h-fit"
+                    placeholder="Last name"
+                    onChange={e => setLastname(e.target.value)}/>
+            </div>
+            
+            <div className='relative w-full flex items-center'>
+
+                <Input type={showPassword ? "text" : "password"}
+                    value={password}
+                    className="bg-white p-[12px] rounded-[8px] text-text6 text-lg invalid:border-red-400 h-fit"
+                    placeholder="Password"
+                    onChange={e => setPassword(e.target.value)}/>
+                <button className="absolute right-[12px]"
+                    onClick={() => setShowPassword(!showPassword)}>
+                    {showPassword ? (
+                        <IoMdEyeOff className="text-secondary1 text-lg" />
+                    ) : (
+                        <IoMdEye className="text-secondary1 text-lg" />
+                    )}
+                </button>
+            </div>
+            
+        </form>
+
+        <div className='flex flex-row gap-[12px] flex-wrap'>
+            {errors.emailError && <p className='text-error1 text-sm'>{errors.emailError}</p>}
+            {errors.firstname && <p className='text-error1 text-sm'>{errors.firstname}</p>}
+            {errors.lastname && <p className='text-error1 text-sm'>{errors.lastname}</p>}
+            {errors.passwordError && <p className='text-error1 text-sm'>{errors.passwordError}</p>}
+        </div>
+
+        <div className='flex-1'/>
+
+        <div className='flex flex-col gap-[12px]'>
+            
+           <GoogleSignUp/>
+
+            {!loading ? 
+                <Button variant="default" className='text-text1 text-xl font-semibold rounded-[12px] w-full bg-secondary1 py-[36px]'
+                    onClick={handleSignup}>
+                    Submit
+                </Button> :
+                <Button variant="default" className='text-text4 text-xl font-semibold rounded-[12px] w-full bg-text3 py-[36px]'>
+                    Loading...
+                </Button>
+            }
+
+            <div className='w-full'>
+                <div className='flex flex-row justify-center'>
+                    <p className='text-text3'>Already have an account? <a onClick={()=>setIsSignUp(false)} className='text-secondary1 hover:cursor-pointer'>Sign in</a></p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    }
+
+    const SignInModal = () => {
+        return <div className="w-[540px] min-h-[540px] flex flex-col gap-[24px] bg-background1 rounded-[12px] p-[24px]">
+        <div className='flex flex-col'>
+            <div className='flex flex-row justify-between'>
+                <p className='text-4xl font-semibold text-text1'>Sign In</p>
+                {/*<IoMdClose color={"var(--text-1)"} className='text-4xl hover:cursor-pointer' onClick={() => setShowModal(false)} />*/}
+            </div>
+            <p className='text-xl font-regular text-text3 text-start'>Register to get full access!</p>
+        </div>
+
+        <form onSubmit={e => e.preventDefault()}
+            className="items-center gap-[12px] w-full flex flex-col justify-center h-fit">
+            
+            <Input type="email"
+                value={email}
+                className="bg-white p-[12px] rounded-[8px] text-text6 text-lg invalid:border-red-400 h-fit"
+                placeholder="Email"
+                onChange={e => setEmail(e.target.value)}/>
+            <Input type="password"
+                value={password}
+                className="bg-white p-[12px] rounded-[8px] text-text6 text-lg invalid:border-red-400 h-fit"
+                placeholder="Password"
+                onChange={e => setPassword(e.target.value)}/>
+        </form>
+
+        <div className='flex-1'/>
+
+        <div className='flex flex-col gap-[12px]'>
+            
+
+            <GoogleSignIn/>
+
+            {!loading ? 
+            <Button variant="default" className='text-text1 text-xl font-semibold rounded-[12px] w-full bg-secondary1 py-[36px]'
+                onClick={handleSignIn}>
+                Submit
+            </Button> :
+            <Button variant="default" className='text-text4 text-xl font-semibold rounded-[12px] w-full bg-text3 py-[36px]'>
+                Loading...
+            </Button>
+            }
+
+            <div className='w-full'>
+                <div className='flex flex-row justify-center'>
+                    <p className='text-text3'>Don&apos;t have an account? <a onClick={()=>setIsSignUp(true)} className='text-secondary1 hover:cursor-pointer'>Sign up</a></p>
+                </div>
+            </div>
+        </div>
+
+       
+
+    </div>
+    }
 
     return (
         showModal && (
         <div className="fixed z-10 inset-0 overflow-y-auto backdrop-blur-md flex justify-center items-center">
-            {finishedSignup && <div className="w-[540px] h-[540px] flex flex-col gap-[24px] bg-white items-center justify-center rounded-[12px] p-[24px]">
-                <div className='flex flex-row justify-center items-center text-center'>
-                    <p className='text-2xl font-semibold text-background1'>Check your email to verify your account</p>
-                </div>
-                <div className='flex-1'/>
-                <img src="./animations/email-verification.gif" height={150} width={150} className='self-center'/>
-                <div className='flex-1'/>
-                <Button variant="default" className='text-text1 text-xl font-semibold rounded-[12px] w-full bg-secondary1 py-[36px]'
-                    onClick={()=>{
-                        setFinishedSignup(false)
-                        setShowModal(!showModal)
-                        router.push('/connect')
-                    }}>
-                    Okay
-                </Button>
-            </div>}
-            {!finishedSignup && isSignUp && <div className="w-[540px] min-h-[540px] flex flex-col gap-[24px] bg-background1 rounded-[12px] p-[24px]">
-                <div className='flex flex-col'>
-                    <div className='flex flex-row justify-between'>
-                        <p className='text-4xl font-semibold text-text1'>Sign Up</p>
-                        {/*<IoMdClose color={"var(--text-1)"} className='text-4xl hover:cursor-pointer' onClick={() => setShowModal(false)} />*/}
-                    </div>
-                    <p className='text-xl font-regular text-text3 text-start'>Join communities of real people</p>
-                </div>
-
-                <form onSubmit={e => e.preventDefault()}
-                    className="items-center gap-[12px] w-full flex flex-col justify-center h-fit">
-                    
-                    <Input type="email"
-                        value={email}
-                        className="bg-white p-[12px] rounded-[8px] text-text6 text-lg invalid:border-red-400 h-fit"
-                        placeholder="Email"
-                        onChange={e => { 
-                            setEmail(e.target.value) 
-                        }}/>
-                    <div className='flex flex-row w-full space-x-[12px]'>
-                        <Input type="text"
-                            value={firstname}
-                            className="bg-white w-full p-[12px] rounded-[8px] text-text6 text-lg invalid:border-red-400 h-fit"
-                            placeholder="First name"
-                            onChange={e => setFirstname(e.target.value)}/>
-                        <Input type="text"
-                            value={lastname}
-                            className="bg-white w-full p-[12px] rounded-[8px] text-text6 text-lg invalid:border-red-400 h-fit"
-                            placeholder="Last name"
-                            onChange={e => setLastname(e.target.value)}/>
-                    </div>
-                    
-                    <div className='relative w-full flex items-center'>
-
-                        <Input type={showPassword ? "text" : "password"}
-                            value={password}
-                            className="bg-white p-[12px] rounded-[8px] text-text6 text-lg invalid:border-red-400 h-fit"
-                            placeholder="Password"
-                            onChange={e => setPassword(e.target.value)}/>
-                        <button className="absolute right-[12px]"
-                            onClick={() => setShowPassword(!showPassword)}>
-                            {showPassword ? (
-                                <IoMdEyeOff className="text-secondary1 text-lg" />
-                            ) : (
-                                <IoMdEye className="text-secondary1 text-lg" />
-                            )}
-                        </button>
-                    </div>
-                    
-                </form>
-
-                <div className='flex flex-row gap-[12px] flex-wrap'>
-                    {errors.emailError && <p className='text-error1 text-sm'>{errors.emailError}</p>}
-                    {errors.firstname && <p className='text-error1 text-sm'>{errors.firstname}</p>}
-                    {errors.lastname && <p className='text-error1 text-sm'>{errors.lastname}</p>}
-                    {errors.passwordError && <p className='text-error1 text-sm'>{errors.passwordError}</p>}
-                </div>
-
-                <div className='flex-1'/>
-
-                <div className='flex flex-col gap-[12px]'>
-                    {!loading ? 
-                    <Button variant="default" className='text-text1 text-xl font-semibold rounded-[12px] w-full bg-secondary1 py-[36px]'
-                        onClick={handleSignup}>
-                        Submit
-                    </Button> :
-                    <Button variant="default" className='text-text4 text-xl font-semibold rounded-[12px] w-full bg-text3 py-[36px]'>
-                        Loading...
-                    </Button>
-                    }
-
-                    <div className='w-full'>
-                        <div className='flex flex-row justify-center'>
-                            <p className='text-text3'>Already have an account? <a onClick={()=>setIsSignUp(false)} className='text-secondary1 hover:cursor-pointer'>Sign in</a></p>
-                        </div>
-                    </div>
-                </div>
-
-            </div>}
-            {!finishedSignup && !isSignUp && <div className="w-[540px] min-h-[540px] flex flex-col gap-[24px] bg-background1 rounded-[12px] p-[24px]">
-                <div className='flex flex-col'>
-                    <div className='flex flex-row justify-between'>
-                        <p className='text-4xl font-semibold text-text1'>Sign In</p>
-                        {/*<IoMdClose color={"var(--text-1)"} className='text-4xl hover:cursor-pointer' onClick={() => setShowModal(false)} />*/}
-                    </div>
-                    <p className='text-xl font-regular text-text3 text-start'>Register to get full access!</p>
-                </div>
-
-                <form onSubmit={e => e.preventDefault()}
-                    className="items-center gap-[12px] w-full flex flex-col justify-center h-fit">
-                    
-                    <Input type="email"
-                        value={email}
-                        className="bg-white p-[12px] rounded-[8px] text-text6 text-lg invalid:border-red-400 h-fit"
-                        placeholder="Email"
-                        onChange={e => setEmail(e.target.value)}/>
-                    <Input type="password"
-                        value={password}
-                        className="bg-white p-[12px] rounded-[8px] text-text6 text-lg invalid:border-red-400 h-fit"
-                        placeholder="Password"
-                        onChange={e => setPassword(e.target.value)}/>
-                </form>
-
-                <div className='flex-1'/>
-
-                <div className='flex flex-col gap-[12px]'>
-                    {!loading ? 
-                    <Button variant="default" className='text-text1 text-xl font-semibold rounded-[12px] w-full bg-secondary1 py-[36px]'
-                        onClick={handleSignIn}>
-                        Submit
-                    </Button> :
-                    <Button variant="default" className='text-text4 text-xl font-semibold rounded-[12px] w-full bg-text3 py-[36px]'>
-                        Loading...
-                    </Button>
-                    }
-
-                    <div className='w-full'>
-                        <div className='flex flex-row justify-center'>
-                            <p className='text-text3'>Don&apos;t have an account? <a onClick={()=>setIsSignUp(true)} className='text-secondary1 hover:cursor-pointer'>Sign up</a></p>
-                        </div>
-                    </div>
-                </div>
-
-               
-
-            </div>}
+            {finishedSignup && <Verification/>}
+            {!finishedSignup && isSignUp && <SignUpModal/>}
+            {!finishedSignup && !isSignUp && <SignInModal/>}
         </div>
     ))
 }

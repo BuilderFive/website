@@ -73,7 +73,8 @@ export default function RootLayout({
             <head>
                 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
                 <link rel="icon" href="https://www.builderfive.com/favicon.ico?v=2" />
-                <link href='https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.css' rel='stylesheet' />
+                <link href='https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.css' rel='stylesheet' /><script src="https://accounts.google.com/gsi/client" async defer></script>
+                <script src="https://accounts.google.com/gsi/client" async defer></script>
             </head>
             <body className={css("min-h-screen font-poppins antialiased", sans.variable, mono.variable, poppins.variable)}>
                 <ThemeProvider attribute="class" defaultTheme="dark">
