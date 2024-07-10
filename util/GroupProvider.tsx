@@ -17,7 +17,8 @@ interface GroupContextProps {
     setUserLocation: (location: {latitude: number, longitude: number}) => void;
     packagedGroup: PackagedGroup | null;
     topic: string;
-    systemProcessGroupJoin: (newTopic: string) => void;
+    joinGroup: (group: Tables<'groups'>) => void;
+    joinRandomGroup: (newTopic: string) => void;
     availableTopics: string[];
     leaveGroup: () => void;
     createGroup: (discussionPrompt: string) => void;
@@ -34,7 +35,8 @@ const GroupContext = createContext<GroupContextProps>({
     setUserLocation: () => {},
     packagedGroup: null,
     topic: "startups",
-    systemProcessGroupJoin: () => {},
+    joinGroup: () => {},
+    joinRandomGroup: () => {},
     availableTopics: ["startups","productivity","academics", "careers", "science","history"],
     leaveGroup: () => {},
     createGroup: () => {},
@@ -232,27 +234,15 @@ export function GroupProvider(props: React.PropsWithChildren) {
     //get members of the group
     //update packaged group object after receiving handleSetTopic
 
-    const joinGroup = async(newTopic: string) => {        
+    //to join a random group
+    const joinGroup = async(group: Tables<'groups'>) => {        
         if (userLocation.latitude === null || userLocation.longitude === null) {
             alert('Please enable location services to join a group.');
             return;
         }
-        setLoading(true)
-        const userLatitude = userLocation.latitude;
-        const userLongitude = userLocation.longitude;
-
-        // Check for an existing eligible group in loadedGroups
-        const eligibleGroup = loadedGroups
-            .filter(group => group.topic === newTopic)
-            .find(group => {             
-                const distance = Math.sqrt(
-                    Math.pow(group.location[0] - userLatitude, 2) +
-                    Math.pow(group.location[1] - userLongitude, 2)
-                );
-                return distance <= radius;
-        });
 
         const insertMember = async(foundGroup: Tables<'groups'>) => {
+            setLoading(true)
             // Insert the user as a new group member
             const { data: newMemberData, error: newMemberError } = await supabase
                 .from('group_members')
@@ -281,8 +271,32 @@ export function GroupProvider(props: React.PropsWithChildren) {
             return foundGroup.group_uuid;
         }
 
+        insertMember(group);
+    }
+
+    const joinRandomGroup = (newTopic: string) => {
+        if (userLocation.latitude === null || userLocation.longitude === null) {
+            alert('Please enable location services to join a group.');
+            return;
+        }
+        setLoading(true)
+        const userLatitude = userLocation.latitude;
+        const userLongitude = userLocation.longitude;
+
+        // Check for an existing eligible group in loadedGroups
+        const eligibleGroup = loadedGroups
+            .filter(group => group.topic === newTopic)
+            .find(group => {             
+                const distance = Math.sqrt(
+                    Math.pow(group.location[0] - userLatitude, 2) +
+                    Math.pow(group.location[1] - userLongitude, 2)
+                );
+                return distance <= radius;
+        });
+
         if (eligibleGroup) {
-            insertMember(eligibleGroup);
+            joinGroup(eligibleGroup);
+            return;
         }
     }
 
@@ -449,7 +463,7 @@ export function GroupProvider(props: React.PropsWithChildren) {
         userLocation,
         setUserLocation,
         packagedGroup,
-        topic, systemProcessGroupJoin: joinGroup, setTopic,
+        topic, joinGroup, joinRandomGroup, setTopic,
         availableTopics, leaveGroup, loadedGroups,
         setLoading, createGroup
     };

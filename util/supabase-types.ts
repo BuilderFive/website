@@ -14,9 +14,9 @@ export type Database = {
           avatar: string
           bio: string
           created_at: string
-          first_name: string | null
+          first_name: string
           last_joined: string
-          last_name: string | null
+          last_name: string
           tokens: number
           uuid: string
         }
@@ -24,9 +24,9 @@ export type Database = {
           avatar?: string
           bio?: string
           created_at?: string
-          first_name?: string | null
+          first_name?: string
           last_joined?: string
-          last_name?: string | null
+          last_name?: string
           tokens?: number
           uuid?: string
         }
@@ -34,9 +34,9 @@ export type Database = {
           avatar?: string
           bio?: string
           created_at?: string
-          first_name?: string | null
+          first_name?: string
           last_joined?: string
-          last_name?: string | null
+          last_name?: string
           tokens?: number
           uuid?: string
         }

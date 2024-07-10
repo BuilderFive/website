@@ -15,7 +15,7 @@ import { FaMicrophone } from "react-icons/fa";
 export default function Globe({children}: {children: React.ReactNode}) {
     const mapbox = useRef<mapboxgl.map>(null)
     const globe = useRef<HTMLDivElement>(null)
-    const { radius, createGroup, leaveGroup, setUserLocation, userLocation, packagedGroup, loadedGroups, topic } = useGroup();
+    const { radius, createGroup, leaveGroup, joinGroup, setUserLocation, userLocation, packagedGroup, loadedGroups, topic } = useGroup();
     const [loading, setLoading] = useState(true)
     const markers = useRef<any>([])
 
@@ -106,12 +106,20 @@ export default function Globe({children}: {children: React.ReactNode}) {
                 .setLngLat([group.location[1], group.location[0]])
                 .addTo(mapbox.current);
 
-            marker.getElement().addEventListener('click', () => {
+            marker.getElement().addEventListener('click', async() => {
                 mapbox.current.flyTo({
                     center: [group.location[1], group.location[0]],
                     zoom: 10,
                     essential: true
                 });
+
+                if (!isActive) {
+                    if (packagedGroup) {
+                        const response = await leaveGroup();
+                    }
+                    joinGroup(group)
+                }
+                
             });
 
             markers.current.push(marker)
