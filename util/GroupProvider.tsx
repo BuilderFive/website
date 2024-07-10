@@ -19,6 +19,7 @@ interface GroupContextProps {
     systemProcessGroupJoin: (newTopic: string) => void;
     availableTopics: string[];
     leaveGroup: () => void;
+    createGroup: () => void;
     setTopic: (topic: string) => void;
     loadedGroups: Tables<'groups'>[];
     setLoading: (loading: boolean) => void;
@@ -35,6 +36,7 @@ const GroupContext = createContext<GroupContextProps>({
     systemProcessGroupJoin: () => {},
     availableTopics: ["startups","productivity","academics", "careers", "science","history"],
     leaveGroup: () => {},
+    createGroup: () => {},
     setTopic: () => {},
     loadedGroups: [],
     setLoading: () => {}
@@ -249,89 +251,6 @@ export function GroupProvider(props: React.PropsWithChildren) {
                 return distance <= radius;
         });
 
-        const createGroup = async() => {
-            //create a group
-            const { data: newGroup, error: newGroupError } = await supabase
-                .from('groups')
-                .insert([
-                    {
-                        location: [userLocation.latitude, userLocation.longitude],
-                        topic: topic
-                    },
-                ]).select().single();
-            
-            if (newGroupError) {
-                setLoading(false);
-                console.error('Error inserting new group:', newGroupError);
-                return;
-            }
-
-            const group: Tables<'groups'> = newGroup
-            const group_uuid = group.group_uuid
-
-            //insert user into new group
-            const { data: newMember, error: newMemberError } = await supabase
-                .from('group_members')
-                .insert([
-                    {
-                        group_uuid: group_uuid,
-                        user_uuid: user?.id,
-                        location: [userLocation.latitude, userLocation.longitude],
-                    },
-                ]).select().single();
-            
-            if (newMemberError) {
-                setLoading(false);
-                console.error('Error inserting new member:', newMemberError);
-                return;
-            }
-
-
-            const membersData = await fetchMembers(group_uuid)
-
-            const newPackagedGroup = {
-                group: group,
-                members: membersData,
-            };
-
-            setPackagedGroup(newPackagedGroup);
-            setLoading(false)
-            return group_uuid;
-
-            /*
-            try {
-                const response = await fetch('../api/group/joinFromTopic/', { 
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        userUuid: user?.id,
-                        topic: newTopic,
-                        radius,
-                        latitude: userLocation.latitude,
-                        longitude: userLocation.longitude,
-                    }),
-                });
-        
-                if (response.ok) {
-                    const data = await response.json();
-                    setPackagedGroup(data.result);
-                    setLoading(false)
-                    return (data.result as PackagedGroup).group.group_uuid;
-                } else {
-                    const errorData = await response.json();
-                    setLoading(false)
-                    alert(`Failed to join or create group: ${errorData.error}`);
-                    console.error(`Failed to join or create group: ${errorData.error}`);
-                }
-            } catch (error) {
-                setLoading(false)
-                alert(`Failed to join or create group: ${error}`);
-                console.error('Error joining or creating group:', error);
-            }*/
-        }
-
         const insertMember = async(foundGroup: Tables<'groups'>) => {
             // Insert the user as a new group member
             const { data: newMemberData, error: newMemberError } = await supabase
@@ -366,6 +285,93 @@ export function GroupProvider(props: React.PropsWithChildren) {
         } else {
             createGroup();
         }
+    }
+
+    const createGroup = async() => {
+        if (userLocation.latitude === null || userLocation.longitude === null) {
+            alert('Please enable location services to join a group.');
+            return;
+        }
+        setLoading(true)
+        const { data: newGroup, error: newGroupError } = await supabase
+            .from('groups')
+            .insert([
+                {
+                    location: [userLocation.latitude, userLocation.longitude],
+                    topic: topic
+                },
+            ]).select().single();
+        
+        if (newGroupError) {
+            setLoading(false);
+            console.error('Error inserting new group:', newGroupError);
+            return;
+        }
+
+        const group: Tables<'groups'> = newGroup
+        const group_uuid = group.group_uuid
+
+        //insert user into new group
+        const { data: newMember, error: newMemberError } = await supabase
+            .from('group_members')
+            .insert([
+                {
+                    group_uuid: group_uuid,
+                    user_uuid: user?.id,
+                    location: [userLocation.latitude, userLocation.longitude],
+                },
+            ]).select().single();
+        
+        if (newMemberError) {
+            setLoading(false);
+            console.error('Error inserting new member:', newMemberError);
+            return;
+        }
+
+
+        const membersData = await fetchMembers(group_uuid)
+
+        const newPackagedGroup = {
+            group: group,
+            members: membersData,
+        };
+
+        setPackagedGroup(newPackagedGroup);
+        setLoading(false)
+        return group_uuid;
+
+        /*
+        try {
+            const response = await fetch('../api/group/joinFromTopic/', { 
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    userUuid: user?.id,
+                    topic: newTopic,
+                    radius,
+                    latitude: userLocation.latitude,
+                    longitude: userLocation.longitude,
+                }),
+            });
+    
+            if (response.ok) {
+                const data = await response.json();
+                setPackagedGroup(data.result);
+                setLoading(false)
+                return (data.result as PackagedGroup).group.group_uuid;
+            } else {
+                const errorData = await response.json();
+                setLoading(false)
+                alert(`Failed to join or create group: ${errorData.error}`);
+                console.error(`Failed to join or create group: ${errorData.error}`);
+            }
+        } catch (error) {
+            setLoading(false)
+            alert(`Failed to join or create group: ${error}`);
+            console.error('Error joining or creating group:', error);
+        }*/
     }
 
     const fetchMembers = async(group_uuid: string) => {
@@ -445,7 +451,7 @@ export function GroupProvider(props: React.PropsWithChildren) {
         packagedGroup,
         topic, systemProcessGroupJoin: joinGroup, setTopic,
         availableTopics, leaveGroup, loadedGroups,
-        setLoading
+        setLoading, createGroup
     };
 
     return (
