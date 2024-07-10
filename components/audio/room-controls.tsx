@@ -85,6 +85,7 @@ export function ControlBar({
     saveVideoInputEnabled,
     saveAudioInputDeviceId,
     saveVideoInputDeviceId,
+    userChoices
   } = usePersistentUserChoices({ preventSave: !saveUserChoices });
 
   const microphoneOnChange = React.useCallback(
@@ -107,7 +108,7 @@ export function ControlBar({
             source={Track.Source.Microphone}
             showIcon={showIcon}
             onChange={microphoneOnChange}>
-            {showText && <p className='text-md'>Mute</p>}
+            {showText && <p className='text-md'>{userChoices.audioEnabled ? "Mute" : "Unmute"}</p>}
           </TrackToggle>
         </div>
       )}

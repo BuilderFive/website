@@ -59,7 +59,7 @@ export const Footer = () => {
             token={token} className="w-full h-[80px] flex flex-row justify-between py-[12px] px-[12px] gap-[24px] items-center justify-center"
             serverUrl={serverUrl}
             data-lk-theme="default">
-                
+            
             <AudioConference className='flex flex-row text-text1 w-full justify-between items-center'/>
             <div id="details" className="flex flex-col text-text1 text-sm">
                 <p className='font-semibold text-text1 text-lg truncate'>{formatNumberWithCommas(radius)}</p>
