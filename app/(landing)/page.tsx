@@ -11,11 +11,22 @@ import FeatureFooter from './(home)/components/FeatureFooter';
 import CTA from './(home)/components/CTA';
 import HowItWorks from './(home)/components/HowItWorks';
 import { Globe } from './(home)/components/globe/Globe';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useSession } from '~/util/AuthProvider';
 
 export default function Home() {
     const [loaded, setLoaded] = useState(false);
 
+    const router = useRouter()
+    const { user } = useSession()
+
+    useEffect(()=> {
+        if (user) {
+            router.push('/connect')
+        }
+    },[user])
+    
     return (
         <div className="w-full relative">
             <Hero loaded={loaded} setLoaded={setLoaded}/>

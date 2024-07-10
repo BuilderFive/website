@@ -1,4 +1,3 @@
-"use client"
 import { css } from '~/util';
 import type { Metadata } from 'next';
 import { Header } from '~/components/global/Header';
@@ -19,14 +18,6 @@ export default function LandingLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
-    const router = useRouter()
-    const { user } = useSession()
-
-    useEffect(()=> {
-        if (user) {
-            router.push('/connect')
-        }
-    },[user])
     return (<div className="relative flex min-h-screen flex-col bg-cover bg-twighlight">
         <Header />
         <div className="flex-1">{children}</div>
