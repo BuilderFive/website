@@ -56,7 +56,10 @@ export const RsvpSection = ({setLoaded}) => {
             <div className="w-full space-y-[12px] max-md:w-[90%]">
                 <section className="flex flex-col self-start max-md:self-center">
                     <p className="text-4xl text-white w-full font-semibold">
-                        Out of <a className='text-secondary1 underline'>{rsvpCount}</a> people you will find <a className='text-secondary1 underline'>at least one</a> who shares your interests at our voice call event <a className='text-secondary1 underline'>this week</a>
+                        Out of <a className='text-secondary1 underline'>{rsvpCount}</a> 
+                        people you will find <a className='text-secondary1 underline'>at least one</a> 
+                        who shares your interests at our voice call event 
+                        <a className='text-secondary1 underline'>this weekend</a>
                     </p>
                 </section>
                 <form name='email-input' onSubmit={e => e.preventDefault()} className="flex items-center max-md:flex-col space-x-[12px] max-md:space-x-[0px] h-fit max-md:space-y-[12px]">
@@ -65,7 +68,7 @@ export const RsvpSection = ({setLoaded}) => {
                         value={email}
                         pattern={EMAIL_REGEX.source}
                         className="w-full p-[24px] bg-white text-text6 text-xl invalid:border-red-400 rounded-[12px] h-fit"
-                        placeholder="Enter your email"
+                        placeholder="Enter your email to try now!"
                         onChange={e => setEmail(e.target.value)}/>
                     <Button variant='default'
                         className={"bg-secondary1 max-md:w-full rounded-[12px] h-fit p-[24px] max-md:p-[12px]"}
