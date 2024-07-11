@@ -52,11 +52,11 @@ export const RsvpSection = ({setLoaded}) => {
     }
 
     return (
-        <section id="rsvp" className="w-full"> 
-            <div className="w-full space-y-[12px]">
+        <section id="rsvp" className="w-full flex items-center justify-center"> 
+            <div className="w-full space-y-[12px] max-md:w-[90%]">
                 <section className="flex flex-col self-start max-md:self-center">
-                    <p className="text-2xl text-text1 w-full font-semibold">
-                        Join <a className='text-secondary1'>{rsvpCount}</a> others to get an email reminder on the next audio event
+                    <p className="text-4xl text-white w-full font-semibold">
+                        Out of <a className='text-secondary1 underline'>{rsvpCount}</a> people you will find <a className='text-secondary1 underline'>at least one</a> who shares your interests at our voice call event <a className='text-secondary1 underline'>this week</a>
                     </p>
                 </section>
                 <form name='email-input' onSubmit={e => e.preventDefault()} className="flex items-center max-md:flex-col space-x-[12px] max-md:space-x-[0px] h-fit max-md:space-y-[12px]">
@@ -75,7 +75,7 @@ export const RsvpSection = ({setLoaded}) => {
                         { !loading && addedEmail && <MdiIcon path={mdiCheck} size="20px" />}
                         { !loading && addedEmail && <p className="font-semibold text-lg">EMAIL ADDED</p>}
 
-                        { !loading && !addedEmail && <p className="font-semibold text-lg text-text1">BE REMINDED</p> }
+                        { !loading && !addedEmail && <p className="font-semibold text-lg text-white">BE REMINDED</p> }
                     </Button>
                 </form>
             </div>
