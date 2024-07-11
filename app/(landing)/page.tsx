@@ -14,6 +14,7 @@ import { Globe } from './(home)/components/globe/Globe';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from '~/util/AuthProvider';
+import DemoGlobe from './(home)/components/globe/DemoGlobe';
 
 export default function Home() {
     const [loaded, setLoaded] = useState(false);
@@ -35,7 +36,7 @@ export default function Home() {
             {/*<FeatureFooter/>
             <CTA/>*/}
             <div className='w-full flex items-center justify-center my-[128px]'>
-                <div className='max-w-[800px] w-full bg-background1 p-[48px] rounded-[12px]'>
+                <div className='max-w-[800px] w-full'>
                     <RsvpSection setLoaded={setLoaded}/>
                 </div>
                 

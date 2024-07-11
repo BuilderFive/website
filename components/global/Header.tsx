@@ -9,13 +9,13 @@ import { FaEarthAmericas } from 'react-icons/fa6';
 
 export const Header: React.FC = () => (
     <header className="top-3 z-40 w-full">
-      <div className="flex flex-row w-full justify-between max-md:h-16 py-[24px] px-[24px] items-center justify-center text-white">
+      <div className="flex flex-row w-full md:justify-between max-md:h-16 py-[24px] px-[24px] items-center text-white">
             <Navigation />
             <MobileNavigation />
             
-            <div className="flex md:justify-end w-fit items-center space-x-[24px]">
+            <div className="flex justify-between w-fit max-md:w-full items-center space-x-[24px]">
                 <Link href="/connect" className="flex flex-row gap-[12px] items-center hover:cursor-pointer p-[12px] rounded-[12px] hover:font-semibold">
-                    <p className='text-white text-[14px] font-regular'>Go to Globe</p>
+                    <p className='text-white text-[14px] font-regular max-md:hidden'>Go to Globe</p>
                     <FaEarthAmericas/>
                 </Link>
                <nav className="flex items-center">

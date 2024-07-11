@@ -55,8 +55,8 @@ export const RsvpSection = ({setLoaded}) => {
         <section id="rsvp" className="w-full flex items-center justify-center"> 
             <div className="w-full space-y-[12px] max-md:w-[90%]">
                 <section className="flex flex-col self-start max-md:self-center">
-                    <p className="text-4xl text-white w-full font-semibold">
-                        Out of <a className='text-secondary1 underline'>{rsvpCount}</a> people you will find <a className='text-secondary1 underline'>at least one</a> who shares your interests at our voice call event <a className='text-secondary1 underline'>this week</a>
+                    <p className="text-4xl max-md:text-xl text-white w-full font-semibold">
+                        <a className='text-secondary1'>{rsvpCount}</a> people will get notified of the upcoming voice call event <a className='text-secondary1 underline'>this week</a> to find a new friend
                     </p>
                 </section>
                 <form name='email-input' onSubmit={e => e.preventDefault()} className="flex items-center max-md:flex-col space-x-[12px] max-md:space-x-[0px] h-fit max-md:space-y-[12px]">

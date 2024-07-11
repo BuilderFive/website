@@ -7,6 +7,9 @@ import { FaM, FaMicrophone } from "react-icons/fa6";
 import MapAnimation from '../../../../public/animations/map-animation.json'
 import Lottie from 'react-lottie-player'
 import { clear } from "console";
+import Link from "next/link";
+import { FaExternalLinkAlt } from "react-icons/fa";
+import { useSession } from "~/util/AuthProvider";
 
 
 
@@ -21,25 +24,39 @@ import { clear } from "console";
  * @returns 
  */
 export default function HowItWorks() {
+    const { event } = useSession()
+
+    const getEventStartDate = () => {
+        if (event != null) {
+            return event.start_at ? `${event.start_at.toLocaleString('en-US', { month: 'long', day: 'numeric' })}, at ${event.start_at.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}` : '';
+        } else {
+            return "January, 1 at 12am"
+        }
+    }
     return <div className="max-w-container w-full flex items-center justify-center">
         <div id="howitworks-background" className="w-[1400px] text-text1 text-center px-[48px] py-[48px] max-md:p-[24px] max-md:w-full rounded-[12px]">
-            <p className="text-7xl font-bold mb-[24px] max-md:text-5xl text-secondary1">HOW IT WORKS</p>
-
+            <div className="flex flex-col space-y-[8px] mb-[24px] items-center">
+                <p className="text-7xl font-bold max-md:text-5xl text-secondary1">HOW IT WORKS</p>
+                <div className="max-w-[70%]">
+                    <Link href="/demo" className="flex flex-row space-x-[12px] items-center truncate text-3xl font-semibold max-md:text-xl text-white underline">Or you can see the demo here! <br/><FaExternalLinkAlt size='18px' color='white'/></Link>  
+                </div>
+            </div>
+            
             <div id="howitworks-content" className="flex flex-col space-y-[24px] items-center px-[48px]">
                 
-                <div id="howitworks-row-1" className="flex flex-row w-full flex-wrap gap-x-[24px] gap-y-[24px] justify-between max-md:space-y-[12px]">
+                <div id="howitworks-row-1" className="h-full flex flex-row w-full flex-wrap gap-x-[24px] gap-y-[24px] justify-between max-md:space-y-[12px]">
                     <div id="howitworks-item-1" className="hover:shadow-xl w-[240px] flex relative flex-col flex-grow px-[24px] py-[24px] bg-background1 rounded-[12px] space-y-[24px] max-md:w-full items-center justify-center">
-                        <p className="text-3xl font-semibold text-text1">Every week you have 2 hours to call with local people</p>
+                        <p className="text-3xl font-semibold text-text3">Join <Link href="/connect" className="underline text-secondary1">BuilderFive</Link> this <a className="truncate">{getEventStartDate()}</a><br/> for the next global event!</p>
+                        <div className="flex-1"/>
                         <RevealOnScroll_Timer/>
                         <div className="flex items-center justify-center w-[48px] max-md:w-[24px] aspect-square absolute right-[12px] bottom-[12px] bg-secondary3 rounded-full">
                             <p className="text-text5 text-2xl font-bold max-md:text-sm">1</p>
                         </div>
                     </div>
                     <div id="howitworks-item-2" className="hover:shadow-xl w-[240px] flex relative flex-col flex-grow px-[24px] py-[24px] bg-background2 rounded-[12px] space-y-[24px] max-md:w-full items-center justify-center">
-                        <p className="text-3xl font-semibold text-text1">Select a topic space to call with like-minded people</p>
-                        <RevealOnScroll>                
-                            <ChooseTopicDrawer/>
-                        </RevealOnScroll>
+                        <p className="text-3xl font-semibold text-text3">Call with up to 5 people for 30 minutes and find friends</p>
+                        <div className="h-full flex items-center"><RevealOnScroll><AvatarsJoins/></RevealOnScroll>
+                        </div>
                         <div className="flex items-center justify-center w-[48px] max-md:w-[24px] aspect-square absolute right-[12px] bottom-[12px] bg-secondary3 rounded-full">
                             <p className="text-text5 text-2xl font-bold max-md:text-sm">2</p>
                         </div>
@@ -48,15 +65,16 @@ export default function HowItWorks() {
                 </div>
                 <div id="howitworks-row-2" className="flex flex-row w-full flex-wrap justify-between gap-x-[24px] gap-y-[24px] max-md:space-y-[12px]">
                     <div id="howitworks-item-3" className="hover:shadow-xl w-[240px] flex relative flex-col flex-grow px-[24px] py-[24px] bg-background2 rounded-[12px] space-y-[24px] max-md:w-full items-center justify-center">
-                        <p className="text-3xl font-semibold text-text1">Call with up to 5 people for 30 minutes and find new friends</p>
-                        <div className="h-full flex items-center"><RevealOnScroll><AvatarsJoins/></RevealOnScroll>
-                        </div>
+                        <p className="text-3xl font-semibold text-text3">Add group members as friends and send a DM to meet up</p>
+                        {/* Could create a friend-add dropdown */}
                         <div className="flex items-center justify-center w-[48px] max-md:w-[24px] aspect-square absolute right-[12px] bottom-[12px] bg-secondary3 rounded-full">
                             <p className="text-text5 text-2xl font-bold max-md:text-sm">3</p>
                         </div>
                     </div>
                     <div id="howitworks-item-4" className="hover:shadow-xl w-[240px] flex relative flex-col flex-grow px-[24px] py-[24px] bg-background2 rounded-[12px] space-y-[24px] max-md:w-full items-center justify-center">
-                        <p className="text-3xl font-semibold text-text1">Schedule a meetup at a nearby cafe</p>
+                        <p className="text-3xl font-semibold text-text3">Finally, schedule a date, time, and place using our globe interface</p>
+                        {/* Could create a date/time/place scheduler for a crop of a google map location */}
+
                         <RevealOnScroll><img loading="lazy"
                             src="static/cafe.svg"
                             alt="Group of people collaborating"
@@ -75,10 +93,10 @@ export default function HowItWorks() {
 const ChooseTopicDrawer = () => {
     const [open, setOpen] = useState(false)
     const [topic, setTopic] = useState('Startups')
-    const topics = ['Startups', 'Tech', 'Design', 'Marketing']
+    const topics = ['Startups', 'Anime', 'Networking', 'Other']
 
     const Drawer = () => {
-        return open && <div className='w-[200px] h-fit p-[12px] bg-secondary4 rounded-[12px]'>
+        return open && <div className='w-[200px] flex flex-col h-fit p-[12px] gap-[12px] bg-secondary4 rounded-[12px]'>
             
             {topics.map((element, id) => <div key={id} onClick={()=>{
                 setTopic(element)
