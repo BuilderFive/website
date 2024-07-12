@@ -13,27 +13,10 @@ import { count } from 'console';
 
 const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-export const RsvpSection = ({setLoaded}) => {
+export const RsvpSection = () => {
     const [email, setEmail] = useState('');
     const [loading, setLoading] = useState(false);
     const [addedEmail, setAddedEmail] = useState(false);
-    const [rsvpCount, setRsvpCount] = useState(0);
-    
-    
-    const fetchRSVP = async () => {
-        const { data, error } = await supabase.from("rsvp").select('*', {count: 'exact'});
-        if (error) console.error(error);
-        return data
-    }
-
-    useEffect(() => {
-        fetchRSVP().then(data => {
-            setLoaded(true);
-            if (data) {
-                setRsvpCount(data.length);
-            }
-        });
-    }, [rsvpCount]);
 
     const handleSubmit = async (email: string) => {
         if (!EMAIL_REGEX.test(email)) return;
@@ -53,19 +36,14 @@ export const RsvpSection = ({setLoaded}) => {
 
     return (
         <section id="rsvp" className="w-full flex items-center justify-center"> 
-            <div className="w-full space-y-[12px] max-md:w-[90%]">
-                <section className="flex flex-col self-start max-md:self-center">
-                    <p className="text-4xl max-md:text-xl text-white w-full font-semibold">
-                        <a className='text-secondary1'>{rsvpCount}</a> people will get notified of the upcoming voice call event <a className='text-secondary1 underline'>this week</a> to find a new friend
-                    </p>
-                </section>
+            <div className="w-full">
                 <form name='email-input' onSubmit={e => e.preventDefault()} className="flex items-center max-md:flex-col space-x-[12px] max-md:space-x-[0px] h-fit max-md:space-y-[12px]">
                     <Input required
                         type="email"
                         value={email}
                         pattern={EMAIL_REGEX.source}
-                        className="w-full p-[24px] bg-white text-text6 text-xl invalid:border-red-400 rounded-[12px] h-fit"
-                        placeholder="Enter your email to try!"
+                        className="w-full p-[24px] bg-white text-text6 text-xl invalid:border-red-400 rounded-[12px] h-fit max-md:text-[14px]"
+                        placeholder="Submit an email to try it out!"
                         onChange={e => setEmail(e.target.value)}/>
                     <Button variant='default'
                         className={"bg-secondary1 max-md:w-full rounded-[12px] h-fit p-[24px] max-md:p-[12px]"}
@@ -75,7 +53,7 @@ export const RsvpSection = ({setLoaded}) => {
                         { !loading && addedEmail && <MdiIcon path={mdiCheck} size="20px" />}
                         { !loading && addedEmail && <p className="font-semibold text-lg">EMAIL ADDED</p>}
 
-                        { !loading && !addedEmail && <p className="font-semibold text-lg text-white">BE REMINDED</p> }
+                        { !loading && !addedEmail && <p className="font-semibold text-lg text-white">OKAY, I&#39;M IN</p> }
                     </Button>
                 </form>
             </div>

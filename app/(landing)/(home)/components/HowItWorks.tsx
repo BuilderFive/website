@@ -33,28 +33,28 @@ export default function HowItWorks() {
             return "January, 1 at 12am"
         }
     }
-    return <div className="max-w-container w-full flex items-center justify-center">
-        <div id="howitworks-background" className="w-[1400px] text-text1 text-center px-[48px] py-[48px] max-md:p-[24px] max-md:w-full rounded-[12px]">
+    return <div className="w-full flex items-center justify-center">
+        <div id="howitworks-background" className="w-full text-text1 text-center max-md:w-full px-[48px] max-md:px-[12px] rounded-[12px]">
             <div className="flex flex-col space-y-[8px] mb-[24px] items-center">
                 <p className="text-7xl font-bold max-md:text-5xl text-secondary1">HOW IT WORKS</p>
                 <div className="max-w-[70%]">
-                    <Link href="/demo" className="flex flex-row space-x-[12px] items-center truncate text-3xl font-semibold max-md:text-xl text-white underline">Or you can see the demo here! <br/><FaExternalLinkAlt size='18px' color='white'/></Link>  
+                    <Link href="/demo" className="flex flex-row space-x-[12px] items-center truncate text-3xl font-semibold max-md:text-xl text-white underline">And see the demo<br/><FaExternalLinkAlt size='18px' color='white'/></Link>  
                 </div>
             </div>
             
-            <div id="howitworks-content" className="flex flex-col space-y-[24px] items-center px-[48px]">
+            <div id="howitworks-content" className="flex flex-col space-y-[24px] items-center">
                 
                 <div id="howitworks-row-1" className="h-full flex flex-row w-full flex-wrap gap-x-[24px] gap-y-[24px] justify-between max-md:space-y-[12px]">
-                    <div id="howitworks-item-1" className="hover:shadow-xl w-[240px] flex relative flex-col flex-grow px-[24px] py-[24px] bg-background1 rounded-[12px] space-y-[24px] max-md:w-full items-center justify-center">
-                        <p className="text-3xl font-semibold text-text3">Join <Link href="/connect" className="underline text-secondary1">BuilderFive</Link> this <a className="truncate">{getEventStartDate()}</a><br/> for the next global event!</p>
+                    <div id="howitworks-item-1" className="hover:shadow-xl w-[240px] flex relative flex-col flex-grow px-[24px] py-[24px] bg-transparent rounded-[12px] space-y-[24px] max-md:w-full items-center justify-center">
+                        <p className="text-2xl font-semibold text-white max-md:text-xl">Join <Link href="/connect" className="underline text-secondary1">BuilderFive</Link> this <a className="truncate">{getEventStartDate()}</a><br/> for the next global event!</p>
                         <div className="flex-1"/>
                         <RevealOnScroll_Timer/>
                         <div className="flex items-center justify-center w-[48px] max-md:w-[24px] aspect-square absolute right-[12px] bottom-[12px] bg-secondary3 rounded-full">
                             <p className="text-text5 text-2xl font-bold max-md:text-sm">1</p>
                         </div>
                     </div>
-                    <div id="howitworks-item-2" className="hover:shadow-xl w-[240px] flex relative flex-col flex-grow px-[24px] py-[24px] bg-background2 rounded-[12px] space-y-[24px] max-md:w-full items-center justify-center">
-                        <p className="text-3xl font-semibold text-text3">Call with up to 5 people for 30 minutes and find friends</p>
+                    <div id="howitworks-item-2" className="hover:shadow-xl w-[240px] flex relative flex-col flex-grow px-[24px] py-[24px] bg-transparent rounded-[12px] space-y-[24px] max-md:w-full items-center justify-center">
+                        <p className="text-2xl font-semibold text-white max-md:text-xl">Join or create a topic-focused voice call to meet like-minded people</p>
                         <div className="h-full flex items-center"><RevealOnScroll><AvatarsJoins/></RevealOnScroll>
                         </div>
                         <div className="flex items-center justify-center w-[48px] max-md:w-[24px] aspect-square absolute right-[12px] bottom-[12px] bg-secondary3 rounded-full">
@@ -64,15 +64,15 @@ export default function HowItWorks() {
                    
                 </div>
                 <div id="howitworks-row-2" className="flex flex-row w-full flex-wrap justify-between gap-x-[24px] gap-y-[24px] max-md:space-y-[12px]">
-                    <div id="howitworks-item-3" className="hover:shadow-xl w-[240px] flex relative flex-col flex-grow px-[24px] py-[24px] bg-background2 rounded-[12px] space-y-[24px] max-md:w-full items-center justify-center">
-                        <p className="text-3xl font-semibold text-text3">Add group members as friends and send a DM to meet up</p>
+                    <div id="howitworks-item-3" className="hover:shadow-xl w-[240px] flex relative flex-col flex-grow px-[24px] py-[24px] bg-transparent rounded-[12px] space-y-[24px] max-md:w-full items-center justify-center">
+                        <p className="text-2xl font-semibold text-white max-md:text-xl">Add group members as friends and send a DM to meet up</p>
                         {/* Could create a friend-add dropdown */}
                         <div className="flex items-center justify-center w-[48px] max-md:w-[24px] aspect-square absolute right-[12px] bottom-[12px] bg-secondary3 rounded-full">
                             <p className="text-text5 text-2xl font-bold max-md:text-sm">3</p>
                         </div>
                     </div>
-                    <div id="howitworks-item-4" className="hover:shadow-xl w-[240px] flex relative flex-col flex-grow px-[24px] py-[24px] bg-background2 rounded-[12px] space-y-[24px] max-md:w-full items-center justify-center">
-                        <p className="text-3xl font-semibold text-text3">Finally, schedule a date, time, and place using our globe interface</p>
+                    <div id="howitworks-item-4" className="hover:shadow-xl w-[240px] flex relative flex-col flex-grow px-[24px] py-[24px] bg-transparent rounded-[12px] space-y-[24px] max-md:w-full items-center justify-center">
+                        <p className="text-2xl font-semibold text-white max-md:text-xl">Finally, schedule a date, time, and place using our globe interface</p>
                         {/* Could create a date/time/place scheduler for a crop of a google map location */}
 
                         <RevealOnScroll><img loading="lazy"
@@ -131,7 +131,7 @@ const AvatarsJoins = () => {
     const [currentTime, setCurrentTime] = useState(new Date());
     const endDate = useRef(new Date());
     const [timeLeft, setTimeLeft] = useState({ seconds: 5 });
-    const [avatars, setAvatars] = useState(1)
+    const [avatars, setAvatars] = useState(5)
     const [currentlySpeaking, setCurrentlySpeaking] = useState<number[]>([])
 
     const reset = () => {
@@ -189,9 +189,9 @@ const AvatarsJoins = () => {
     }, [currentTime]);
 
     return <div className="flex flex-row gap-x-[12px] max-lg:gap-x-[8px] max-sm:gap-x-[2px] flex-wrap items-center justify-center">
-        {Array.from({length: avatars}, (_, i) => <div key={i} className="w-[90px] max-lg:w-[64px] max-sm:w-[36px] aspect-square flex items-center justify-center">
-            <div className={`p-[24px] max-lg:p-[12px] max-sm:p-[8px] rounded-full bg-secondary4 ${currentlySpeaking.includes(i) && "border-[4px] max-lg:border-[3px] max-sm:border-[1px] border-secondary1"}`}>
-                <FaMicrophone className="w-[36px] h-[36px] max-lg:w-[30px] max-lg:h-[30px] max-sm:w-[16px] max-sm:h-[16px]" color={"var(--secondary-1)"}/>
+        {Array.from({length: avatars}, (_, i) => <div key={i} className="w-[90px] max-lg:w-[64px] aspect-square flex items-center justify-center">
+            <div className={`p-[24px] max-lg:p-[12px]  rounded-full bg-secondary4 ${currentlySpeaking.includes(i) && "border-[4px] max-lg:border-[3px] max-sm:border-[1px] border-secondary1"}`}>
+                <FaMicrophone className="w-[36px] h-[36px] max-lg:w-[30px] max-lg:h-[30px]" color={"var(--secondary-1)"}/>
             </div>
         </div>
         )}
