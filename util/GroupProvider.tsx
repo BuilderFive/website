@@ -236,13 +236,25 @@ export function GroupProvider(props: React.PropsWithChildren) {
 
     //to join a random group
     const joinGroup = async(group: Tables<'groups'>) => {        
-        if (userLocation.latitude === null || userLocation.longitude === null) {
+        if (userLocation.latitude == null || userLocation.longitude == null) {
             alert('Please enable location services to join a group.');
             return;
         }
 
         const insertMember = async(foundGroup: Tables<'groups'>) => {
             setLoading(true)
+
+            //set the isQueued field of group to false
+            const { data: updatedGroup, error: updatedGroupError } = await supabase
+                .from('groups')
+                .update({ isQueued: false })
+                .eq('group_uuid', foundGroup.group_uuid);
+            
+            if (updatedGroupError) {
+                setLoading(false);
+                console.error('Error updating group:', updatedGroupError);
+                return;
+            }
             // Insert the user as a new group member
             const { data: newMemberData, error: newMemberError } = await supabase
                 .from('group_members')
@@ -275,7 +287,7 @@ export function GroupProvider(props: React.PropsWithChildren) {
     }
 
     const joinRandomGroup = (newTopic: string) => {
-        if (userLocation.latitude === null || userLocation.longitude === null) {
+        if (userLocation.latitude == null || userLocation.longitude == null) {
             alert('Please enable location services to join a group.');
             return;
         }
