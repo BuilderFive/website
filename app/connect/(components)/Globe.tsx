@@ -11,6 +11,7 @@ import { Input } from "~/components/ui/input";
 import ReactDOM from "react-dom";
 import { createRoot } from 'react-dom/client';
 import { FaMicrophone } from "react-icons/fa";
+import { permission } from "process";
 
 export default function Globe({children}: {children: React.ReactNode}) {
     const mapbox = useRef<mapboxgl.map>(null)
@@ -18,6 +19,62 @@ export default function Globe({children}: {children: React.ReactNode}) {
     const { radius, createGroup, leaveGroup, joinGroup, setUserLocation, userLocation, packagedGroup, loadedGroups, topic } = useGroup();
     const [loading, setLoading] = useState(true)
     const markers = useRef<any>([])
+    const [locationPermission, setLocationPermission] = useState<PermissionState>("denied")
+    const reminderTimer = useRef<NodeJS.Timeout | null>(null)
+
+    function getLocation() {
+      if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(getCoordinates, handleLocationError);
+  
+      } else {
+          alert("Geolocation is not supported by this browser.");
+      }
+    }
+    
+    function getCoordinates(position) {
+        setUserLocation({latitude: position.coords.latitude, longitude: position.coords.longitude})
+    }
+    
+    function handleLocationError(error) {
+        switch (error.code) {
+            case error.PERMISSION_DENIED:
+                console.log("User denied the request for Geolocation.");
+                break;
+            case error.POSITION_UNAVAILABLE:
+                console.log("Location information is unavailable.");
+                break;
+            case error.TIMEOUT:
+                console.log("The request to get user location timed out.");
+                break;
+            case error.UNKNOWN_ERROR:
+                console.log("An unknown error occurred.");
+                break;
+            default:
+                console.log("An unknown error occurred.");
+                break;
+        }
+    }
+
+    useEffect(() => {
+        const fetchLocationPermission = async () => {
+            const permission = await navigator.permissions.query({ name: "geolocation" })
+            setLocationPermission(permission.state)
+        }
+        fetchLocationPermission()
+        if (  locationPermission == null || locationPermission != "granted" ) {
+            getLocation()
+            reminderTimer.current = setTimeout(() => {
+                if (userLocation.longitude == null || userLocation.latitude == null) {
+                    alert("In order to use BuilderFive, you need to enable location services. Please allow location services and refresh the page.")
+                }
+            },10000)
+        }
+        return () => {
+            if (reminderTimer.current) {
+                clearTimeout(reminderTimer.current)
+            } 
+        }
+    },[])
 
     useEffect(() => {
         mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAP_BOX_TOKEN;
@@ -58,7 +115,10 @@ export default function Globe({children}: {children: React.ReactNode}) {
             });
             mapbox.current.on('load', () => {
                 geolocate.trigger();
-                //gotta figure out how to scale this si
+                setLoading(false)
+                
+                if (userLocation.longitude == null || userLocation.latitude == null) return;
+                
                 mapbox.current.addSource('circle', createGeoJSONCircle([userLocation.longitude, userLocation.latitude], radius/1000, 64));
                 mapbox.current.addLayer({
                     id: 'circle-fill',
@@ -81,13 +141,32 @@ export default function Globe({children}: {children: React.ReactNode}) {
      * Loading the user's circle and changing it's radius
      */
     useEffect(() => {
-        if (!mapbox.current) return;
-        const circle = mapbox.current.getSource('circle')
-        if(!circle) return;
+        if (!mapbox.current || userLocation.longitude == null || userLocation.latitude == null || loading) return;
+        if (reminderTimer.current) {
+            clearTimeout(reminderTimer.current)
+        }
+        let circle = mapbox.current.getSource('circle')
+        
+        //if circle is missing add it
+        if(!circle && loading == false) {
+            mapbox.current.addSource('circle', createGeoJSONCircle([userLocation.longitude, userLocation.latitude], radius/1000, 64));
+            mapbox.current.addLayer({
+                id: 'circle-fill',
+                type: 'fill',
+                source: 'circle',
+                layout: {},
+                paint: {
+                    'fill-color': 'rgb(97, 171, 255)',
+                    'fill-opacity': 0.5
+                }
+            });
+            circle = mapbox.current.getSource('circle')
+        };
+
         const geoJSON = createGeoJSONCircle([userLocation.longitude, userLocation.latitude], radius/1000, 64)
         circle.setData(geoJSON.data)
 
-    },[radius])
+    },[radius, locationPermission, loading, userLocation.longitude, userLocation.latitude])
     
     /**
      * Loading the group markers
@@ -125,7 +204,7 @@ export default function Globe({children}: {children: React.ReactNode}) {
             markers.current.push(marker)
         })
 
-        if (packagedGroup == null && userLocation.latitude != null) {
+        if (packagedGroup == null && !(userLocation.longitude == null || userLocation.latitude == null)) {
 
             //renders the custom marker component
             const markerContainer = document.createElement('div');

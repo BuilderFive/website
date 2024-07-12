@@ -11,6 +11,10 @@ import GoogleSignIn from './google-sign-in';
 import GoogleSignUp from './google-sign-up';
 import { Sign } from 'crypto';
 
+//On mobile the white background doesn't exist, so make sure the input form background is white
+//Make it so users can only join groups that are within their radius
+//Create queue system
+//Allow globe view without location
 
 const Modal = ({ showModal, setShowModal }) => {
     const [firstname, setFirstname] = useState('')

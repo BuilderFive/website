@@ -35,54 +35,6 @@ export default function Page() {
       }, 1000)
     }
   }, []);*/
-
-  
-    const [locationPermission, setLocationPermission] = useState<PermissionState>("denied")
-
-    function getLocation() {
-      if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(getCoordinates, handleLocationError);
-  
-      } else {
-          alert("Geolocation is not supported by this browser.");
-      }
-    }
-    
-    function getCoordinates(position) {
-        setUserLocation({latitude: position.coords.latitude, longitude: position.coords.longitude})
-        setLoading(false)
-    }
-    
-    function handleLocationError(error) {
-        switch (error.code) {
-            case error.PERMISSION_DENIED:
-                console.log("User denied the request for Geolocation.");
-                break;
-            case error.POSITION_UNAVAILABLE:
-                console.log("Location information is unavailable.");
-                break;
-            case error.TIMEOUT:
-                console.log("The request to get user location timed out.");
-                break;
-            case error.UNKNOWN_ERROR:
-                console.log("An unknown error occurred.");
-                break;
-            default:
-                console.log("An unknown error occurred.");
-                break;
-        }
-    }
-
-    useEffect(() => {
-      const fetchLocationPermission = async () => {
-        const permission = await navigator.permissions.query({ name: "geolocation" })
-        setLocationPermission(permission.state)
-      }
-      fetchLocationPermission()
-      if ( user && locationPermission == null || locationPermission != "granted" ) {
-        getLocation()
-      }
-    },[])
   
   useEffect(()=> {
     if (!user) {
@@ -94,7 +46,7 @@ export default function Page() {
 
   return !user ? <div className="min-h-screen min-w-screen">
     <Modal showModal={showModal} setShowModal={setShowModal}/>
-  </div> : (locationPermission == "granted" ? <div className="flex flex-row w-screen h-screen relative">
+  </div> : <div className="flex flex-row w-screen h-screen relative">
       {isLoaded && <>
         <Header />
         <Globe>
@@ -102,8 +54,6 @@ export default function Page() {
           {packagedGroup && <Footer />}
         </Globe>
       </>}
-    </div> : <div className="flex items-center justify-center min-h-screen min-w-screen">
-      <p className="text-background1 text-[36px] font-semibold text-center">Please enable location services<br/> and refresh your page</p>
-    </div>)
+    </div>
   ;
 };
