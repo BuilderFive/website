@@ -36,8 +36,8 @@ export default function Home() {
             {/*<FeatureFooter/>
             <CTA/>*/}
             <div className='w-full flex items-center justify-center my-[128px]'>
-                <div className='max-w-[800px] w-full'>
-                    <RsvpSection setLoaded={setLoaded}/>
+                <div className='w-full px-[48px] max-md:px-[12px]'>
+                    <RsvpSection/>
                 </div>
                 
             </div>
