@@ -10,7 +10,6 @@
         --background-1-translucent: hsl(0 0 100% / 0.6);
         --background-2: hsl(0 0 98%);
         --background-3: hsl(0 0 90%);
-        --white: hsl(0 0 100%);
         --error-1: hsl(0 88% 54%);
         --success-1: hsl(94 72% 58%);
         --activity-online: hsl(95 49% 43%);
@@ -36,7 +35,6 @@
         --background-1-translucent: hsl(0 0 0% / 0.4);
         --background-2: hsl(0 0 26%);
         --background-3: hsl(0 1% 35%);
-        --white: hsl(0 0 100%);
         --error-1: hsl(0 100% 75%);
         --success-1: hsl(94 72% 58%);
         --activity-online: hsl(95 49% 43%);

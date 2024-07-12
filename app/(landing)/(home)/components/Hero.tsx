@@ -53,7 +53,7 @@ export default function Hero({loaded, setLoaded}) {
                 </div>
                 
                 <div className="md:absolute md:bottom-[10%] md:right-0 flex flex-col gap-[8px] w-fit">
-                    <div className="flex flex-row gap-x-[8px] items-center w-full">
+                    <div className="flex flex-row gap-x-[8px] items-center w-full justify-end">
                         {event?.isActive ? <>
                             <FaMicrophone size="30px" color='var(--secondary-1)' />
                             <p className="text-4xl max-md:text-2xl text-secondary1 font-bold">Currently active!</p></> :

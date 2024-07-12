@@ -66,7 +66,7 @@ const Modal = ({ showModal, setShowModal }) => {
 
     return (
         showModal && (
-        <div className="fixed z-10 inset-0 overflow-y-auto backdrop-blur-md flex justify-center items-center">
+        <div className="fixed z-100 inset-0 overflow-y-auto backdrop-blur-md flex justify-center items-center">
             {finishedSignup && <Verification/>}
             {!finishedSignup && isSignUp && <SignUpModal setIsSignUp={setIsSignUp} handleGoogleSignin={handleGoogleSignin} setFinishedSignup={setFinishedSignup}/>}
             {!finishedSignup && !isSignUp && <SignInModal setIsSignUp={setIsSignUp} handleGoogleSignin={handleGoogleSignin}/>}

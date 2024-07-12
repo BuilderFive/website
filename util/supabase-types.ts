@@ -148,6 +148,7 @@ export type Database = {
           created_at: string
           end_at: string
           group_uuid: string
+          isQueued: boolean | null
           location: number[]
           max_members: number
           title: string
@@ -157,6 +158,7 @@ export type Database = {
           created_at?: string
           end_at?: string
           group_uuid?: string
+          isQueued?: boolean | null
           location?: number[]
           max_members?: number
           title?: string
@@ -166,6 +168,7 @@ export type Database = {
           created_at?: string
           end_at?: string
           group_uuid?: string
+          isQueued?: boolean | null
           location?: number[]
           max_members?: number
           title?: string
