@@ -18,14 +18,23 @@ module.exports = {
           "2xl": "1400px",
       },
     },
-    colors: {
+
+    
+    backgroundImage: {
+        "twighlight": 
+          "linear-gradient(to bottom, rgba(0, 0, 0, 0.8), rgba(255, 255, 255, 0)), url('/static/Twighlight.svg')",
+        "landscape": "url('/static/bottom-background.svg')",
+        "landscape-2": "url('/static/landscape-alien.svg')",
+        "sunset": "url('/static/Sunset.svg')",
+      },
+    extend: {
+      colors: {
         tabs: 'var(--tabs)',
         background1: 'var(--background-1)',
         'background1-translucent': 'var(--background-1-translucent)',
         background2: 'var(--background-2)',
         background3: 'var(--background-3)',
         background4: 'var(--background-4)',
-        white: 'var(--white)',
         success1: 'var(--success-1)',
         online: 'var(--activity-online)',
         idle: 'var(--activity-idle)',
@@ -51,15 +60,6 @@ module.exports = {
         foreground: "var(--background-2)",
         border: "var(--background-1)"
     },
-    backgroundImage: {
-        "twighlight": 
-          "linear-gradient(to bottom, rgba(0, 0, 0, 0.8), rgba(255, 255, 255, 0)), url('/static/Twighlight.svg')",
-        "landscape": "url('/static/bottom-background.svg')",
-        "landscape-2": "url('/static/landscape-alien.svg')",
-        "sunset": "url('/static/Sunset.svg')",
-      },
-    extend: {
-      
       borderRadius: {
           lg: "var(--radius)",
           md: "calc(var(--radius) - 2px)",
