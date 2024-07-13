@@ -8,6 +8,10 @@ export async function POST(req: Request, res: Response) {
     try {
         const everything = await req.json();
         
+        const event = everything.event;
+
+        if (event !== 'room_finished') return NextResponse.json({ error: 'Invalid event type' }, { status: 500 });
+        
         const group_uuid = everything.room.name;
 
         if (group_uuid == null) return NextResponse.json({ error: 'A group identifier is required' }, { status: 500 });
