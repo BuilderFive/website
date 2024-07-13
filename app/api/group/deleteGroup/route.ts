@@ -3,7 +3,7 @@ import { createClient } from '@supabase/supabase-js';
 import { supabase } from '~/util/supabaseClient';
 import { NextApiRequest, NextApiResponse } from 'next';
 
-export async function POST(req: NextApiRequest, res: NextApiResponse) {
+export async function POST(req: Request, res: Response) {
     const test = {
         "event": "room_finished",
         "room": {
@@ -40,18 +40,18 @@ export async function POST(req: NextApiRequest, res: NextApiResponse) {
       }
     
     try {
-        const { randomInfo } = await req.body()
+        const everything = await req.json();
         
-        const group_uuid = randomInfo.name;
+        const group_uuid = everything.name;
 
         if (group_uuid == null) return NextResponse.json({ error: 'A group identifier is required' }, { status: 500 });
 
         const { data, error } = await supabase.from('groups').delete().eq('group_uuid', group_uuid);
 
         if (error) {
-            return NextResponse.json({ error: error.message, randomInfo }, { status: 500 });
+            return NextResponse.json({ error: error.message, everything }, { status: 500 });
         }
-        return NextResponse.json({ data, randomInfo }, { status: 200 });
+        return NextResponse.json({ data, everything }, { status: 200 });
     } catch (error) {
         return NextResponse.json({ error }, { status: 500 });
     }
