@@ -252,7 +252,7 @@ export default function Globe({children}: {children: React.ReactNode}) {
 
             markers.current.push(marker)
         }
-    },[loadedGroups, packagedGroup, userLocation, loading])
+    },[loadedGroups, packagedGroup, loading])
 
     return(<div className="w-screen h-screen relative">
         <div ref={globe} className="h-full w-full"/>
@@ -261,7 +261,7 @@ export default function Globe({children}: {children: React.ReactNode}) {
                 <Sidebar/>
             </div>
             <div className="fixed z-20 bottom-0 w-full">
-                {packagedGroup && !packagedGroup.group.isQueued && !loading && <Footer />}
+                {packagedGroup && !loading && <Footer />}
             </div>
             
         </div>
