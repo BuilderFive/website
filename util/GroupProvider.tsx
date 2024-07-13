@@ -65,7 +65,7 @@ export function GroupProvider(props: React.PropsWithChildren) {
     const [packagedGroup, setPackagedGroup] = useState<PackagedGroup| null>(null) //current group that the user is in
     const [topic, setTopic] = useState("startups")
     const [isLoading, setLoading] = useState<boolean>(false);
-    const availableTopics = ["startups","productivity","academics", "careers", "science","history"]
+    const availableTopics = ["startups","miscellaneous"]
     const [loadedGroups, setLoadedGroups] = useState<Tables<'groups'>[]>([]);
 
     //could get packagedgroup from local storage, 

@@ -22,7 +22,6 @@ export default function Globe({children}: {children: React.ReactNode}) {
     const { radius, createGroup, leaveGroup, joinGroup, setUserLocation, userLocation, packagedGroup, loadedGroups, topic } = useGroup();
     const [loading, setLoading] = useState(true)
     const markers = useRef<any>([])
-    const [locationPermission, setLocationPermission] = useState<PermissionState>("denied")
     const reminderTimer = useRef<NodeJS.Timeout | null>(null)
     const circle = useRef<any>(null)
 
@@ -59,13 +58,28 @@ export default function Globe({children}: {children: React.ReactNode}) {
         }
     }
 
-    useEffect(() => {
-        const fetchLocationPermission = async () => {
-            const permission = await navigator.permissions.query({ name: "geolocation" })
-            setLocationPermission(permission.state)
+    function updateCircle() {
+        if(circle.current == null) {
+            mapbox.current.addSource('circle', createGeoJSONCircle([userLocation.longitude, userLocation.latitude], radius/1000, 64));
+            mapbox.current.addLayer({
+                id: 'circle-fill',
+                type: 'fill',
+                source: 'circle',
+                layout: {},
+                paint: {
+                    'fill-color': 'rgb(97, 171, 255)',
+                    'fill-opacity': 0.5
+                }
+            });
+            circle.current = mapbox.current.getSource('circle')
         }
-        fetchLocationPermission()
-        if (  locationPermission == null || locationPermission != "granted" ) {
+      
+        const geoJSON = createGeoJSONCircle([userLocation.longitude, userLocation.latitude], radius/1000, 64)
+        circle.current.setData(geoJSON.data)
+    }
+
+    useEffect(() => {
+        if (  userLocation.longitude == null || userLocation.latitude == null) {
             getLocation()
             reminderTimer.current = setTimeout(() => {
                 if (userLocation.longitude == null || userLocation.latitude == null) {
@@ -137,25 +151,8 @@ export default function Globe({children}: {children: React.ReactNode}) {
         if (reminderTimer.current) {
             clearTimeout(reminderTimer.current)
         }
-
-        if(circle.current == null) {
-            mapbox.current.addSource('circle', createGeoJSONCircle([userLocation.longitude, userLocation.latitude], radius/1000, 64));
-            mapbox.current.addLayer({
-                id: 'circle-fill',
-                type: 'fill',
-                source: 'circle',
-                layout: {},
-                paint: {
-                    'fill-color': 'rgb(97, 171, 255)',
-                    'fill-opacity': 0.5
-                }
-            });
-            circle.current = mapbox.current.getSource('circle')
-        }
-      
-        const geoJSON = createGeoJSONCircle([userLocation.longitude, userLocation.latitude], radius/1000, 64)
-        circle.current.setData(geoJSON.data)
-        
+       updateCircle()
+       
     },[radius, loading, userLocation])
     
 

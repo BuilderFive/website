@@ -109,7 +109,7 @@ export const Sidebar = () => {
     }
     //I'm building an audio based social network and meetup platform to call with local like-minded over shared interests to meetup in person at a nearby cafe
     const ActiveGroups = () => {
-        return <div id='active-groups' className='flex flex-col w-full h-full pb-[12px] gap-[12px]'>
+        return <div id='active-groups' className='flex flex-col w-full h-full gap-[12px]'>
             <RenderGroups filteredTopics={filteredTopics} userLocation={userLocation} />
         </div>
     }
@@ -124,7 +124,7 @@ export const Sidebar = () => {
         </div>
         {open && <div className={`ml-[8px] h-fit ${theme == "light" ? "bg-background1" : "bg-transparent"} px-[12px] pt-[24px] flex flex-col w-[240px] rounded-[12px]`}>
             <p className='font-bold text-[24px] text-text1'>Topics</p>
-            <div className='flex flex-col'>
+            <div className='flex flex-col gap-[4px] pb-[12px]'>
                 {availableTopics.map((subj, id) => <div key={id} id="row-#" onClick={()=> handleTopicChange(subj)} className="hover:cursor-pointer hover:bg-background3 p-[8px] rounded-[12px]">
                     <p className='text-text1'>{subj}</p>
                 </div>)}
