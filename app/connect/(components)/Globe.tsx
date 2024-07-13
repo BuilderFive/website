@@ -24,6 +24,7 @@ export default function Globe({children}: {children: React.ReactNode}) {
     const markers = useRef<any>([])
     const [locationPermission, setLocationPermission] = useState<PermissionState>("denied")
     const reminderTimer = useRef<NodeJS.Timeout | null>(null)
+    const circle = useRef<any>(null)
 
     function getLocation() {
       if (navigator.geolocation) {
@@ -101,19 +102,6 @@ export default function Globe({children}: {children: React.ReactNode}) {
                   'star-intensity': 0.5 // Background star brightness (default 0.35 at low zoooms )
                 });
                 setLoading(false)
-                if (userLocation.longitude == null || userLocation.latitude == null) return;
-                mapbox.current.addSource('circle', createGeoJSONCircle([userLocation.longitude, userLocation.latitude], radius/1000, 64));
-                mapbox.current.addLayer({
-                    id: 'circle-fill',
-                    type: 'fill',
-                    source: 'circle',
-                    layout: {},
-                    paint: {
-                        'fill-color': 'rgb(97, 171, 255)',
-                        'fill-opacity': 0.5
-                    }
-                });
-                
             });
             const geolocate = new mapboxgl.GeolocateControl({
                 positionOptions: {
@@ -144,31 +132,31 @@ export default function Globe({children}: {children: React.ReactNode}) {
      * Loading the user's circle and changing it's radius
      */
     useEffect(() => {
-        if (!mapbox.current || userLocation.longitude == null || userLocation.latitude == null || loading) return;
+        if (!mapbox.current || loading) return;
+
         if (reminderTimer.current) {
             clearTimeout(reminderTimer.current)
         }
-        //if circle is missing add it
-        mapbox.current.on('style.load', () => {
-            let circle = mapbox.current.getSource('circle')
-            if(!circle) {
-                mapbox.current.addSource('circle', createGeoJSONCircle([userLocation.longitude, userLocation.latitude], radius/1000, 64));
-                mapbox.current.addLayer({
-                    id: 'circle-fill',
-                    type: 'fill',
-                    source: 'circle',
-                    layout: {},
-                    paint: {
-                        'fill-color': 'rgb(97, 171, 255)',
-                        'fill-opacity': 0.5
-                    }
-                });
-                circle = mapbox.current.getSource('circle')
-            };
-            const geoJSON = createGeoJSONCircle([userLocation.longitude, userLocation.latitude], radius/1000, 64)
-            circle.setData(geoJSON.data)
-        })
-    },[radius, locationPermission, loading, userLocation.longitude, userLocation.latitude])
+
+        if(circle.current == null) {
+            mapbox.current.addSource('circle', createGeoJSONCircle([userLocation.longitude, userLocation.latitude], radius/1000, 64));
+            mapbox.current.addLayer({
+                id: 'circle-fill',
+                type: 'fill',
+                source: 'circle',
+                layout: {},
+                paint: {
+                    'fill-color': 'rgb(97, 171, 255)',
+                    'fill-opacity': 0.5
+                }
+            });
+            circle.current = mapbox.current.getSource('circle')
+        }
+      
+        const geoJSON = createGeoJSONCircle([userLocation.longitude, userLocation.latitude], radius/1000, 64)
+        circle.current.setData(geoJSON.data)
+        
+    },[radius, loading, userLocation])
     
 
     /**
@@ -200,13 +188,14 @@ export default function Globe({children}: {children: React.ReactNode}) {
             
 
             marker.getElement().addEventListener('click', async() => {
-                mapbox.current.flyTo({
-                    center: [group.location[1], group.location[0]],
-                    zoom: 10,
-                    essential: true
-                });
-
-                if (!isActive) {
+                if (isActive && packagedGroup.group.isQueued) {
+                    leaveGroup()
+                } else {
+                    mapbox.current.flyTo({
+                        center: [group.location[1], group.location[0]],
+                        zoom: 10,
+                        essential: true
+                    });
                     joinProcess(group)
                 }
                 
@@ -219,7 +208,6 @@ export default function Globe({children}: {children: React.ReactNode}) {
                         'bottom' : [0, -40]
                     }
                 });
-                
 
                 marker.getElement().addEventListener('mouseenter', async() => {
                     const infoBubble = document.createElement('div');
@@ -229,7 +217,8 @@ export default function Globe({children}: {children: React.ReactNode}) {
                         <p className="text-slate-800 font-semibold text-[24px]">
                             {group.title}
                         </p>
-                        <p className="text-secondary1 text-[12px] font-bold">Press to Join</p>
+                        {isActive ? <p className="text-error1 self-end text-[12px] font-bold">Press to Cancel</p>
+                         : <p className="text-secondary1 self-end text-[12px] font-bold">Press to Join</p>}
                     </div>)
                     popup
                         .setLngLat([group.location[1], group.location[0]])

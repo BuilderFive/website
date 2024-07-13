@@ -2,17 +2,20 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { supabase } from '~/util/supabaseClient';
 
-export async function DELETE(req: NextRequest, res: NextResponse) {
+export async function POST(req: NextRequest, res: NextResponse) {
     try {
-        const { group_uuid } = await req.json();
+        const { randomInfo } = await req.json();
 
-        // Delete the row that matches group_uuid in table groups
-        const { data, error } = await supabase.from('groups').delete().eq('group_uuid', group_uuid);
+        const group_uuid = randomInfo.id;
+
+        if (group_uuid == null) return NextResponse.json({ error: 'A group identifier is required' }, { status: 400 });
+
+        const { data, error } = await supabase.from('groups').delete().eq('group_uuid', group_uuid).select().single();
 
         if (error) {
             return NextResponse.json({ error: error.message }, { status: 500 });
         }
-        return NextResponse.json({ data });
+        return NextResponse.json({ data }, { status: 200 });
     } catch (error) {
         return NextResponse.json({ error }, { status: 500 });
     }

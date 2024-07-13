@@ -12,15 +12,14 @@ export default function EmptyBubble({topic, packagedGroup, createGroup, leaveGro
         setCharacterCount(e.target.value.length)
     }
 
-    const handleSubmit = async(e: KeyboardEvent<HTMLTextAreaElement>) => {        
+    const handleSubmit = async(e: KeyboardEvent<HTMLTextAreaElement>) => {
+        
         if (packagedGroup) {
             //means user is currently in a call. Leave the group
             const response = await leaveGroup();
         }
         //check if user is already in a group, if so call leaveGroup and await for user confirmation
         createGroup(prompt)
-        setPrompt("")
-        setCharacterCount(0)
     }
 
     return <div className="flex flex-col w-[240px] h-[280px]">
@@ -32,9 +31,13 @@ export default function EmptyBubble({topic, packagedGroup, createGroup, leaveGro
                         minLength={5} maxLength={60} rows={2}
                         onKeyDown={e => {
                             if (e.key === 'Enter') {
+                                e.preventDefault();
+                                e.currentTarget.blur();
                                 handleSubmit(e);
+                                
                             }
-                        }}                        className="bg-background3 w-full rounded-[12px] p-[12px] resize-none"
+                        }}
+                        className="bg-background3 w-full rounded-[12px] p-[12px] resize-none"
                         placeholder={`What about ${topic} would you like to discuss?`}
                         onChange={handleChange}/>
                     <div className="absolute bottom-2 right-2">
