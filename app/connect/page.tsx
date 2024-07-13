@@ -63,7 +63,7 @@ export default function Page() {
           <Header />
           <Globe>
             <Sidebar/>
-            {!packagedGroup?.group.isQueued && <Footer />}
+            {!packagedGroup && <Footer />}
           </Globe>
         </>}
       </div>
