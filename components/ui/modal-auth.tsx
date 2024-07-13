@@ -35,7 +35,7 @@ const Modal = ({ showModal, setShowModal }) => {
               queryParams: {
                 access_type: 'offline',
                 prompt: 'consent',
-              }, redirectTo: "builderfive.com"
+              }, redirectTo: "builderfive.com/connect"
             },
           })
         if (error) {
