@@ -109,7 +109,7 @@ export const Sidebar = () => {
     }
     //I'm building an audio based social network and meetup platform to call with local like-minded over shared interests to meetup in person at a nearby cafe
     const ActiveGroups = () => {
-        return <div id='active-groups' className='flex flex-col w-full h-full gap-[12px]'>
+        return <div id='active-groups' className='flex flex-col w-full h-full gap-[12px] pb-[12px]'>
             <RenderGroups filteredTopics={filteredTopics} userLocation={userLocation} />
         </div>
     }
