@@ -10,7 +10,7 @@ export async function POST(req: Request, res: Response) {
         
         const event = everything.event;
 
-        if (event !== 'room_finished') return NextResponse.json({ error: 'Invalid event type' }, { status: 500 });
+        if (event !== 'ROOM_ENDED') return NextResponse.json({ error: 'Invalid event type' }, { status: 500 });
         
         const group_uuid = everything.room.name;
 
