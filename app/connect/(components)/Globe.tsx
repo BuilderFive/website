@@ -191,11 +191,11 @@ export default function Globe({children}: {children: React.ReactNode}) {
                 if (isActive && packagedGroup.group.isQueued) {
                     leaveGroup()
                 } else {
-                    mapbox.current.flyTo({
+                    /*mapbox.current.flyTo({
                         center: [group.location[1], group.location[0]],
                         zoom: 10,
                         essential: true
-                    });
+                    });*/
                     joinProcess(group)
                 }
                 
