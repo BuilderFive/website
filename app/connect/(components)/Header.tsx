@@ -4,13 +4,14 @@ import { ButtonIcon, MoonIcon, SunIcon } from "@radix-ui/react-icons";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { FaMicrophone, FaSearchLocation } from "react-icons/fa";
+import { FaMicrophone, FaSearchLocation, FaTrash } from "react-icons/fa";
 import { ThemeSwitcher } from "~/components/nav/ThemeSwitcher";
 import { useSession } from "~/util/AuthProvider";
 import { ImExit } from "react-icons/im";
 import {Slider} from "@nextui-org/slider";
 import Timer, { calculateTimeRemaining } from "~/app/(landing)/(home)/components/Timer";
 import { useTimer } from "~/util/TimerProvider";
+import { useGroup } from "~/util/GroupProvider";
 
 export const Header: React.FC = () => {
     const { event } = useSession();
@@ -95,6 +96,58 @@ const AccountDrawer = () => {
     const { signout, user, } = useSession();
     const [showModal, setShowModal] = useState(false);
     const {theme, setTheme} = useTheme();
+    const { packagedGroup } = useGroup();
+
+    //some old tests to make sure api endpoint for deleting groups works
+    const sendPostReq = async () => {
+        const res = await fetch('/api/group/deleteGroup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "event": "room_finished",
+                "room": {
+                  "sid": "RM_hycBMAjmt6Ub",
+                  "name": packagedGroup?.group.group_uuid,
+                  "emptyTimeout": 300,
+                  "creationTime": "1692627281",
+                  "turnPassword": "2Pvdj+/WV1xV4EkB8klJ9xkXDWY=",
+                  "enabledCodecs": [
+                    {
+                      "mime": "audio/opus"
+                    },
+                    {
+                      "mime": "video/H264"
+                    },
+                    {
+                      "mime": "video/VP8"
+                    },
+                    {
+                      "mime": "video/AV1"
+                    },
+                    {
+                      "mime": "video/H264"
+                    },
+                    {
+                      "mime": "audio/red"
+                    },
+                    {
+                      "mime": "video/VP9"
+                    }
+                  ]
+                },
+                "id": "EV_3DXLrqmZCLEF",
+            })
+        });
+        const data = await res.json();
+        if (res.ok) {
+            console.log(data)
+            return data
+        } else {
+            console.error('Error:', data.error);
+        }
+    }
 
     return (<div className="flex-1 flex-col relative items-center justify-center">
         <div onClick={()=> {
