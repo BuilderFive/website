@@ -2,17 +2,19 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { supabase } from '~/util/supabaseClient';
 import { NextApiRequest, NextApiResponse } from 'next';
+import { Room } from 'livekit-server-sdk';
+
+interface WebhookEvent {
+    event: 'room_finished'
+    room: Room
+}
 
 export async function POST(req: Request, res: Response) {
     
     try {
-        const everything = await req.json();
-        
-        const event = everything.event;
-
-        if (event !== 'ROOM_ENDED') return NextResponse.json({ error: 'Invalid event type' }, { status: 500 });
-        
-        const group_uuid = everything.room.name;
+        const event: WebhookEvent = await req.json();
+                
+        const group_uuid = event.room.name;
 
         if (group_uuid == null) return NextResponse.json({ error: 'A group identifier is required' }, { status: 500 });
 
