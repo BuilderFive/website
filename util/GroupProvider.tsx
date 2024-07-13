@@ -235,7 +235,9 @@ export function GroupProvider(props: React.PropsWithChildren) {
     //update packaged group object after receiving handleSetTopic
 
     //to join a random group
-    const joinGroup = async(group: Tables<'groups'>) => {        
+    const joinGroup = async(group: Tables<'groups'>) => { 
+        console.log(userLocation.latitude, userLocation.longitude)   
+
         if (userLocation.latitude == null || userLocation.longitude == null) {
             alert('Please enable location services to join a group.');
             return;
@@ -283,7 +285,9 @@ export function GroupProvider(props: React.PropsWithChildren) {
             return foundGroup.group_uuid;
         }
 
-        insertMember(group);
+        if (packagedGroup?.group.group_uuid !== group.group_uuid) {
+            insertMember(group);
+        }
     }
 
     const joinRandomGroup = (newTopic: string) => {

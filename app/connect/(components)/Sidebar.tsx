@@ -109,7 +109,7 @@ export const Sidebar = () => {
     }
     //I'm building an audio based social network and meetup platform to call with local like-minded over shared interests to meetup in person at a nearby cafe
     const ActiveGroups = () => {
-        return <div id='active-groups' className='flex flex-col w-full h-full'>
+        return <div id='active-groups' className='flex flex-col w-full h-full pb-[12px] gap-[12px]'>
             <RenderGroups filteredTopics={filteredTopics} userLocation={userLocation} />
         </div>
     }
@@ -134,7 +134,7 @@ export const Sidebar = () => {
 };
 
 const RenderGroups = ({ filteredTopics, userLocation }) => {
-    const { leaveGroup } = useGroup()
+    const { leaveGroup, joinGroup } = useGroup()
     const { currentTime } = useTimer();
 
   
@@ -184,7 +184,7 @@ const RenderGroups = ({ filteredTopics, userLocation }) => {
       const groupLocation = { latitude: group.location[0], longitude: group.location[1]}
   
       return (
-        <div key={group.group_uuid} className='flex flex-row gap-[12px] p-[12px] bg-background2 rounded-[12px] h-fit w-full'>
+        <div key={group.group_uuid} onClick={()=>joinGroup(group)} className='flex flex-row gap-[12px] p-[12px] bg-background2 rounded-[12px] h-fit w-full hover:bg-background3 hover:cursor-pointer'>
           <div className='bg-background3 p-[8px] rounded-full h-fit w-fit aspect-square'>
             <LuMegaphone size={24} color={"var(--text-2)"} />
           </div>
