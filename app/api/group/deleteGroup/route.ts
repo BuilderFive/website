@@ -15,12 +15,12 @@ interface WebhookEvent {
     room: Room
 }
 
-export async function POST(req: NextApiRequest, res: NextApiResponse) {
+export async function POST(req: NextRequest, res: NextResponse) {
     try {
 
         // Validate and decode the webhook event
-        const rawBody = await req.body() as string;
-        const event = await receiver.receive(rawBody, req.headers.authorization);
+        const rawBody = await req.text();
+        const event = await receiver.receive(rawBody, req.headers.get('Authorization') || "");
 
         if (event == null || event.room == null || event.event !== 'room_finished') {
             return NextResponse.json({ error: 'Invalid webhook event' }, { status: 400 });
