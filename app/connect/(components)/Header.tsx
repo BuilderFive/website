@@ -98,12 +98,11 @@ const AccountDrawer = () => {
     const {theme, setTheme} = useTheme();
     const { packagedGroup } = useGroup();
 
-    //some old tests to make sure api endpoint for deleting groups works
     const sendPostReq = async () => {
         const res = await fetch('/api/group/deleteGroup', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/webhook+json'
             },
             body: JSON.stringify({
                 "event": "room_finished",
@@ -170,6 +169,11 @@ const AccountDrawer = () => {
                 : <MoonIcon color={"var(--text-1)"} />}
                 <p className="text-text1">{theme == 'light' ? 'Light' : "Dark"}</p>
             </div>
+            {/*<div id="row-2" className="hover:cursor-pointer hover:bg-background3 p-[8px] rounded-[12px] flex flex-row items-center gap-[8px]" 
+                onClick={()=>sendPostReq()}>
+                <FaTrash color={"var(--text-1)"} />
+                <p className="text-text1 truncate">Delete Server Group</p>
+        </div>*/}
             <div id="row-2" className="hover:cursor-pointer hover:bg-background3 p-[8px] rounded-[12px] flex flex-row items-center gap-[8px]" onClick={signout}>
                 <ImExit color={"var(--text-1)"} />
                 <p className="text-text1 truncate">Sign out</p>
