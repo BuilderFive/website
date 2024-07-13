@@ -37,7 +37,7 @@ const GroupContext = createContext<GroupContextProps>({
     topic: "startups",
     joinGroup: () => {},
     joinRandomGroup: () => {},
-    availableTopics: ["startups","productivity","academics", "careers", "science","history"],
+    availableTopics: ["startups","miscellaneous"],
     leaveGroup: () => {},
     createGroup: () => {},
     setTopic: () => {},
