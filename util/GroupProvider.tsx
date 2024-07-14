@@ -68,16 +68,23 @@ export function GroupProvider(props: React.PropsWithChildren) {
     const availableTopics = ["startups","miscellaneous"]
     const [loadedGroups, setLoadedGroups] = useState<Tables<'groups'>[]>([]);
 
-    //could get packagedgroup from local storage, 
-    //but would need to figure out how to take precedence 
-    //over grabbing from supabase, then clearing it up
-    
-    
-    //fires every time user changes
-    //should fire on initial load to fetch up to date info on user's group
+    /**
+     * INITIAL LOAD
+     */
     useEffect(() => {
         if (!user) return;
-        const fetchGroupData = async () => {
+
+        const fetchGroups = async () => {
+            const { data: groups, error: error } = await supabase.from('groups').select('*');
+            if (error) {
+                console.error('Error fetching groups data:', error);
+                return;
+            }
+            setLoadedGroups(groups as Tables<'groups'>[]);
+            return groups
+        }
+
+        const fetchUserGroup = async () => {
             try {
                 // Fetch the user's group UUID(s). Replace this with your actual logic to get the user's group UUID(s).
                 const { data: userGroups, error: userGroupsError } = await supabase
@@ -123,42 +130,23 @@ export function GroupProvider(props: React.PropsWithChildren) {
             }
         };
         
-        fetchGroupData();
+        fetchGroups();
+        fetchUserGroup();
     }, [user]);
-
-    //fires every time user or topic changes
-    useEffect(() => {
-        if (!user) return;
-        const fetchTopicGroups = async () => {
-            try {
-                // Fetch the user's group UUID(s). Replace this with your actual logic to get the user's group UUID(s).
-                const { data: fetchedGroups, error: fetchedGroupErrors } = await supabase
-                    .from('groups')
-                    .select('*')
-                    .eq('topic', topic);
-                
-                if (fetchedGroupErrors) throw fetchedGroupErrors;
-
-                setLoadedGroups(fetchedGroups)
-            } catch (error) {
-                console.error('Error fetching group data:', error);
-            }
-        };
-        fetchTopicGroups();
-    }, [user, topic]);
 
     //updates to get realtime updates from select topic space
     useEffect(()=> {
         if (!user) return
-        const channel = supabase.channel('topic groups')
+        
+        const channel = supabase.channel('realtime groups')
             .on('postgres_changes', {
-                event: 'INSERT', schema: 'public', table: 'groups', filter: `topic=eq.${topic}`
+                event: 'INSERT', schema: 'public', table: 'groups'
             }, (payload)=> {
                 const newGroup = {payload}.payload.new as Tables<'groups'>;
                 setLoadedGroups([...loadedGroups, newGroup])
             })
             .on('postgres_changes', {
-                event: 'DELETE', schema: 'public', table: 'groups', filter: `topic=eq.${topic}`
+                event: 'DELETE', schema: 'public', table: 'groups'
             }, (payload)=> {
                 const oldGroup = {payload}.payload.old as Tables<'groups'>;
                 const newGroups = loadedGroups.filter(group => group.group_uuid !== oldGroup.group_uuid);
@@ -167,11 +155,13 @@ export function GroupProvider(props: React.PropsWithChildren) {
         return () => {
             if (channel) supabase.removeChannel(channel)
         }
-    },[user, topic])
+    },[user])
 
 
     //update group members when a new member joins/leaves
     useEffect(() => {
+        if (!user && packagedGroup == null) return
+
         const channel = supabase.channel('realtime members')
             .on('postgres_changes', {
                 event: 'INSERT', schema: 'public', table: 'group_members', filter: `group_uuid=eq.${packagedGroup?.group.group_uuid}`
@@ -236,8 +226,7 @@ export function GroupProvider(props: React.PropsWithChildren) {
 
     //to join a random group
     const joinGroup = async(group: Tables<'groups'>) => { 
-        console.log(userLocation.latitude, userLocation.longitude)   
-
+        if (group.group_uuid === packagedGroup?.group.group_uuid) return;
         if (userLocation.latitude == null || userLocation.longitude == null) {
             alert('Please enable location services to join a group.');
             return;

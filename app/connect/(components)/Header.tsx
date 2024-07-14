@@ -4,7 +4,7 @@ import { ButtonIcon, MoonIcon, SunIcon } from "@radix-ui/react-icons";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { FaMicrophone, FaSearchLocation, FaTrash } from "react-icons/fa";
+import { FaBell, FaMicrophone, FaSearchLocation, FaTrash, FaUser } from "react-icons/fa";
 import { ThemeSwitcher } from "~/components/nav/ThemeSwitcher";
 import { useSession } from "~/util/AuthProvider";
 import { ImExit } from "react-icons/im";
@@ -12,11 +12,16 @@ import {Slider} from "@nextui-org/slider";
 import Timer, { calculateTimeRemaining } from "~/app/(landing)/(home)/components/Timer";
 import { useTimer } from "~/util/TimerProvider";
 import { useGroup } from "~/util/GroupProvider";
+import { useProfile } from "~/util/ProfileProvider";
+import { Input } from "~/components/ui/input";
+import { FaC } from "react-icons/fa6";
+import { IoMdClose, IoMdEye, IoMdEyeOff } from "react-icons/io";
 
 export const Header: React.FC = () => {
     const { event } = useSession();
     const { days, hours, minutes, seconds } = calculateTimeRemaining(new Date(), event);
     const { currentTime } = useTimer();
+    const [showUpdates, setShowUpdates] = useState(false);
 
   
     const formatTime = (time) => {
@@ -72,7 +77,7 @@ export const Header: React.FC = () => {
         );
     }
 
-    return (<header className="fixed top-0 right-0 z-10 w-full">
+    return (<header className="fixed top-0 right-0 z-30 w-full">
         <div className="flex flex-row w-full justify-end max-md:h-16 py-[24px] px-[24px] items-start text-white">
             <div className="absolute w-full flex items-center justify-center">
                 {event?.isActive ? <ActiveEvent/> : <ComingEvent/>}
@@ -85,84 +90,64 @@ export const Header: React.FC = () => {
                 <nav className="flex items-center max-md:hidden">
                     <CurrentlyCalling/>
                 </nav>*/}
-                <AccountDrawer/>
+                <AccountDrawer showUpdates={showUpdates} setShowUpdates={setShowUpdates}/>
             </div>
         </div>
+        {showUpdates && 
+        
+            <div onClick={()=>setShowUpdates(false)} className="absolute z-30 top-0 backdrop-blur w-screen h-screen flex items-center justify-center">
+                <div onClick={(e) => e.stopPropagation()} className="absolute rounded-[12px] max-w-[540px] max-h-[720px] max-md:max-w-[360px] max-md:max-h-[480px] w-full h-full bg-background1 p-[24px] flex flex-col min-w-[128px] min-h-[128px]">
+                    <div className="w-full flex flex-row justify-between items-center">
+                        <p className="text-text1 font-bold text-[24px]">Builder&#39;s Updates</p>
+                        <IoMdClose size={24} color={"var(--text-1)"} onClick={()=>setShowUpdates(false)} className="hover:cursor-pointer" />
+                    </div>
+
+                </div>
+            </div>}
     </header>)
 }
 
-const AccountDrawer = () => {
+const AccountDrawer = ({ showUpdates, setShowUpdates}) => {
+    const { first_name, last_name, changeFirstName, changeLastName } = useProfile()
+
     const [open, setOpen] = useState(false);
     const { signout, user, } = useSession();
     const [showModal, setShowModal] = useState(false);
+
     const {theme, setTheme} = useTheme();
     const { packagedGroup } = useGroup();
 
-    const sendPostReq = async () => {
-        const res = await fetch('/api/group/deleteGroup', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/webhook+json'
-            },
-            body: JSON.stringify({
-                "event": "room_finished",
-                "room": {
-                  "sid": "RM_hycBMAjmt6Ub",
-                  "name": packagedGroup?.group.group_uuid,
-                  "emptyTimeout": 300,
-                  "creationTime": "1692627281",
-                  "turnPassword": "2Pvdj+/WV1xV4EkB8klJ9xkXDWY=",
-                  "enabledCodecs": [
-                    {
-                      "mime": "audio/opus"
-                    },
-                    {
-                      "mime": "video/H264"
-                    },
-                    {
-                      "mime": "video/VP8"
-                    },
-                    {
-                      "mime": "video/AV1"
-                    },
-                    {
-                      "mime": "video/H264"
-                    },
-                    {
-                      "mime": "audio/red"
-                    },
-                    {
-                      "mime": "video/VP9"
-                    }
-                  ]
-                },
-                "id": "EV_3DXLrqmZCLEF",
-            })
-        });
-        const data = await res.json();
-        if (res.ok) {
-            console.log(data)
-            return data
-        } else {
-            console.error('Error:', data.error);
-        }
+    const ProfileRow = () => {
+        return <div className="flex flex-col gap-[12px] max-w-[320px] min-w-[180px] items-center">
+            <div className="p-[12px] rounded-full border-[2px] border-text3 bg-background3">
+                <FaUser color={"var(--text-3)"} size={"64px"} />
+            </div>
+            <div className="flex flex-row gap-[4px] justify-start w-full">
+               <p className="text-text3 font-semibold text-[14px]">{first_name} </p>
+                <p className="text-text3 font-semibold text-[14px]">{last_name}</p> 
+            </div>
+            
+        </div>
     }
 
-    return (<div className="flex-1 flex-col relative items-center justify-center">
+    return (<div className="flex flex-row gap-[24px] relative items-center justify-end">
+        {/*<div id="updates" onClick={()=>setShowUpdates(!showUpdates)} className="relative aspect-square rounded-full hover:cursor-pointer">
+            <FaBell size={"36px"}/>
+</div>*/}
+
         <div onClick={()=> {
             if (!user) {
                 setShowModal(!showModal)
             } else {
                 setOpen(!open)
             }
-        }} className="flex items-center space-x-[12px] hover:cursor-pointer">
+        }} className="relative flex items-center space-x-[12px] hover:cursor-pointer">
             {user ? <img src="/static/logos/blue-logo.svg" alt="Your account" className="aspect-square h-[64px] rounded-full" />
              : <img src="/static/logos/black-logo-transparent.svg" alt="Your account" className="aspect-square h-[64px] rounded-full bg-text8" />}
-
-        </div>
-        {open && user &&
-        <div className="absolute mt-[12px] shadow-md rounded-[12px] right-0 w-fit bg-background1 p-[12px] flex flex-col min-w-[128px]">
-            <div id="row-1" className="hover:cursor-pointer hover:bg-background3 p-[8px] rounded-[12px] flex flex-row items-center gap-[8px]" onClick={()=>{
+            {open && user &&
+        <div className="absolute top-[84px] shadow-md rounded-[12px] right-0 w-fit bg-background1 p-[12px] flex flex-col min-w-[128px]">
+            <ProfileRow/>
+            <div id="row-2" className="hover:cursor-pointer hover:bg-background3 p-[8px] rounded-[12px] flex flex-row items-center gap-[8px]" onClick={()=>{
                 setTheme(theme == 'light' ? 'dark' : 'light')
             }}>
                 {theme == 'light' ? <SunIcon color={"var(--text-1)"} />
@@ -174,12 +159,14 @@ const AccountDrawer = () => {
                 <FaTrash color={"var(--text-1)"} />
                 <p className="text-text1 truncate">Delete Server Group</p>
         </div>*/}
-            <div id="row-2" className="hover:cursor-pointer hover:bg-background3 p-[8px] rounded-[12px] flex flex-row items-center gap-[8px]" onClick={signout}>
+            <div id="row-3" className="hover:cursor-pointer hover:bg-background3 p-[8px] rounded-[12px] flex flex-row items-center gap-[8px]" onClick={signout}>
                 <ImExit color={"var(--text-1)"} />
                 <p className="text-text1 truncate">Sign out</p>
             </div>
             
         </div>
         }
+        </div>
+        
     </div>)
 }

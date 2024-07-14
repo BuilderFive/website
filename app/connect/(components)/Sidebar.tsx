@@ -18,6 +18,7 @@ import { Tables } from '~/util/supabase-types';
 import { Spinner } from '@nextui-org/react';
 import { useTheme } from 'next-themes';
 import { useTimer } from '~/util/TimerProvider';
+import { min } from 'lodash';
 
 export const Sidebar = () => {
     const { topic, setTopic, userLocation, loadedGroups, availableTopics, packagedGroup, leaveGroup, joinRandomGroup, isLoading, radius, setRadius } = useGroup();
@@ -116,11 +117,11 @@ export const Sidebar = () => {
     
 
     return <div className='z-20 flex flex-row relative h-full'>
-        <div className={`h-fit flex flex-col min-w-[280px] max-w-[360px] w-fit ${theme == "light" ? "bg-background1" : "bg-transparent"} px-[12px] pt-[24px] gap-[12px] items-center rounded-[12px] justify-start`}>
+        <div className={`h-fit flex flex-col min-w-[280px] max-w-[360px] w-fit ${theme == "light" ? "bg-background1" : "bg-transparent"} px-[12px] pt-[24px] pb-[12px] gap-[12px] items-center rounded-[12px] justify-start`}>
             <Title/>
             <JoinButton/>
             <TopicDrawer/>
-            <ActiveGroups/>
+            {filteredTopics.length > 0 && <ActiveGroups/>}
         </div>
         {open && <div className={`ml-[8px] h-fit ${theme == "light" ? "bg-background1" : "bg-transparent"} px-[12px] pt-[24px] flex flex-col w-[240px] rounded-[12px]`}>
             <p className='font-bold text-[24px] text-text1'>Topics</p>
@@ -136,18 +137,6 @@ export const Sidebar = () => {
 const RenderGroups = ({ filteredTopics, userLocation }) => {
     const { leaveGroup, joinGroup } = useGroup()
     const { currentTime } = useTimer();
-
-  
-    function getTimeRemaining(group) {
-      const endAt = group.end_at;
-      const endAtDate = new Date(endAt);
-      const now = currentTime;
-      const timeDiff = endAtDate.getTime() - now.getTime();
-      const minutes = Math.floor((timeDiff % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((timeDiff % (1000 * 60)) / 1000);
-  
-      return { minutes, seconds };
-    }
 
     const getDistance = useMemo(() => {
         return (userLocation: {latitude, longitude}, groupLocation: {latitude, longitude}): string => {
@@ -175,24 +164,49 @@ const RenderGroups = ({ filteredTopics, userLocation }) => {
     }
   
     return filteredTopics.map((group: Tables<'groups'>) => {
-      const timeLeft = getTimeRemaining(group);
+
       const formattedTimeText = () => {
-        const sign = (timeLeft.minutes < 0 || timeLeft.seconds < 0) ? "-" : "";
-        return <p className='text-text1 font-regular text-[12px]'>{sign}{formatTime(timeLeft.minutes)}:{formatTime(timeLeft.seconds)} minutes remaining</p>
+        const timePassed = () => {
+            const createdTime = new Date(group.created_at);
+            const currentTime = new Date();
+            const timeDiff = currentTime.getTime() - createdTime.getTime();
+            const seconds = Math.floor(timeDiff / 1000);
+            const minutes = Math.floor(timeDiff / (1000 * 60));
+            const hours = Math.floor(minutes / 60);
+            const days = Math.floor(hours / 24);
+
+            return { days, hours, minutes, seconds };
+        }
+        const { days, hours, minutes, seconds } = timePassed();
+        const sign = (minutes < 0 || seconds < 0) ? "-" : "";
+        if (minutes > 0) {
+            if (minutes == 1) {
+                return <p className='text-text3 font-regular text-[12px]'>Started {sign}{minutes} minute ago</p>
+            } else {
+                return <p className='text-text3 font-regular text-[12px]'>Started {sign}{minutes} minutes ago</p>
+            }
+        } else if (seconds > 0) {
+            if (seconds > 10) {
+                return <p className='text-text3 font-regular text-[12px]'>Started {sign}{seconds} seconds ago</p>
+            } else {
+                return <p className='text-text3 font-regular text-[12px]'>Started just now</p>
+            }
+        }
       }
 
       const groupLocation = { latitude: group.location[0], longitude: group.location[1]}
   
       return (
-        <div key={group.group_uuid} onClick={()=>joinGroup(group)} className='flex flex-row gap-[12px] p-[12px] bg-background2 rounded-[12px] h-fit w-full hover:bg-background3 hover:cursor-pointer'>
+        <div key={group.group_uuid} onClick={()=>joinGroup(group)} className='flex flex-row gap-[12px] p-[12px] bg-background2 rounded-[12px] h-fit w-full hover:shadow-md hover:cursor-pointer'>
           <div className='bg-background3 p-[8px] rounded-full h-fit w-fit aspect-square'>
             <LuMegaphone size={24} color={"var(--text-2)"} />
           </div>
-          <div className='justify-center items-center flex flex-col w-full h-fill'>
-            <div className='flex flex-row justify-between w-full h-fit'>
-                <p className='text-text1 font-regular text-[14px]'>{getDistance(userLocation, groupLocation)}km away</p> 
+          <div className='justify-center items-end flex flex-col w-full h-fill'>
+            <div className='flex flex-row justify-start w-full h-fit'>
+                <p className='text-text1 font-semibold text-[16px]'>{group.title}</p>
                 {/** Amount of users in the group */}
             </div>
+            <p className='text-text3 font-regular text-[12px]'>{getDistance(userLocation, groupLocation)}km away</p> 
             {formattedTimeText()}
           </div>
         </div>
