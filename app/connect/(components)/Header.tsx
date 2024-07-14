@@ -17,11 +17,10 @@ import { Input } from "~/components/ui/input";
 import { FaC } from "react-icons/fa6";
 import { IoMdClose, IoMdEye, IoMdEyeOff } from "react-icons/io";
 
-export const Header: React.FC = () => {
+export const Header = ({showUpdates, setShowUpdates}) => {
     const { event } = useSession();
     const { days, hours, minutes, seconds } = calculateTimeRemaining(new Date(), event);
     const { currentTime } = useTimer();
-    const [showUpdates, setShowUpdates] = useState(false);
 
   
     const formatTime = (time) => {
@@ -77,7 +76,7 @@ export const Header: React.FC = () => {
         );
     }
 
-    return (<header className="fixed top-0 right-0 z-30 w-full">
+    return (<header className="fixed top-0 right-0 z-10 w-full">
         <div className="flex flex-row w-full justify-end max-md:h-16 py-[24px] px-[24px] items-start text-white">
             <div className="absolute w-full flex items-center justify-center">
                 {event?.isActive ? <ActiveEvent/> : <ComingEvent/>}
