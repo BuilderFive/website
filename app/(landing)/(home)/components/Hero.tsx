@@ -30,7 +30,7 @@ export default function Hero({loaded, setLoaded}) {
     }, [rsvpCount]);
 
     return <div className="min-h-screen">
-    <div id="Hero" className="px-[48px] max-md:px-[12px] w-full h-full flex flex-row max-md:flex-col flex-wrap flex-grow py-[48px] justify-between max-md:items-center space-y-[48px]">
+    <div id="Hero" className="px-[48px] max-md:px-[12px] w-full h-full flex flex-row max-md:flex-col flex-wrap flex-grow py-[48px] justify-center max-md:items-center space-y-[48px]">
         <section id="Column 1" className="max-w-[800px] md:min-w-[500px] flex flex-col max-md:items-center justify-between items-start w-fit max-md:w-full flex-1 space-y-[24px]">
             <div id="title" className="h-full space-y-[4px] max-md:text-center flex flex-col justify-center max-md:items-center">
                 <h1 className="text-8xl max-md:text-6xl text-secondary1 font-bold">Find friends <a className="text-secondary2">online</a> to meetup <a className="text-secondary2">offline</a></h1>
@@ -46,7 +46,7 @@ export default function Hero({loaded, setLoaded}) {
             </div>
             
         </section>
-        <section id="Column 2" className="flex flex-col max-md:items-center justify-start md:justify-center w-fit flex-1 space-y-[48px] md:pl-[48px]">
+        <section id="Column 2" className="flex flex-col max-md:items-center items-center md:justify-center w-fit flex-1 space-y-[48px] md:pl-[48px]">
             <div className="relative max-w-[750px] w-full">
                 <div onClick={()=>router.push('/connect')} className="max-md:hidden max-w-[750px] w-full aspect-square">
                     <Globe />
