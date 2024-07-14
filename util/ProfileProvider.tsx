@@ -1,18 +1,22 @@
 "use client"
 
 import React, { ReactNode, createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
-import { supabase } from './supabaseClient';
 import { User, Session, SupabaseClient, createClient, AuthChangeEvent } from '@supabase/supabase-js';
 import { Tables } from './supabase-types';
 import {v4 as uuidv4} from 'uuid';
 import { useRouter } from 'next/router';
 import { useSession } from './AuthProvider';
+import { set, update } from 'lodash';
 
 interface ProfileContextProps {
     uuid: string;
     bio: string;
     created_at: string;
     last_joined: string;
+    setFirstName: (name: string) => void;
+    setLastName: (name: string) => void;
+    changeFirstName: (name: string) => void;
+    changeLastName: (name: string) => void;
     first_name: string;
     last_name: string;
     tokens: number;
@@ -24,6 +28,10 @@ const ProfileContext = createContext<ProfileContextProps>({
     bio: '',
     created_at: '',
     last_joined: '',
+    setFirstName: () => {},
+    setLastName: () => {},
+    changeFirstName: () => {},
+    changeLastName: () => {},
     first_name: '',
     last_name: '',
     tokens: 0,
@@ -39,7 +47,7 @@ export const useProfile = () => useContext(ProfileContext);
  * @returns 
  */
 export function ProfileProvider(props: React.PropsWithChildren) {
-    const { user } = useSession();
+    const { user, supabase } = useSession();
     const [uuid, setUUID] = useState<string>('');
     const [bio, setBio] = useState<string>('');
     const [created_at, setCreatedAt] = useState<string>('');
@@ -79,12 +87,34 @@ export function ProfileProvider(props: React.PropsWithChildren) {
         if (user) fetchData();
     }, [user]);
 
+    const changeFirstName = (text: string) => {
+        setFirstName(text)
+        const updateDatabase = async () => {
+            const { data: data, error: error } = await supabase.from('account').update({ first_name: text }).eq('uuid', user?.id);
+            if (error) {
+                console.error(error);
+            }
+        }
+        updateDatabase();
+    }
+    const changeLastName = (text: string) => {
+        setLastName(text) 
+        const updateDatabase = async () => {
+            const { data: data, error: error } = await supabase.from('account').update({ last_name: text }).eq('uuid', user?.id);
+            if (error) {
+                console.error(error);
+            }
+        }
+        updateDatabase();
+    }
 
     const contextObject = {
         uuid,
         bio,
         created_at,
         last_joined,
+        setFirstName, setLastName,
+        changeFirstName, changeLastName,
         first_name,
         last_name,
         tokens,

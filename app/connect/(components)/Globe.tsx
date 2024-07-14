@@ -58,35 +58,33 @@ export default function Globe({children}: {children: React.ReactNode}) {
     }
 
     function updateCircle() {
-        
-            let circle = mapbox.current.getSource('circle')
-            const newCircle = createGeoJSONCircle([userLocation.longitude, userLocation.latitude], radius/1000, 64)
-
-            if (circle == undefined || loading) {
-                mapbox.current.addSource('circle', newCircle);
-                mapbox.current.addLayer({
-                    id: 'circle-fill',
-                    type: 'fill',
-                    source: 'circle',
-                    layout: {},
-                    paint: {
-                        'fill-color': 'rgb(97, 171, 255)',
-                        'fill-opacity': 0.5
+        let circle = mapbox.current.getSource('circle')
+        const newCircle = createGeoJSONCircle([userLocation.longitude, userLocation.latitude], radius/1000, 64)
+        if (circle == undefined) {
+            mapbox.current.addSource('circle', newCircle);
+            mapbox.current.addLayer({
+                id: 'circle-fill',
+                type: 'fill',
+                source: 'circle',
+                layout: {},
+                paint: {
+                    'fill-color': 'rgb(97, 171, 255)',
+                    'fill-opacity': 0.5
+                }
+            });
+            return;
+        } else {
+            circle.setData({
+                "type": "FeatureCollection",
+                "features": [{
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Polygon",
+                        "coordinates": newCircle.data.features[0].geometry.coordinates
                     }
-                });
-                return;
-            } else {
-                circle.setData({
-                    "type": "FeatureCollection",
-                    "features": [{
-                        "type": "Feature",
-                        "geometry": {
-                            "type": "Polygon",
-                            "coordinates": newCircle.data.features[0].geometry.coordinates
-                        }
-                    }]
-                })
-            }
+                }]
+            })
+        }
     }
 
     useEffect(() => {
@@ -158,32 +156,23 @@ export default function Globe({children}: {children: React.ReactNode}) {
      */
     useEffect(() => {
         if (!mapbox.current) return;
-
-        const onLoad = () => {
-            updateCircle();
-        };
     
         if (mapbox.current.isStyleLoaded()) {
             updateCircle();
         } else {
-            mapbox.current.once('load', onLoad);
+            mapbox.current.once('style.load', updateCircle);
         }
-    
-        return () => {
-            if (mapbox.current) {
-                mapbox.current.off('load', onLoad);
-            }
-        };
        
-    },[radius, loading])
+    },[radius, loading, mapbox.current, userLocation])
     
 
     /**
      * Loading the group markers
      */
     useEffect(()=> {
+        console.log('1')
         if (!mapbox.current || loading) return;
-
+        console.log(packagedGroup, loadedGroups)
         const joinProcess = async(group: Tables<'groups'>)=> {
             if (packagedGroup) {
                 const response = await leaveGroup();
@@ -208,7 +197,6 @@ export default function Globe({children}: {children: React.ReactNode}) {
             
 
             marker.getElement().addEventListener('click', async() => {
-                console.log(isActive, packagedGroup?.group.isQueued)
                 if (isActive && packagedGroup.group.isQueued) {
                     leaveGroup()
                 } else {
@@ -255,20 +243,14 @@ export default function Globe({children}: {children: React.ReactNode}) {
             }
             markers.current.push(marker)
         })
-        
-    },[loadedGroups, loading])
-
-    useEffect(() => {
-        if (!mapbox.current || loading) return;
-        if (packagedGroup == null && !(userLocation.longitude == null || userLocation.latitude == null)) {
+        if (packagedGroup == null) {
             //renders the custom marker component
             const markerContainer = document.createElement('div');
             const root = createRoot(markerContainer);
             root.render(<EmptyBubble topic={topic} 
                 createGroup={createGroup}
                 leaveGroup={leaveGroup}
-                packagedGroup={packagedGroup} />);   
-            
+                packagedGroup={packagedGroup} />);
             
             const marker = new mapboxgl.Marker(markerContainer) 
                 .setLngLat([userLocation.longitude, userLocation.latitude])
@@ -276,7 +258,7 @@ export default function Globe({children}: {children: React.ReactNode}) {
 
             markers.current.push(marker)
         }
-    },[packagedGroup, userLocation, loading])
+    },[loadedGroups, packagedGroup, loading, userLocation])
 
     return(<div className="w-screen h-screen relative">
         <div ref={globe} className="h-full w-full"/>

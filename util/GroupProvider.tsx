@@ -67,7 +67,7 @@ export function GroupProvider(props: React.PropsWithChildren) {
     const [isLoading, setLoading] = useState<boolean>(false);
     const availableTopics = ["startups","miscellaneous"]
     const [loadedGroups, setLoadedGroups] = useState<Tables<'groups'>[]>([]);
-    
+
     /**
      * INITIAL LOAD
      */
@@ -226,8 +226,7 @@ export function GroupProvider(props: React.PropsWithChildren) {
 
     //to join a random group
     const joinGroup = async(group: Tables<'groups'>) => { 
-        console.log(userLocation.latitude, userLocation.longitude)   
-
+        if (group.group_uuid === packagedGroup?.group.group_uuid) return;
         if (userLocation.latitude == null || userLocation.longitude == null) {
             alert('Please enable location services to join a group.');
             return;
