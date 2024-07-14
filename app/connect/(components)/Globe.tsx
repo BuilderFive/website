@@ -15,6 +15,7 @@ import { permission } from "process";
 import EmptyBubble from "~/components/globe/EmptyBubble";
 import { unmountComponentAtNode } from "@react-three/fiber";
 import { Button } from "~/components/ui/button";
+import { user } from "@nextui-org/theme";
 
 export default function Globe({children}: {children: React.ReactNode}) {
     const mapbox = useRef<mapboxgl.map>(null)
@@ -156,23 +157,20 @@ export default function Globe({children}: {children: React.ReactNode}) {
      */
     useEffect(() => {
         if (!mapbox.current) return;
+        if (!userLocation.longitude || !userLocation.latitude) return;
     
         if (mapbox.current.isStyleLoaded()) {
             updateCircle();
-        } else {
-            mapbox.current.once('style.load', updateCircle);
         }
        
-    },[radius, loading, mapbox.current, userLocation])
+    },[radius, loading, mapbox.current])
     
 
     /**
      * Loading the group markers
      */
     useEffect(()=> {
-        console.log('1')
         if (!mapbox.current || loading) return;
-        console.log(packagedGroup, loadedGroups)
         const joinProcess = async(group: Tables<'groups'>)=> {
             if (packagedGroup) {
                 const response = await leaveGroup();

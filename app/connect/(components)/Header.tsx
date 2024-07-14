@@ -101,7 +101,23 @@ export const Header: React.FC = () => {
                         <p className="text-text1 font-bold text-[24px]">Builder&#39;s Updates</p>
                         <IoMdClose size={24} color={"var(--text-1)"} onClick={()=>setShowUpdates(false)} className="hover:cursor-pointer" />
                     </div>
+                    <div className="flex flex-col gap-[4px]">
+                        <div className="flex flex-col gap-[4px]">
+                            <p className="text-text1 font-[14px] font-semibold">I have some things planned</p>
+                            <p className="text-text3 font-[12px] font-regular">July 13th, 11:45pm</p>
+                        </div>
+                        
+                        <div className="flex flex-col gap-[8px]">
+                            <p className="text-text2 font-[12px] font-regular">+ Video demo on landing page</p>
+                            <p className="text-text2 font-[12px] font-regular">+ Fix bugs for event tomorrow</p>
+                            <p className="text-text2 font-[12px] font-regular">+ Allow group members to friend each other</p>
+                            <p className="text-text2 font-[12px] font-regular">+ Allow friends to chat with one another</p>
+                            <p className="text-text2 font-[12px] font-regular">+ Allow friends to schedule meetings at locations</p>
+                            <p className="text-text2 font-[12px] font-regular">+ Continue to grow the Austin Meetup group!</p>
+                            <p className="text-text2 font-[12px] font-regular">+ More personal networking</p>
 
+                        </div>
+                    </div>
                 </div>
             </div>}
     </header>)
@@ -131,9 +147,9 @@ const AccountDrawer = ({ showUpdates, setShowUpdates}) => {
     }
 
     return (<div className="flex flex-row gap-[24px] relative items-center justify-end">
-        {/*<div id="updates" onClick={()=>setShowUpdates(!showUpdates)} className="relative aspect-square rounded-full hover:cursor-pointer">
+        <div id="updates" onClick={()=>setShowUpdates(!showUpdates)} className="relative aspect-square rounded-full hover:cursor-pointer">
             <FaBell size={"36px"}/>
-</div>*/}
+        </div>
 
         <div onClick={()=> {
             if (!user) {
