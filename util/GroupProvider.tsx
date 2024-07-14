@@ -425,6 +425,8 @@ export function GroupProvider(props: React.PropsWithChildren) {
             });
             if (!error) {
                 setLoading(false)
+                const updatedLoadedGroups = loadedGroups.filter(group => group.group_uuid !== group_uuid);
+                setLoadedGroups(updatedLoadedGroups);
                 setPackagedGroup(null)
                 return data
             } else {
