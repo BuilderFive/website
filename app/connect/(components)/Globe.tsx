@@ -17,7 +17,7 @@ import { unmountComponentAtNode } from "@react-three/fiber";
 import { Button } from "~/components/ui/button";
 import { user } from "@nextui-org/theme";
 
-export default function Globe({children}: {children: React.ReactNode}) {
+export default function Globe({showUpdates}) {
     const mapbox = useRef<mapboxgl.map>(null)
     const globe = useRef<HTMLDivElement>(null)
     const { radius, createGroup, leaveGroup, joinGroup, setUserLocation, userLocation, packagedGroup, loadedGroups, topic } = useGroup();
@@ -262,7 +262,7 @@ export default function Globe({children}: {children: React.ReactNode}) {
         <div ref={globe} className="h-full w-full"/>
         <div className='relative z-20'>
             <div className="fixed z-20 left-2 top-2">
-                <Sidebar/>
+                {!showUpdates && <Sidebar/>}
             </div>
             <div className="fixed z-20 bottom-0 w-full">
                 {packagedGroup && !loading && <Footer />}

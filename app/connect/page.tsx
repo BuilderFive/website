@@ -21,6 +21,8 @@ export default function Page() {
   const { packagedGroup, setUserLocation } = useGroup();
   const { user, event } = useSession();
   const [showModal, setShowModal] = useState(false);
+  const [showUpdates, setShowUpdates] = useState(false);
+
   const { days, hours, minutes, seconds } = calculateTimeRemaining(new Date(), event);
   const router = useRouter()
   const [ loading, setLoading ] = useState(true)
@@ -60,11 +62,8 @@ export default function Page() {
       <Modal showModal={showModal} setShowModal={setShowModal}/>
     </div> : <div className="flex flex-row w-screen h-screen relative">
         {isLoaded && <>
-          <Header />
-          <Globe>
-            <Sidebar/>
-            {!packagedGroup && <Footer />}
-          </Globe>
+          <Header showUpdates={showUpdates} setShowUpdates={setShowUpdates} />
+          <Globe showUpdates={showUpdates}/>
         </>}
       </div>
   }
