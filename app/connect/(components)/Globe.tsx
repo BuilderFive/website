@@ -23,12 +23,11 @@ export default function Globe({children}: {children: React.ReactNode}) {
     const [loading, setLoading] = useState(true)
     const markers = useRef<any>([])
     const reminderTimer = useRef<NodeJS.Timeout | null>(null)
-    const circle = useRef<any>(null)
 
     function getLocation() {
       if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(getCoordinates, handleLocationError);
-  
+        navigator.geolocation.getCurrentPosition(getCoordinates, handleLocationError);
+        reminderTimer.current = null
       } else {
           alert("Geolocation is not supported by this browser.");
       }
@@ -59,40 +58,42 @@ export default function Globe({children}: {children: React.ReactNode}) {
     }
 
     function updateCircle() {
-        if(circle.current == null) {
-            mapbox.current.addSource('circle', createGeoJSONCircle([userLocation.longitude, userLocation.latitude], radius/1000, 64));
-            mapbox.current.addLayer({
-                id: 'circle-fill',
-                type: 'fill',
-                source: 'circle',
-                layout: {},
-                paint: {
-                    'fill-color': 'rgb(97, 171, 255)',
-                    'fill-opacity': 0.5
-                }
-            });
-            circle.current = mapbox.current.getSource('circle')
-        }
-      
-        const geoJSON = createGeoJSONCircle([userLocation.longitude, userLocation.latitude], radius/1000, 64)
-        circle.current.setData(geoJSON.data)
+        
+            let circle = mapbox.current.getSource('circle')
+            const newCircle = createGeoJSONCircle([userLocation.longitude, userLocation.latitude], radius/1000, 64)
+
+            if (circle == undefined || loading) {
+                mapbox.current.addSource('circle', newCircle);
+                mapbox.current.addLayer({
+                    id: 'circle-fill',
+                    type: 'fill',
+                    source: 'circle',
+                    layout: {},
+                    paint: {
+                        'fill-color': 'rgb(97, 171, 255)',
+                        'fill-opacity': 0.5
+                    }
+                });
+                return;
+            } else {
+                circle.setData({
+                    "type": "FeatureCollection",
+                    "features": [{
+                        "type": "Feature",
+                        "geometry": {
+                            "type": "Polygon",
+                            "coordinates": newCircle.data.features[0].geometry.coordinates
+                        }
+                    }]
+                })
+            }
     }
 
     useEffect(() => {
-        if (  userLocation.longitude == null || userLocation.latitude == null) {
-            getLocation()
-            reminderTimer.current = setTimeout(() => {
-                if (userLocation.longitude == null || userLocation.latitude == null) {
-                    alert("In order to use BuilderFive, you need to enable location services. Please allow location services and refresh the page.")
-                }
-            },10000)
+        if (userLocation.longitude == null || userLocation.latitude == null) {
+            getLocation();
         }
-        return () => {
-            if (reminderTimer.current) {
-                clearTimeout(reminderTimer.current)
-            } 
-        }
-    },[])
+    }, [userLocation.latitude, userLocation.longitude]);
 
     useEffect(() => {
         mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAP_BOX_TOKEN;
@@ -115,8 +116,20 @@ export default function Globe({children}: {children: React.ReactNode}) {
                   'space-color': 'rgb(11, 11, 25)', // Background color
                   'star-intensity': 0.5 // Background star brightness (default 0.35 at low zoooms )
                 });
+                mapbox.current.addSource('circle', createGeoJSONCircle([userLocation.longitude, userLocation.latitude], radius/1000, 64));
+                mapbox.current.addLayer({
+                    id: 'circle-fill',
+                    type: 'fill',
+                    source: 'circle',
+                    layout: {},
+                    paint: {
+                        'fill-color': 'rgb(97, 171, 255)',
+                        'fill-opacity': 0.5
+                    }
+                });
                 setLoading(false)
             });
+
             const geolocate = new mapboxgl.GeolocateControl({
                 positionOptions: {
                     enableHighAccuracy: false
@@ -136,8 +149,6 @@ export default function Globe({children}: {children: React.ReactNode}) {
                 geolocate.trigger();                
             })
 
-
-            // Clean up on unmount
             return () => mapbox.current.remove();
         }
     },[])
@@ -146,14 +157,25 @@ export default function Globe({children}: {children: React.ReactNode}) {
      * Loading the user's circle and changing it's radius
      */
     useEffect(() => {
-        if (!mapbox.current || loading) return;
+        if (!mapbox.current) return;
 
-        if (reminderTimer.current) {
-            clearTimeout(reminderTimer.current)
+        const onLoad = () => {
+            updateCircle();
+        };
+    
+        if (mapbox.current.isStyleLoaded()) {
+            updateCircle();
+        } else {
+            mapbox.current.once('load', onLoad);
         }
-       updateCircle()
+    
+        return () => {
+            if (mapbox.current) {
+                mapbox.current.off('load', onLoad);
+            }
+        };
        
-    },[radius, loading, userLocation])
+    },[radius, loading])
     
 
     /**
@@ -161,6 +183,7 @@ export default function Globe({children}: {children: React.ReactNode}) {
      */
     useEffect(()=> {
         if (!mapbox.current || loading) return;
+
         const joinProcess = async(group: Tables<'groups'>)=> {
             if (packagedGroup) {
                 const response = await leaveGroup();
@@ -185,6 +208,7 @@ export default function Globe({children}: {children: React.ReactNode}) {
             
 
             marker.getElement().addEventListener('click', async() => {
+                console.log(isActive, packagedGroup?.group.isQueued)
                 if (isActive && packagedGroup.group.isQueued) {
                     leaveGroup()
                 } else {
@@ -231,9 +255,12 @@ export default function Globe({children}: {children: React.ReactNode}) {
             }
             markers.current.push(marker)
         })
+        
+    },[loadedGroups, loading])
 
+    useEffect(() => {
+        if (!mapbox.current || loading) return;
         if (packagedGroup == null && !(userLocation.longitude == null || userLocation.latitude == null)) {
-
             //renders the custom marker component
             const markerContainer = document.createElement('div');
             const root = createRoot(markerContainer);
@@ -249,7 +276,7 @@ export default function Globe({children}: {children: React.ReactNode}) {
 
             markers.current.push(marker)
         }
-    },[loadedGroups, packagedGroup, loading])
+    },[packagedGroup, userLocation, loading])
 
     return(<div className="w-screen h-screen relative">
         <div ref={globe} className="h-full w-full"/>
