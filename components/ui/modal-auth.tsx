@@ -133,28 +133,6 @@ const SignUpModal = ({handleGoogleSignin, setIsSignUp, setFinishedSignup}) => {
             alert(error.message);
             return
         }
-        //send email here
-        const sendWelcomeEmail = async(inputEmail: string) => {
-            try {
-                const response = await fetch('../api/email/welcome/', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ email: inputEmail }),
-                });
-            
-                const data = await response.json();
-                if (response.ok) {
-                    return data
-                } else {
-                    console.error('Error sending email:', data.error);
-                }
-            } catch (error) {
-                console.error('Error sending email:', error);
-            }
-        }
-        sendWelcomeEmail(email)
         setFinishedSignup(true)
         clearForm()
     };
