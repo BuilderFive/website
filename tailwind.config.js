@@ -18,15 +18,6 @@ module.exports = {
           "2xl": "1400px",
       },
     },
-
-    
-    backgroundImage: {
-        "twighlight": 
-          "linear-gradient(to bottom, rgba(0, 0, 0, 0.8), rgba(255, 255, 255, 0)), url('/static/Twighlight.svg')",
-        "landscape": "url('/static/bottom-background.svg')",
-        "landscape-2": "url('/static/landscape-alien.svg')",
-        "sunset": "url('/static/Sunset.svg')",
-      },
     extend: {
       colors: {
         tabs: 'var(--tabs)',
@@ -60,6 +51,13 @@ module.exports = {
         foreground: "var(--background-2)",
         border: "var(--background-1)"
     },
+    backgroundImage: {
+      "twighlight": 
+        "linear-gradient(to bottom, rgba(0, 0, 0, 0.8), rgba(255, 255, 255, 0)), url('/static/Twighlight.svg')",
+      "landscape": "url('/static/bottom-background.svg')",
+      "landscape-2": "url('/static/landscape-alien.svg')",
+      "sunset": "url('/static/Sunset.svg')",
+    },
       borderRadius: {
           lg: "var(--radius)",
           md: "calc(var(--radius) - 2px)",
@@ -73,6 +71,10 @@ module.exports = {
           "accordion-up": {
               from: { height: "var(--radix-accordion-content-height)" },
               to: { height: "0" },
+          },
+          gradientMove: {
+            '0%, 100%': { backgroundPosition: 'left' },
+            '50%': { backgroundPosition: 'right' },
           },
           slidein: {
             from: {
@@ -88,6 +90,7 @@ module.exports = {
       animation: {
           "accordion-down": "accordion-down 0.2s ease-out",
           "accordion-up": "accordion-up 0.2s ease-out",
+          'gradient-x': 'gradientMove 1s ease infinite',
           slidein: "slidein 1s ease var(--slidein-delay, 0) forwards",
         },
       fontFamily: {

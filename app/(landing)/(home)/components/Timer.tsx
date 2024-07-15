@@ -32,9 +32,13 @@ export default function Timer({loaded}) {
 
     const timeLeft = !loaded ? {days: 0, hours:0, minutes:0, seconds:0} : calculateTimeRemaining(currentTime, event);
     const sign = (timeLeft.days < 0 || timeLeft.hours < 0 || timeLeft.minutes < 0 || timeLeft.seconds < 0) ? "-" : "";
-
     const SoonComponent = () => (
-        <section className="w-fit h-fit flex gap-[24px] flex items-center justify-center max-md:grid max-md:grid-cols-2">
+        <section onClick={() => {
+            const element = document.getElementById("google-calendar");
+            if (element) {
+                element.scrollIntoView({ behavior: "smooth" });
+            }
+        }} className="w-fit h-fit flex gap-[24px] flex items-center justify-center max-md:grid max-md:grid-cols-2 hover:cursor-pointer" >
         <section className='w-[125px] relative bg-secondary1 p-[24px] aspect-square rounded-[12px] shadow-md flex items-center justify-center'>
             <p className='text-6xl text-white font-black'>
                 {sign}{formatTime(timeLeft.days)}
