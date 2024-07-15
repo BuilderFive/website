@@ -45,8 +45,8 @@ export default function HowItWorks() {
             
             <div id="howitworks-content" className="flex flex-col space-y-[24px] items-center">
                 
-                <div id="howitworks-row-1" className="h-full flex flex-row w-full flex-wrap gap-x-[24px] gap-y-[24px] justify-between max-md:space-y-[12px]">
-                    <div id="howitworks-item-1" className="hover:shadow-xl w-[240px] flex relative flex-col flex-grow px-[24px] py-[24px] bg-transparent rounded-[12px] space-y-[24px] max-md:w-full items-center justify-center">
+                <div id="howitworks-row-1" className="h-full flex flex-row w-full flex-wrap gap-x-[24px] gap-y-[24px] justify-center max-md:space-y-[12px]">
+                    <div id="howitworks-item-1" className="hover:shadow-xl w-[240px] max-w-[540px] flex relative flex-col flex-grow px-[24px] py-[24px] bg-transparent rounded-[12px] space-y-[24px] max-md:w-full items-center justify-center">
                         <p className="text-2xl font-semibold text-white max-md:text-xl w-[60%] w-full max-lg:w-[100%]">Go to <Link href="/connect" className="underline text-secondary1">BuilderFive</Link> during an event</p>
                         <div className="flex-1"/>
                         <RevealOnScroll_Timer/>
@@ -54,7 +54,7 @@ export default function HowItWorks() {
                             <p className="text-text5 text-2xl font-bold max-md:text-sm">1</p>
                         </div>
                     </div>
-                    <div id="howitworks-item-2" className="hover:shadow-xl w-[240px] flex relative flex-col flex-grow px-[24px] py-[24px] bg-transparent rounded-[12px] space-y-[24px] max-md:w-full items-center justify-center">
+                    <div id="howitworks-item-2" className="hover:shadow-xl w-[240px] max-w-[540px] flex relative flex-col flex-grow px-[24px] py-[24px] bg-transparent rounded-[12px] space-y-[24px] max-md:w-full items-center justify-center">
                         <p className="text-2xl font-semibold text-white max-md:text-xl w-[60%] w-full max-lg:w-[100%]">Join or create a voice call <br/>Anyone near you will join</p>
                         <div className="h-full flex items-center"><RevealOnScroll><AvatarsJoins/></RevealOnScroll>
                         </div>
@@ -64,11 +64,11 @@ export default function HowItWorks() {
                     </div>
                    
                 </div>
-                <div id="howitworks-row-2" className="flex flex-row w-full flex-wrap justify-between gap-x-[24px] gap-y-[24px] max-md:space-y-[12px]">
-                    <div id="howitworks-item-3" className="hover:shadow-xl w-[240px] flex relative flex-col flex-grow px-[24px] py-[24px] bg-transparent rounded-[12px] space-y-[24px] max-md:w-full items-center justify-center">
+                <div id="howitworks-row-2" className="h-full flex flex-row w-full flex-wrap gap-x-[24px] gap-y-[24px] justify-center max-md:space-y-[12px]">
+                    <div id="howitworks-item-3" className="hover:shadow-xl w-[240px] max-w-[540px] flex relative flex-col flex-grow px-[24px] py-[24px] bg-transparent rounded-[12px] space-y-[24px] max-md:w-full items-center justify-center">
                         <p className="text-2xl font-semibold text-white max-md:text-xl w-[60%] w-full max-lg:w-[100%]">Add friends, chat, and<br/>find time to meet up</p>
                         {/* Could create a friend-add dropdown */}
-                        <div className="flex flex-row gap-[24px]">
+                        <div className="flex flex-row">
                             <div className="your-audio-group-marker"/>
                             <div className="wait-audio-group-marker"/>
                             <div className="other-audio-group-marker"/>
@@ -77,7 +77,7 @@ export default function HowItWorks() {
                             <p className="text-text5 text-2xl font-bold max-md:text-sm">3</p>
                         </div>
                     </div>
-                    <div id="howitworks-item-4" className="hover:shadow-xl w-[240px] flex relative flex-col flex-grow px-[24px] py-[24px] bg-transparent rounded-[12px] space-y-[24px] max-md:w-full items-center justify-center">
+                    <div id="howitworks-item-4" className="hover:shadow-xl w-[240px] max-w-[540px] flex relative flex-col flex-grow px-[24px] py-[24px] bg-transparent rounded-[12px] space-y-[24px] max-md:w-full items-center justify-center">
                         <p className="text-2xl font-semibold text-white max-md:text-xl w-[60%] w-full max-lg:w-[100%]">Repeat step 1 to <br/>meet more people!</p>
                         {/* Could create a date/time/place scheduler for a crop of a google map location */}
 
