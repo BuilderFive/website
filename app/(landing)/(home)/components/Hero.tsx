@@ -8,6 +8,7 @@ import { FaMicrophone } from "react-icons/fa6";
 import {Tooltip} from "@nextui-org/tooltip";
 import { useSession } from "~/util/AuthProvider";
 import { useRouter } from "next/navigation";
+import { CtaButton } from "./CtaButton";
 export default function Hero({loaded, setLoaded}) {
     const { event, supabase } = useSession();
     const router = useRouter()
@@ -42,7 +43,9 @@ export default function Hero({loaded, setLoaded}) {
                         <a className='text-secondary1 text-5xl max-md:text-2xl font-bold'>{rsvpCount}</a> people want to get notified for this week&#39;s online networking event.
                     </p>
                 </section>
-                <RsvpSection />
+                <CtaButton>
+                    OKAY, I&#39;M IN
+                </CtaButton>
             </div>
             
         </section>

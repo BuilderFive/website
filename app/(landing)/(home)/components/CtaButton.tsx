@@ -1,57 +1,23 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { useSession } from '~/util/AuthProvider';
 
 interface CtaButtonProps {
-    target: string;
     children: React.ReactNode;
 }
 
-export const CtaButton: React.FC<CtaButtonProps> = ({ target, children }) => {
+export const CtaButton: React.FC<CtaButtonProps> = ({ children }) => {
     const ref = useRef<HTMLButtonElement>(null);
-    const [mousePosition, setMousePosition] = useState({ x: '-100%', y: '-100%' });
-
-    const scrollTo = function (target: string) {
-        const element = document.getElementById(target)
-        element?.scrollIntoView({ behavior: "smooth", block: "end", inline: "nearest" });
-    }
-
-    useEffect(() => {
-        const handleMouseMove = (e: MouseEvent) => {
-            if (!ref.current) return
-            const rect = ref.current.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            setMousePosition({ x: `${x}px`, y: `${y}px` });
-        }
-
-        document.addEventListener('mousemove', handleMouseMove);
-        return () => document.removeEventListener('mousemove', handleMouseMove);
-    }, [])
+    const { handleSignInWithGoogle } = useSession();
 
     return (
-        <button
+        <button onClick={handleSignInWithGoogle}
             ref={ref}
-            onClick={e => {
-                e.preventDefault();
-                scrollTo(target);
-            }}
-            className="relative w-32 h-9 overflow-hidden rounded-lg bg-[#e5e7eb] transform transition-transform ease-in-out active:scale-90"
-        >
-            <span
-                className="absolute z-0 h-28 w-28 -translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(#1e3a8a_0%,transparent_70%)]"
-                style={
-                    {
-                        left: mousePosition.x,
-                        top: mousePosition.y,
-                    } as any
-                }
-            ></span>
-            <div className="relative h-8 z-10 m-[1px] rounded-[calc(0.5rem-1px)] bg-white/70 px-4 py-[0.3rem] text-xs text-blue-600 backdrop-blur-sm">
-                <span className="text-sm font-medium items-center justify-center">
-                    {children}
-                </span>
-            </div>
+            className="w-full flex flex-row py-[24px] gap-[12px] rounded-[12px] items-center justify-center bg-background1 hover:cursor-pointer hover:bg-secondary4">
+            
+            <img className='w-6 h-6' src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google logo"/>
+            <p className='text-text3 font-semibold text-[24px]'>Get a free account in 5 seconds</p>
         </button>
     )
 }

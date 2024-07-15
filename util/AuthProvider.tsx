@@ -20,6 +20,8 @@ interface SessionContextProps {
     isInvited: boolean;
     signout: () => void;
     event: Event | null;
+    handleSignInWithGoogleOTP: (response: any) => void;
+    handleSignInWithGoogle: () => void; 
 }
 
 const SessionContext = createContext<SessionContextProps>({
@@ -29,7 +31,9 @@ const SessionContext = createContext<SessionContextProps>({
     isLoading: false,
     isInvited: false,
     signout: () => {},
-    event: null
+    event: null,
+    handleSignInWithGoogleOTP: () => {},
+    handleSignInWithGoogle: () => {}
 });
 
 export const useSession = () => useContext(SessionContext);
@@ -224,17 +228,25 @@ export function SessionProvider(props: React.PropsWithChildren) {
         return true
     }
     
-    //FIX THIS
-    async function getSessionsCount() {
-        const { data, error } = await supabase.auth.admin.listUsers()
-
+    async function handleSignInWithGoogleOTP(response: any) {
+        const { data, error } = await supabase.auth.signInWithIdToken({
+          provider: 'google',
+          token: response.credential,
+        })
+    }
+    const handleSignInWithGoogle = async () => {
+        const { data, error } = await supabase.auth.signInWithOAuth({
+            provider: 'google',
+            options: {
+              queryParams: {
+                    access_type: 'offline',
+                    prompt: 'consent',
+                }, redirectTo: process.env.NODE_ENV === 'development' ? "http://localhost:3000/connect" : "builderfive.com/connect" 
+            },
+          })
         if (error) {
-            console.error('Error:', error);
-            return;
+            console.error('Error signing in with Google:', error);
         }
-
-        console.log('Total sessions:', data);
-        return data.total;
     }
 
     const contextObject = {
@@ -242,7 +254,8 @@ export function SessionProvider(props: React.PropsWithChildren) {
         session,
         supabase,
         isLoading,
-        isInvited,
+        isInvited, handleSignInWithGoogleOTP,
+        handleSignInWithGoogle,
         signout, event
     };
 
