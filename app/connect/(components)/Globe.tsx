@@ -16,6 +16,7 @@ import EmptyBubble from "~/components/globe/EmptyBubble";
 import { unmountComponentAtNode } from "@react-three/fiber";
 import { Button } from "~/components/ui/button";
 import { user } from "@nextui-org/theme";
+import { GeoJSONSource, Source } from "mapbox-gl";
 
 export default function Globe({showUpdates}) {
     const mapbox = useRef<mapboxgl.map>(null)
@@ -24,6 +25,7 @@ export default function Globe({showUpdates}) {
     const [loading, setLoading] = useState(true)
     const markers = useRef<any>([])
     const reminderTimer = useRef<NodeJS.Timeout | null>(null)
+    const circle = useRef<GeoJSONSource | null>(null)
 
     function getLocation() {
       if (navigator.geolocation) {
@@ -59,9 +61,8 @@ export default function Globe({showUpdates}) {
     }
 
     function updateCircle() {
-        let circle = mapbox.current.getSource('circle')
         const newCircle = createGeoJSONCircle([userLocation.longitude, userLocation.latitude], radius/1000, 64)
-        if (circle == undefined) {
+        if (circle.current == undefined || circle.current == null) {
             mapbox.current.addSource('circle', newCircle);
             mapbox.current.addLayer({
                 id: 'circle-fill',
@@ -75,14 +76,15 @@ export default function Globe({showUpdates}) {
             });
             return;
         } else {
-            circle.setData({
+            circle.current.setData({
                 "type": "FeatureCollection",
                 "features": [{
                     "type": "Feature",
                     "geometry": {
                         "type": "Polygon",
                         "coordinates": newCircle.data.features[0].geometry.coordinates
-                    }
+                    },
+                    "properties": {} // Add the 'properties' property here
                 }]
             })
         }
@@ -115,7 +117,9 @@ export default function Globe({showUpdates}) {
                   'space-color': 'rgb(11, 11, 25)', // Background color
                   'star-intensity': 0.5 // Background star brightness (default 0.35 at low zoooms )
                 });
-                mapbox.current.addSource('circle', createGeoJSONCircle([userLocation.longitude, userLocation.latitude], radius/1000, 64));
+                console.log('1')
+                const newCircle = createGeoJSONCircle([userLocation.longitude, userLocation.latitude], radius/1000, 64);
+                mapbox.current.addSource('circle', newCircle);
                 mapbox.current.addLayer({
                     id: 'circle-fill',
                     type: 'fill',
@@ -126,6 +130,7 @@ export default function Globe({showUpdates}) {
                         'fill-opacity': 0.5
                     }
                 });
+                circle.current = mapbox.current.getSource('circle') as GeoJSONSource;
                 setLoading(false)
             });
 
@@ -156,14 +161,12 @@ export default function Globe({showUpdates}) {
      * Loading the user's circle and changing it's radius
      */
     useEffect(() => {
-        if (!mapbox.current) return;
+        if (!mapbox.current || loading) return;
         if (!userLocation.longitude || !userLocation.latitude) return;
-    
-        if (mapbox.current.isStyleLoaded()) {
-            updateCircle();
-        }
+
+        updateCircle();
        
-    },[radius, loading, mapbox.current])
+    },[radius, loading, mapbox.current, userLocation])
     
 
     /**
@@ -256,7 +259,7 @@ export default function Globe({showUpdates}) {
 
             markers.current.push(marker)
         }
-    },[loadedGroups, packagedGroup, loading, userLocation])
+    },[loadedGroups, packagedGroup, loading, userLocation, event])
 
     return(<div className="w-screen h-screen relative">
         <div ref={globe} className="h-full w-full"/>

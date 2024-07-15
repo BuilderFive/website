@@ -31,13 +31,18 @@ export default function Home() {
     return (
         <div className="w-full relative">
             <Hero loaded={loaded} setLoaded={setLoaded}/>
-            
             <HowItWorks />
+            <div className='px-[48px] max-md:px-[12px] w-full h-full'>
+                <div className='rounded-[12px] bg-background1 p-[24px] h-full'>
+                    <iframe id="google-calendar" src={`https://calendar.google.com/calendar/embed?height=600&wkst=1&ctz=America%2FChicago&bgcolor=%23ffffff&src=Y18yNzk2ODA4NmViMDk0NDUxZmNkY2NhMzBlNTg2NTA1N2JmMzA1ZTBhYTczZDZiZWQ2MTVhMDllZjcxMjJhZjVlQGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20&color=%23039BE5`} className="min-h-[600px] max-h-[1080px] w-full h-full"  scrolling="no"></iframe>
+
+                </div>
+            </div>
             {/*<FeatureFooter/>
             <CTA/>*/}
             <div className='w-full flex items-center justify-center my-[128px]'>
                 <div className='w-full px-[48px] max-md:px-[12px]'>
-                    <RsvpSection/>
+                    <CtaButton>OKAY, LET&#39;S TRY IT</CtaButton>
                 </div>
                 
             </div>

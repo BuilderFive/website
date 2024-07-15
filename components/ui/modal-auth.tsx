@@ -10,6 +10,7 @@ import LottiePlayer from '@lottiefiles/lottie-player';
 import GoogleSignIn from './google-sign-in';
 import GoogleSignUp from './google-sign-up';
 import { Sign } from 'crypto';
+import { useSession } from '~/util/AuthProvider';
 
 //On mobile the white background doesn't exist, so make sure the input form background is white
 //Make it so users can only join groups that are within their radius
@@ -17,6 +18,7 @@ import { Sign } from 'crypto';
 //Allow globe view without location
 
 const Modal = ({ showModal, setShowModal }) => {
+    const { handleSignInWithGoogle} = useSession()
     const [firstname, setFirstname] = useState('')
     const [lastname, setLastname] = useState('')
     const router = useRouter()
@@ -27,23 +29,6 @@ const Modal = ({ showModal, setShowModal }) => {
     const [loading, setLoading] = useState(false)
     const [finishedSignup, setFinishedSignup] = useState(false)
     const [errors, setErrors] = useState({emailError: "", firstname: "", lastname:"", passwordError: ""});
-
-    const handleGoogleSignin = async () => {
-        const { data, error } = await supabase.auth.signInWithOAuth({
-            provider: 'google',
-            options: {
-              queryParams: {
-                access_type: 'offline',
-                prompt: 'consent',
-              }, redirectTo: "builderfive.com/connect"
-            },
-          })
-        if (error) {
-            console.error('Error signing in with Google:', error);
-        } else {
-            console.log('Signed in with Google:', data);
-        }
-    }
 
     const Verification = () => {
         return <div className="w-[540px] h-[540px] flex flex-col gap-[24px] bg-white items-center justify-center rounded-[12px] p-[24px]">
@@ -68,8 +53,8 @@ const Modal = ({ showModal, setShowModal }) => {
         showModal && (
         <div className="fixed z-100 inset-0 overflow-y-auto backdrop-blur-md flex justify-center items-center">
             {finishedSignup && <Verification/>}
-            {!finishedSignup && isSignUp && <SignUpModal setIsSignUp={setIsSignUp} handleGoogleSignin={handleGoogleSignin} setFinishedSignup={setFinishedSignup}/>}
-            {!finishedSignup && !isSignUp && <SignInModal setIsSignUp={setIsSignUp} handleGoogleSignin={handleGoogleSignin}/>}
+            {!finishedSignup && isSignUp && <SignUpModal setIsSignUp={setIsSignUp} handleGoogleSignin={handleSignInWithGoogle} setFinishedSignup={setFinishedSignup}/>}
+            {!finishedSignup && !isSignUp && <SignInModal setIsSignUp={setIsSignUp} handleGoogleSignin={handleSignInWithGoogle}/>}
         </div>
     ))
 }
@@ -148,28 +133,6 @@ const SignUpModal = ({handleGoogleSignin, setIsSignUp, setFinishedSignup}) => {
             alert(error.message);
             return
         }
-        //send email here
-        const sendWelcomeEmail = async(inputEmail: string) => {
-            try {
-                const response = await fetch('../api/email/welcome/', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ email: inputEmail }),
-                });
-            
-                const data = await response.json();
-                if (response.ok) {
-                    return data
-                } else {
-                    console.error('Error sending email:', data.error);
-                }
-            } catch (error) {
-                console.error('Error sending email:', error);
-            }
-        }
-        sendWelcomeEmail(email)
         setFinishedSignup(true)
         clearForm()
     };
