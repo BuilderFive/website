@@ -1,14 +1,16 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useTheme } from 'next-themes';
 import { geoGraticule10 } from 'd3-geo';
-import { Canvas, useLoader, useFrame } from '@react-three/fiber';
+import { Canvas, useLoader, useFrame, } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import { GeoJsonGeometry } from 'three-geojson-geometry';
-import { Group, TextureLoader } from 'three';
+import { Group, TextureLoader, AnimationLoader, CanvasTexture, BufferGeometry, Material, Mesh, NormalBufferAttributes, Object3DEventMap } from 'three';
 import { Quaternion, Vector3 } from 'three';
 import geoJson from './countries.geojson.json';
+import { parseGIF, decompressFrames } from 'gifuct-js';
+import { Plane } from '@react-three/drei';
 
 interface ThreePropWithTheme {
     theme: string;
@@ -91,7 +93,7 @@ const latLonToCartesian = (lat: number, lon: number, radius: number = 1) => {
         z: radius * Math.sin(phi) * Math.sin(theta)
     };
 };
-
+  
 const ImageMarker = ({ position, imageUrl }: { position: { x: number; y: number; z: number; }, imageUrl: string }) => {
     const texture = useLoader(TextureLoader, imageUrl);
     const dir = new Vector3(position.x, position.y, position.z).normalize();
@@ -121,17 +123,15 @@ const RotatingGlobe: React.FC<ThreePropWithTheme> = ({ theme }) => {
             <GlobeMesh theme={theme || 'dark'} />
             {/*<GlobeGraticule theme={theme || 'dark'} />*/}
             <Countries theme={theme || 'dark'} />
+            <AnimationMarker position={latLonToCartesian(31.7749, -187.4194)} gifUrl="/animations/active-mic.gif" />
+
         </group>
     );
 };
 
 export const Globe = () => {
     const { theme } = useTheme();
-    const randomPoints = generateRandomPointsWithinCountries(10);
-    const imageUrls = [
-        '/static/discord.svg',
-    ];
-
+    
     return (
         <Canvas
             camera={{
@@ -148,3 +148,70 @@ export const Globe = () => {
         </Canvas>
     );
 };
+const loadGifTexture = async (url) => {
+    const response = await fetch(url);
+    const buffer = await response.arrayBuffer();
+    const gif = parseGIF(buffer);
+    const frames = decompressFrames(gif, true);
+  
+    return frames.map(frame => {
+      const { width, height } = frame.dims;
+      const canvas = document.createElement('canvas');
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        const imageData = ctx.createImageData(width, height);
+        for (let i = 0; i < frame.patch.length; i++) {
+          imageData.data[i] = frame.patch[i];
+        }
+        ctx.putImageData(imageData, 0, 0);
+      }
+      return new CanvasTexture(canvas);
+    });
+  };
+  
+  const AnimationMarker = ({ position, gifUrl }) => {
+    const [gifTextures, setGifTextures] = useState<any>([]);
+    const [currentFrame, setCurrentFrame] = useState(0);
+    const meshRef = useRef<any>(null);
+  
+    useEffect(() => {
+      let isMounted = true;
+      loadGifTexture(gifUrl).then((textures) => {
+        if (isMounted) {
+          setGifTextures(textures);
+        }
+      });
+      return () => {
+        isMounted = false;
+      };
+    }, [gifUrl]);
+  
+    useFrame(() => {
+      if (gifTextures.length > 0) {
+        setCurrentFrame((prev) => (prev + 1) % gifTextures.length);
+      }
+  
+      if (meshRef.current) {
+        const dir = new Vector3(position.x, position.y, position.z).normalize();
+        const up = new Vector3(0, 0, 1); // Use Z axis as up vector
+        const quaternion = new Quaternion().setFromUnitVectors(up, dir);
+      
+        // Adjust the position to lie exactly on the globe's surface
+        const adjustedPosition = dir.multiplyScalar(1.01); // Assuming the globe radius is 1
+      
+        meshRef.current.position.set(adjustedPosition.x, adjustedPosition.y, adjustedPosition.z);
+        meshRef.current.quaternion.copy(quaternion);
+      }
+    });
+  
+    if (gifTextures.length === 0) return null;
+  
+    return (
+      <mesh ref={meshRef}>
+        <planeGeometry args={[0.075, 0.075]} />
+        <meshBasicMaterial map={gifTextures[currentFrame]} side={2} transparent />
+      </mesh>
+    );
+  };

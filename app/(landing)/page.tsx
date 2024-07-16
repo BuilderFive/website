@@ -34,8 +34,9 @@ export default function Home() {
     return (
         <div className="container w-full relative">
             <Hero loaded={loaded} setLoaded={setLoaded}/>
-            <HeroCollage />
-            <div className='w-full relative h-full flex flex-col gap-[256px]'>
+            
+            <div className='w-full relative flex flex-col gap-[256px] my-[256px] max-md:my-[64px] max-md:gap-[64px]'>
+                <HeroCollage />
                 <CaseStudy/>
                 <Superiority/>
                 <HowItWorks /> 
