@@ -156,8 +156,8 @@ export default function CaseStudy() {
                         <p className='text-text1 text-4xl font-bold'>BuilderFive</p>
                     </div>
                 </div>
-                <div className='w-full pt-[152px] min-h-[540px] border-secondary1 border-[4px] bg-background3 p-[24px] rounded-[24px] mt-[128px] flex flex-row max-lg:flex-col gap-[24px]'>
-                    <div className='flex flex-col justify-start items-start w-full'>
+                <div className='w-full h-fit pt-[152px] min-h-[540px] border-secondary1 border-[4px] bg-background3 p-[24px] rounded-[24px] mt-[128px] flex flex-row max-lg:flex-col flex-wrap flex-1 gap-[24px] justify-between items-center'>
+                    <div className='flex flex-col justify-start items-start'>
                         <div className='flex flex-row gap-[12px] items-center justify-start'>
                             <FaCheck className='text-secondary1 h-[24px] w-[24px]'/> 
                             <p className='text-secondary1 text-2xl font-medium w-full'>Meet new friends IRL, not strangers</p>
@@ -186,7 +186,7 @@ export default function CaseStudy() {
                             <IoMdRadioButtonOn className='text-text3 h-[24px] w-[24px]'/> 
                             <p className='text-text3 text-2xl font-medium w-full'>Navigate a globe instead of a list to join calls</p>
                         </div>
-                        <div className='flex flex-row gap-[12px] mt-[24px] items-center justify-center'>
+                        <div className='flex flex-row max-md:flex-col gap-[12px] mt-[24px] items-center justify-center max-md:w-full'>
                             <img src="/static/meetup.svg" alt="Meetup" className="aspect-square h-[128px] rounded-full" />
                             <FaPlus className='text-text1 h-[64px] w-[64px]'/> 
                             <img src="/static/clubhouse.svg" alt="Clubhouse" className="aspect-square h-[128px] rounded-full" />
@@ -195,7 +195,7 @@ export default function CaseStudy() {
 
                         </div>
                     </div>
-                    <video className='max-w-[740px] max-h-[740px] w-full h-full min-w-[420px] min-h-[420px] rounded-[24px] bg-black' controls >
+                    <video className='max-w-[740px] max-h-[740px] w-full h-full rounded-[24px] bg-black' controls >
                         <source src={'/audio-room.mp4'} type="video/mp4"/>
                     </video>
                 </div>
