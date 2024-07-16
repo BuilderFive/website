@@ -18,14 +18,18 @@ export default function Hero({loaded, setLoaded}) {
     const fetchRSVP = async () => {
         const { data, error } = await supabase.from("rsvp").select('*', {count: 'exact'});
         if (error) console.error(error);
-        return data
+        const { data: dataAccount, error: errorAccount } = await supabase.from("account").select('*', {count: 'exact'});
+        if (errorAccount) console.error(errorAccount);
+        const count = (data?.length ?? 0) + (dataAccount?.length ?? 0);
+
+        return count;
     }
 
     useEffect(() => {
         fetchRSVP().then(data => {
             setLoaded(true);
             if (data) {
-                setRsvpCount(data.length);
+                setRsvpCount(data);
             }
         });
     }, [rsvpCount]);
