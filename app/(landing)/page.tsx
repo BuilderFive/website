@@ -16,6 +16,7 @@ import { useRouter } from 'next/navigation';
 import { useSession } from '~/util/AuthProvider';
 import DemoGlobe from './(home)/components/globe/DemoGlobe';
 import CaseStudy from './(home)/components/Problem';
+import Superiority from './(home)/components/SiteSuperiority';
 
 export default function Home() {
     const [loaded, setLoaded] = useState(false);
@@ -34,6 +35,7 @@ export default function Home() {
             <Hero loaded={loaded} setLoaded={setLoaded}/>
             <div className='w-full relative flex flex-col gap-[128px]'>
                 <CaseStudy/>
+                <Superiority/>
                 <HowItWorks /> 
                 <div className='px-[48px] max-md:px-[12px] w-full h-full'>
                     <div className='rounded-[12px] bg-background1 p-[24px] h-full'>
