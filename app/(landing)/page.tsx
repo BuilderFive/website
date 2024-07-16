@@ -15,7 +15,7 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from '~/util/AuthProvider';
 import DemoGlobe from './(home)/components/globe/DemoGlobe';
-import Problem from './(home)/components/Problem';
+import CaseStudy from './(home)/components/Problem';
 
 export default function Home() {
     const [loaded, setLoaded] = useState(false);
@@ -32,7 +32,7 @@ export default function Home() {
     return (
         <div className="w-full relative">
             <Hero loaded={loaded} setLoaded={setLoaded}/>
-            <Problem/>
+            <CaseStudy/>
             <HowItWorks />
 
             <div className='px-[48px] max-md:px-[12px] w-full h-full'>

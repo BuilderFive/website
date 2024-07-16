@@ -98,7 +98,7 @@ export default function Timer({loaded}) {
                 </div> : <FaSpinner className='animate-spin' color={"var(--text-4)"} />}
             </div>
             <div>
-                <p className="text-white text-2xl font-regular"><a className="text-secondary1 font-semibold">Time Left</a> {sign}{formatTime(timeLeft.days)}:{formatTime(timeLeft.hours)}:{formatTime(timeLeft.minutes)}:{formatTime(timeLeft.seconds)}</p>
+                <p className="text-white text-2xl font-medium"><a className="text-secondary1 font-semibold">Time Left</a> {sign}{formatTime(timeLeft.days)}:{formatTime(timeLeft.hours)}:{formatTime(timeLeft.minutes)}:{formatTime(timeLeft.seconds)}</p>
             </div>
         </div>
     }
