@@ -39,8 +39,8 @@ export default function Hero({loaded, setLoaded}) {
             </div>
             <div id="join" className="flex flex-col space-y-[12px] w-full max-md:w-[90%] gap-[12px]">
                 <section className="flex flex-col self-start max-md:self-center">
-                    <p className="text-4xl max-md:text-xl text-white w-full font-semibold">
-                        <a className='text-secondary1 text-5xl max-md:text-2xl font-bold'>{rsvpCount}</a> people want to get notified for this week&#39;s online networking event.
+                    <p className="text-3xl max-md:text-xl text-white w-full font-semibold">
+                        <a className='text-secondary1 font-bold'>{rsvpCount}</a> people are coming to the next event
                     </p>
                 </section>
                 <CtaButton>
