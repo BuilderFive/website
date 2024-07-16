@@ -2,7 +2,7 @@ import { FaCheck, FaPlus, FaEquals } from "react-icons/fa";
 import { IoMdRadioButtonOn } from "react-icons/io";
 
 export default function Superiority() {
-    return <div className="relative px-[48px] max-md:px-[0px] w-full h-full">
+    return <div className="relative w-full h-full">
 
     
     <div id="builderfive" className='w-full h-full flex justify-center relative'>

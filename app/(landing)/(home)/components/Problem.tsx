@@ -1,5 +1,3 @@
-'use client';
-
 import { ReactNode, useEffect, useRef, useState } from 'react';
 import { MdiIcon, css } from '~/util';
 import { mdiAccountGroup, mdiMapLegend } from '@mdi/js';
@@ -11,7 +9,7 @@ import { IoMdRadioButtonOn } from 'react-icons/io';
 //create a scenario
 export default function CaseStudy() {
 
-    return <div id="builderfive-case" className="relative px-[48px] max-md:px-[0px] w-full h-full">
+    return <div id="builderfive-case" className="relative w-full h-full">
         <div className='bg-background1 rounded-[24px] px-[24px] max-md:px-[12px] py-[48px] w-full h-full flex flex-col gap-[128px]'>
              <div id="problem" className='flex flex-row flex-wrap max-md:flex-col lg:grid lg:grid-cols-2 max-lg:gap-[48px] gap-[96px]'>
                 <div id="problem-row-1" className='flex justify-start items-start flex-col gap-[24px] w-full'>

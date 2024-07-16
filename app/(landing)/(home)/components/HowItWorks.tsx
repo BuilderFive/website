@@ -35,7 +35,7 @@ export default function HowItWorks() {
         }
     }
     return <div className="w-full flex items-center justify-center">
-        <div id="howitworks-background" className="w-full text-text1 text-center max-md:w-full px-[48px] max-md:px-[12px] py-[24px] rounded-[12px]">
+        <div id="howitworks-background" className="w-full text-text1 text-center py-[24px] rounded-[12px]">
             <div className="flex flex-col space-y-[8px] mb-[24px] items-center">
                 <p className="text-7xl font-bold max-md:text-5xl text-secondary1">HOW IT WORKS</p>
                 <div className="max-w-[70%]">

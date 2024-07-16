@@ -17,6 +17,7 @@ import { useSession } from '~/util/AuthProvider';
 import DemoGlobe from './(home)/components/globe/DemoGlobe';
 import CaseStudy from './(home)/components/Problem';
 import Superiority from './(home)/components/SiteSuperiority';
+import HeroCollage from './(home)/components/HeroCollage';
 
 export default function Home() {
     const [loaded, setLoaded] = useState(false);
@@ -31,9 +32,10 @@ export default function Home() {
     },[user])
     
     return (
-        <div className="w-full relative">
+        <div className="container w-full relative">
             <Hero loaded={loaded} setLoaded={setLoaded}/>
-            <div className='w-full relative flex flex-col gap-[128px]'>
+            <HeroCollage />
+            <div className='w-full relative h-full flex flex-col gap-[256px]'>
                 <CaseStudy/>
                 <Superiority/>
                 <HowItWorks /> 
@@ -43,10 +45,6 @@ export default function Home() {
                     </div>
                 </div>
             </div>
-            
-
-            
-
             <div className='w-full flex items-center justify-center my-[128px]'>
                 <div className='w-full px-[48px] max-md:px-[12px]'>
                     <CtaButton>OKAY, LET&#39;S TRY IT</CtaButton>

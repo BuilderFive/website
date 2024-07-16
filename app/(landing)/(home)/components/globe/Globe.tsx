@@ -1,36 +1,32 @@
 'use client';
 
+import React, { useRef } from 'react';
 import { useTheme } from 'next-themes';
 import { geoGraticule10 } from 'd3-geo';
-import { Canvas } from '@react-three/fiber';
-import { OrbitControls, Point } from '@react-three/drei';
+import { Canvas, useLoader, useFrame } from '@react-three/fiber';
+import { OrbitControls } from '@react-three/drei';
 import { GeoJsonGeometry } from 'three-geojson-geometry';
-
+import { Group, TextureLoader } from 'three';
+import { Quaternion, Vector3 } from 'three';
 import geoJson from './countries.geojson.json';
-import { ArrowHelper, Color, Quaternion, Vector3 } from 'three';
 
 interface ThreePropWithTheme {
     theme: string;
 }
 
 const Countries: React.FC<ThreePropWithTheme> = ({ theme }) => {
-    let themeColor = theme === 'light'
-        ? '#E6F5FF'
-        : '#60a5fa';
+    let themeColor = theme === 'light' ? '#E6F5FF' : '#60a5fa';
     
     return (
         <group>
-            {
-                geoJson.features.map((data, index) => {
-                    const { geometry } = data;
-                    return (
-                        <lineSegments key={index} geometry={new GeoJsonGeometry(geometry, 1)}>
-                            
-                            <lineBasicMaterial color={themeColor} />
-                        </lineSegments>
-                    );
-                })
-            }
+            {geoJson.features.map((data, index) => {
+                const { geometry } = data;
+                return (
+                    <lineSegments key={index} geometry={new GeoJsonGeometry(geometry, 1)}>
+                        <lineBasicMaterial color={themeColor} />
+                    </lineSegments>
+                );
+            })}
         </group>
     );
 };
@@ -63,9 +59,7 @@ const generateRandomPointsWithinCountries = (numPoints: number) => {
 };
 
 const GlobeGraticule: React.FC<ThreePropWithTheme> = ({ theme }) => {
-    let themeColor = theme === 'light'
-        ? '#59A4E0'
-        : '#3c3c3c';
+    let themeColor = theme === 'light' ? '#59A4E0' : '#3c3c3c';
 
     return (
         <group>
@@ -77,9 +71,7 @@ const GlobeGraticule: React.FC<ThreePropWithTheme> = ({ theme }) => {
 };
 
 const GlobeMesh: React.FC<ThreePropWithTheme> = ({ theme }) => {
-    let themeColor = theme === 'light'
-        ? '#59A4E0'
-        : '#0f172a';
+    let themeColor = theme === 'light' ? '#59A4E0' : '#0f172a';
 
     return (
         <mesh>
@@ -88,7 +80,6 @@ const GlobeMesh: React.FC<ThreePropWithTheme> = ({ theme }) => {
         </mesh>
     );
 };
-
 
 // Function to convert lat/lon to Cartesian coordinates
 const latLonToCartesian = (lat: number, lon: number, radius: number = 1) => {
@@ -101,9 +92,45 @@ const latLonToCartesian = (lat: number, lon: number, radius: number = 1) => {
     };
 };
 
+const ImageMarker = ({ position, imageUrl }: { position: { x: number; y: number; z: number; }, imageUrl: string }) => {
+    const texture = useLoader(TextureLoader, imageUrl);
+    const dir = new Vector3(position.x, position.y, position.z).normalize();
+    const axis = new Vector3(0, 1, 0).cross(dir).normalize();
+    const angle = Math.acos(new Vector3(0, 1, 0).dot(dir));
+    const quaternion = new Quaternion().setFromAxisAngle(axis, angle);
+
+    return (
+        <mesh position={[position.x, position.y, position.z]} quaternion={quaternion}>
+            <planeGeometry args={[0.1, 0.1]} />
+            <meshBasicMaterial map={texture} side={2} />
+        </mesh>
+    );
+};
+
+const RotatingGlobe: React.FC<ThreePropWithTheme> = ({ theme }) => {
+    const globeRef = useRef<Group>(null);
+
+    useFrame(() => {
+        if (globeRef.current) {
+            globeRef.current.rotation.y += 0.001; // Adjust the rotation speed here
+        }
+    });
+
+    return (
+        <group ref={globeRef}>
+            <GlobeMesh theme={theme || 'dark'} />
+            {/*<GlobeGraticule theme={theme || 'dark'} />*/}
+            <Countries theme={theme || 'dark'} />
+        </group>
+    );
+};
+
 export const Globe = () => {
     const { theme } = useTheme();
-    const randomPoints = generateRandomPointsWithinCountries(1000);
+    const randomPoints = generateRandomPointsWithinCountries(10);
+    const imageUrls = [
+        '/static/discord.svg',
+    ];
 
     return (
         <Canvas
@@ -117,24 +144,7 @@ export const Globe = () => {
         >
             <OrbitControls enableRotate={true} enableZoom={false} enablePan={false} />
             <ambientLight intensity={1.3} />
-            <GlobeMesh theme={theme || 'dark'} />
-            {/*<GlobeGraticule theme={theme || 'dark'} />*/}
-            <Countries theme={theme || 'dark'} />
-            {
-                randomPoints.map((point, index) => {
-                    const dir = new Vector3(point.x, point.y, point.z).normalize();
-                    const axis = new Vector3(0, 1, 0).cross(dir).normalize();
-                    const angle = Math.acos(new Vector3(0, 1, 0).dot(dir));
-                    const quaternion = new Quaternion().setFromAxisAngle(axis, angle);
-
-                    return (
-                        <mesh key={index} position={[point.x, point.y, point.z]} quaternion={quaternion}>
-                            <cylinderGeometry args={[0.001, 0.001, 0.1, 32]} />
-                            <meshBasicMaterial color={"#61abff"} />
-                        </mesh>
-                    );
-                })
-            }
+            <RotatingGlobe theme={theme || 'dark'} />
         </Canvas>
     );
 };
