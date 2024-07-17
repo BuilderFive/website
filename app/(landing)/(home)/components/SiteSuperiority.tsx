@@ -98,9 +98,7 @@ export default function Superiority() {
                         </Link>
                     </div>
 
-                    <video className="max-w-[740px] max-h-[740px] w-full h-full rounded-[24px] bg-black" controls>
-                        <source src={"/audio-room.mp4"} type="video/mp4" />
-                    </video>
+                    
                     <div className='w-full'>
                         <CtaButton>SOUNDS GOOD, LET ME JOIN</CtaButton>
                     </div>
