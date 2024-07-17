@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 import { Header } from '~/components/global/Header';
 import { Footer } from '~/components/global/Footer';
 
-import { Inter, Roboto_Mono, Poppins } from 'next/font/google';
+import { Inter, Roboto_Mono, Poppins, Baloo_Thambi_2, Fredoka } from 'next/font/google';
 import { ThemeProvider } from '~/components/ui/theme-provider';
 
 import "~/styles/globals.css";
@@ -21,8 +21,14 @@ const poppins = Poppins({
     subsets: ['latin'],
     display: 'swap',
     variable: '--font-poppins',
-    weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900']
-  });
+    weight: ['400'] // Change the type to "400"[]
+});
+const baloo = Fredoka({
+    subsets: ['latin'],
+    display: 'swap',
+    variable: '--font-baloo',
+    weight: ['300', '400', '500', '600', '700'] 
+});
 
 export const metadata: Metadata = {
     title: {
@@ -76,7 +82,7 @@ export default function RootLayout({
                 <link rel="icon" href="https://www.builderfive.com/favicon.ico?v=2" />
                 <link href='https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.css' rel='stylesheet' /><script src="https://accounts.google.com/gsi/client" async defer></script>
             </head>
-            <body className={css("min-h-screen font-poppins antialiased", sans.variable, mono.variable, poppins.variable)}>
+            <body className={css("min-h-screen font-baloo antialiased", sans.variable, mono.variable, poppins.variable, baloo.variable)}>
                 <ThemeProvider attribute="class" defaultTheme="dark">
                 <NextUIProvider>
                 <SessionProvider>

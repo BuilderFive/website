@@ -13,9 +13,12 @@ module.exports = {
   theme: {
     container: {
       center: true,
-      padding: "2rem",
       screens: {
+          "xl": "1080px",
+          "xl": "1240px",
           "2xl": "1400px",
+          "3xl": "1720px",
+          "4xl": "2080px",
       },
     },
     extend: {
@@ -96,6 +99,7 @@ module.exports = {
       fontFamily: {
           sans: ["var(--font-sans)", ...fontFamily.sans],
           poppins: "var(--font-poppins)", ...fontFamily.poppins,
+          baloo: "var(--font-baloo)", ...fontFamily.baloo,
 
       },
     },
