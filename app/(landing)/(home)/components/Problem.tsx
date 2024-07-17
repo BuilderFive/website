@@ -6,12 +6,13 @@ import { FaFaceMeh, FaFaceSmile, FaRegFaceMeh, FaRegFaceSmile, FaX } from 'react
 import Lottie from 'react-lottie-player';
 import animationData from  './../../../../public/animations/hammer.json';
 import { IoMdRadioButtonOn } from 'react-icons/io';
+import Superiority from './SiteSuperiority';
 //create a scenario
 export default function CaseStudy() {
 
     return <div id="builderfive-case" className="relative w-full h-full">
-        <div className='bg-background1 rounded-[24px] px-[24px] max-md:px-[12px] py-[48px] w-full h-full flex flex-col gap-[128px]'>
-             <div id="problem" className='flex flex-row flex-wrap max-md:flex-col lg:grid lg:grid-cols-2 max-lg:gap-[48px] gap-[96px]'>
+        <div className='w-full h-full flex flex-col gap-[24px] items-center'>
+             {/*<div id="problem" className='flex flex-row flex-wrap max-md:flex-col lg:grid lg:grid-cols-2 max-lg:gap-[48px] gap-[96px]'>
                 <div id="problem-row-1" className='flex justify-start items-start flex-col gap-[24px] w-full'>
                     <div id="problem-title" className='text-text1 w-fit'>
                         <p className='text-text3 text-5xl font-semibold max-lg:text-3xl'>1. THIS IS MARCO</p>
@@ -80,72 +81,73 @@ export default function CaseStudy() {
                         </div>
                     </div>
                 </div>
-            </div>
+</div>*/}
 
-            <div id='competitors' className='bg-background3 p-[24px] rounded-[24px] gap-[24px]'>
-                <p className='text-text3 font-bold text-5xl flex justify-start items-center w-full pb-[24px]'>Marco&#39;s ratings of these apps</p>
-                <div className='flex flex-row justify-between max-lg:flex-col gap-[24px]'>
-                    <div className='p-[24px] gap-[24px] flex flex-col justify-center items-center bg-background2 rounded-[12px] w-full'>
-                        <img src="/static/meetup.svg" alt="Meetup" className="aspect-square h-[128px] rounded-full" />
+            <div id='competitors' className='w-fit bg-background3 p-[24px] rounded-[24px] gap-[24px]'>
+                <p className='text-text3 font-bold text-4xl max-md:text-xl flex justify-start items-center w-full pb-[24px]'>You may have tried these apps . . .</p>
+                <div className='flex flex-row justify-center max-lg:flex-col gap-[24px] max-md:items-center'>
+                    <div className='p-[24px] gap-[24px] flex flex-col justify-start items-center bg-background2 rounded-[12px] max-w-xl w-full'>
+                        <img src="/static/meetup.svg" alt="Meetup" className="aspect-square max-w-[128px] max-md:max-w-[64px] rounded-full" />
                         <div className='flex flex-col justify-start items-start w-full'>
-                            <p className='text-text3 text-xl font-bold'>MEETUP</p>
+                            <p className='text-text3 text-xl max-md:text-lg font-bold'>MEETUP</p>
 
                             <div className='flex flex-row gap-[12px] items-center justify-start'>
                                 <FaCheck className='text-secondary1 h-[24px] w-[24px]'/> 
-                                <p className='text-secondary1 text-xl font-medium'>Meeting real people</p>
+                                <p className='text-secondary1 text-xl max-md:text-lg font-medium'>Meeting real people</p>
                             </div>
                             <div className='flex flex-row gap-[12px] items-center justify-start'>
                                 <FaX className='text-red-500 h-[24px] w-[24px]'/> 
-                                <p className='text-red-500 text-xl font-medium'>Is it worth going to a meetup?</p>
+                                <p className='text-red-500 text-xl max-md:text-lg font-medium'>Is it worth going to a meetup?</p>
                             </div>
                             <div className='flex flex-row gap-[12px] items-center justify-start'>
                                 <FaX className='text-red-500 h-[24px] w-[24px]'/> 
-                                <p className='text-red-500 text-xl font-medium'>Creating a group is expensive</p>
+                                <p className='text-red-500 text-xl max-md:text-lg font-medium'>Creating a group is expensive</p>
                             </div>
                             
                         </div>
                     </div>
-                    <div className='p-[24px] gap-[24px] flex flex-col justify-center items-center bg-background2 rounded-[12px] w-full'>
-                        <img src="/static/discord.svg" alt="Discord" className="aspect-square h-[128px] rounded-full" />
+                    <div className='p-[24px] gap-[24px] flex flex-col justify-start items-center bg-background2 rounded-[12px] max-w-xl w-full'>
+                        <img src="/static/discord.svg" alt="Discord" className="aspect-square max-w-[128px] max-md:max-w-[64px] rounded-full" />
                         <div className='flex flex-col justify-start items-start w-full'>
-                            <p className='text-text3 text-xl font-bold'>DISCORD</p>
+                            <p className='text-text3 text-xl max-md:text-lg font-bold'>DISCORD</p>
 
                             <div className='flex flex-row gap-[12px] items-center justify-start'>
                                 <FaCheck className='text-secondary1 h-[24px] w-[24px]'/> 
-                                <p className='text-secondary1 text-xl font-medium'>Easy to find groups</p>
+                                <p className='text-secondary1 max-md:text-lg text-xl font-medium'>Easy to find groups</p>
                             </div>
                             <div className='flex flex-row gap-[12px] items-center justify-start'>
                                 <FaX className='text-red-500 h-[24px] w-[24px]'/> 
-                                <p className='text-red-500 text-xl font-medium'>Hard to make real friends</p>
+                                <p className='text-red-500 max-md:text-lg text-xl font-medium'>Hard to make real friends</p>
                             </div>
                             <div className='flex flex-row gap-[12px] items-center justify-start'>
                                 <FaX className='text-red-500 h-[24px] w-[24px]'/> 
-                                <p className='text-red-500 text-xl font-medium'>Too many inactive chats</p>
+                                <p className='text-red-500 max-md:text-lg text-xl font-medium'>Too many inactive chats</p>
                             </div>
                         </div>
                     </div>
-                    <div className='p-[24px] gap-[24px] flex flex-col justify-center items-center bg-background2 rounded-[12px] w-full'>
-                        <img src="/static/clubhouse.svg" alt="Clubhouse" className="aspect-square h-[128px] rounded-full" />
+                    <div className='p-[24px] gap-[24px] flex flex-col justify-start items-center bg-background2 rounded-[12px] max-w-xl w-full'>
+                        <img src="/static/clubhouse.svg" alt="Clubhouse" className="aspect-square max-w-[128px] max-md:max-w-[64px] rounded-full" />
                         <div className='flex flex-col justify-start items-start w-full'>
-                            <p className='text-text3 text-xl font-bold'>CLUBHOUSE</p>
+                            <p className='text-text3 text-xl max-md:text-lg font-bold'>CLUBHOUSE</p>
 
                             <div className='flex flex-row gap-[12px] items-center justify-start'>
                                 <FaCheck className='text-secondary1 h-[24px] w-[24px]'/> 
-                                <p className='text-secondary1 text-xl font-medium'>Authenticity with audio</p>
+                                <p className='text-secondary1 text-xl max-md:text-lg font-medium'>Authenticity with audio</p>
                             </div>
                             <div className='flex flex-row gap-[12px] items-center justify-start'>
                                 <FaCheck className='text-secondary1 h-[24px] w-[24px]'/> 
-                                <p className='text-secondary1 text-xl font-medium'>Discussing topics I like</p>
+                                <p className='text-secondary1 text-xl max-md:text-lg font-medium'>Discussing topics I like</p>
                             </div>
                             <div className='flex flex-row gap-[12px] items-center justify-start'>
                                 <FaX className='text-red-500 h-[24px] w-[24px]'/> 
-                                <p className='text-red-500 text-xl font-medium'>Not making real friendships</p>
+                                <p className='text-red-500 text-xl max-md:text-lg font-medium'>Not making real friendships</p>
                             </div>
                         </div>                
                     </div>
                 </div>
                
             </div>
+            <Superiority/>
         </div>
         
     </div>
