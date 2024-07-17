@@ -24,7 +24,7 @@ export default function Superiority() {
                             alt="BuilderFive"
                             className="max-w-[36px] rounded-full w-full"
                         />
-                        <p className="text-secondary1 text-4xl font-bold">BuilderFive</p>
+                        <p className="text-white text-4xl font-bold">BuilderFive</p>
                     </div>
 
                     <div className="flex flex-col justify-start items-start">
