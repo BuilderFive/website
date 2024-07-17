@@ -20,9 +20,9 @@ export default function Superiority() {
                 <div className="w-fit h-fit md:pt-[152px] min-h-[540px] border-secondary1 border-[4px] bg-background1 p-[24px] rounded-[24px] mt-[128px] flex flex-col gap-[24px] items-center" style={{ boxShadow: '0 0 100px 5px rgba(100, 97, 255, 0.5)' }}>
                     <div className="md:hidden flex flex-row gap-[12px] w-fit items-center justify-center">
                         <img
-                            src="/static/logos/blue-logo.svg"
+                            src="/static/logos/logo-image.png"
                             alt="BuilderFive"
-                            className="aspect-square h-[36px] rounded-full w-full"
+                            className="max-w-[36px] rounded-full w-full"
                         />
                         <p className="text-secondary1 text-4xl font-bold">BuilderFive</p>
                     </div>
