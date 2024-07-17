@@ -26,7 +26,7 @@ export default function HeroCollage() {
                 ))}
             </div>
             <div id="collage-title" className="flex flex-col md:gap-[12px] justify-center items-center text-center absolute top-0 p-[24px] px-[48px] rounded-[24px] bg-secondary1 w-fit">
-                <p className="text-text1 text-7xl max-md:text-2xl font-bold">You're a click away</p>
+                <p className="text-text1 text-7xl max-md:text-2xl font-bold">You&#39;re a click away</p>
                 <p className="text-text1 text-3xl max-md:text-lg font-semibold">Be more productive and fulfilled</p>
             </div>
         </div>
