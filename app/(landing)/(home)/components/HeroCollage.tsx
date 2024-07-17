@@ -2,8 +2,8 @@ export default function HeroCollage() {
     return (
         <div className="relative flex flex-col items-center justify-center">
             <div id="collage-title" className="flex flex-col md:gap-[12px] justify-center items-center text-center md:absolute top-0 z-10 p-[24px] px-[48px] rounded-[24px] bg-secondary1 w-fit">
-                <p className="text-white text-7xl max-md:text-2xl font-bold">You&#39;re a click away</p>
-                <p className="text-white text-3xl max-md:text-lg font-semibold">Be more productive and fulfilled</p>
+                <p className="text-white text-7xl max-md:text-2xl font-bold">Convenient Connections</p>
+                <p className="text-white text-3xl max-md:text-lg font-semibold">Avoid the anxiety and meetup w/ new people you&#39;ve talked to before</p>
             </div>
             <div className="columns-2 md:columns-3 mt-[96px] max-md:mt-[12px]">
                 {[
