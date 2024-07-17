@@ -162,8 +162,7 @@ export default function DemoGlobe() {
                 element.classList.remove('wait-audio-group-marker');
                 element.classList.add('other-audio-group-marker');
             } else if (element.classList.contains('other-audio-group-marker')){
-                element.classList.remove('other-audio-group-marker');
-                element.classList.add('wait-audio-group-marker');
+                marker.remove()
             }
         }, 5000);
         return () => clearInterval(interval);
