@@ -15,8 +15,8 @@ export const Header: React.FC = () => (
             
             <div className="flex justify-between w-fit max-md:w-full items-center space-x-[24px]">
                 <Link href="/connect" className="flex flex-row gap-[12px] items-center hover:cursor-pointer p-[12px] rounded-[12px] hover:font-semibold">
-                    <p className='text-white text-[14px] font-regular max-md:hidden'>Go to Globe</p>
-                    <FaEarthAmericas/>
+                    <p className='text-text1 text-xl font-regular max-md:hidden'>Go to Globe</p>
+                    <FaEarthAmericas size='30px' color="var(--text-1)"/>
                 </Link>
                <nav className="flex items-center relative">
                     <ThemeSwitcher />

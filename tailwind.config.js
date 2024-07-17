@@ -13,12 +13,19 @@ module.exports = {
   theme: {
     container: {
       center: true,
+      padding: {
+        DEFAULT: "0px",
+        lg: "48px",
+      },  
       screens: {
-          "xl": "1080px",
-          "xl": "1240px",
-          "2xl": "1400px",
-          "3xl": "1720px",
-          "4xl": "2080px",
+        lg: '920px',
+        "xl": "1080px",
+        "xl": "1240px",
+        "2xl": "1400px",
+        "3xl": "1560px",
+        "4xl": "1720px",
+        "5xl": "1880px",
+        "6xl": "2040px",
       },
     },
     extend: {
@@ -38,6 +45,7 @@ module.exports = {
         secondary2: 'var(--secondary-2)',
         secondary3: 'var(--secondary-3)',
         secondary4: 'var(--secondary-4)',
+        secondary5: 'var(--secondary-5)',
         text1: 'var(--text-1)',
         text2: 'var(--text-2)',
         text3: 'var(--text-3)',
