@@ -38,6 +38,7 @@ export default function Home() {
             <div className='w-full relative flex flex-col gap-[256px] my-[256px] max-md:my-[64px] max-md:gap-[64px]'>
                 <HeroCollage />
                 <CaseStudy/>
+                
                 {/*<HowItWorks /> */}
             </div>
             <iframe id="google-calendar" src={`https://calendar.google.com/calendar/embed?height=600&wkst=1&ctz=America%2FChicago&bgcolor=%23ffffff&src=Y18yNzk2ODA4NmViMDk0NDUxZmNkY2NhMzBlNTg2NTA1N2JmMzA1ZTBhYTczZDZiZWQ2MTVhMDllZjcxMjJhZjVlQGdyb3VwLmNhbGVuZGFyLmdvb2dsZS5jb20&color=%23039BE5`} className="min-h-[600px] max-h-[1080px] w-full h-full"  scrolling="no"></iframe>
