@@ -81,9 +81,9 @@ export default function CaseStudy() {
                         </div>
                     </div>
                 </div>
-</div>*/}
+            </div>*/}
 
-            <div id='competitors' className='w-fit max-md:bg-transparent md:bg-background3 p-[24px] rounded-[24px] gap-[24px]'>
+            <div id='competitors' className='w-fit bg-transparent rounded-[24px] gap-[24px]'>
                 <p className='text-text3 font-bold text-4xl max-md:text-xl flex justify-start items-center w-full pb-[24px]'>You may have tried these apps . . .</p>
                 <div className='flex flex-row justify-center max-lg:flex-col gap-[24px] max-md:items-center'>
                     <div className='p-[24px] gap-[24px] flex flex-col justify-start items-center bg-background2 rounded-[12px] max-w-xl w-full'>
@@ -145,7 +145,6 @@ export default function CaseStudy() {
                         </div>                
                     </div>
                 </div>
-               
             </div>
             <Superiority/>
         </div>
