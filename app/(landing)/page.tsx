@@ -23,10 +23,10 @@ export default function Home() {
     const [loaded, setLoaded] = useState(false);
 
     const router = useRouter()
-    const { user } = useSession()
+    const { user, event } = useSession()
 
     useEffect(()=> {
-        if (user) {
+        if (user && event?.isActive) {
             router.push('/connect')
         }
     },[user])
