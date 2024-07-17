@@ -61,6 +61,7 @@ module.exports = {
         "landscape": "url('/static/bottom-background.svg')",
         "landscape-2": "url('/static/landscape-alien.svg')",
         "sunset": "url('/static/Sunset.svg')",
+        "clouds": "url('/static/Clouds.svg')",
       },
       borderRadius: {
           lg: "var(--radius)",
