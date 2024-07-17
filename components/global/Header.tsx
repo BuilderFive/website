@@ -18,7 +18,7 @@ export const Header: React.FC = () => (
                     <p className='text-white text-[14px] font-regular max-md:hidden'>Go to Globe</p>
                     <FaEarthAmericas/>
                 </Link>
-               <nav className="flex items-center">
+               <nav className="flex items-center relative">
                     <ThemeSwitcher />
                 </nav>
             </div>
