@@ -4,9 +4,18 @@ import { IoMdRadioButtonOn } from "react-icons/io";
 import { CtaButton } from "./CtaButton";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { useSession } from "~/util/AuthProvider";
 
 export default function Superiority() {
-    const router = useRouter();
+    const { event } = useSession();
+    const getNextEventTime = () => {
+        if (event && event.start_at) {
+            const eventDate = new Date(event.start_at);
+            const options: Intl.DateTimeFormatOptions = { month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' };
+            return eventDate.toLocaleDateString('en-US', options);
+        }
+        return '';
+    };
     return (
         <div className="relative w-full h-full">
             <div id="builderfive" className="w-full h-full flex justify-center relative">
@@ -21,7 +30,7 @@ export default function Superiority() {
                         <p className="text-white text-4xl max-md:text-xl font-bold">BuilderFive</p>
                     </div>
                 </Link>
-                <div className="w-fit h-fit md:pt-[152px] min-h-[540px] border-secondary1 border-[4px] bg-background1 p-[24px] rounded-[24px] mt-[128px] flex flex-col gap-[24px] items-center" style={{ boxShadow: '0 0 100px 5px rgba(100, 97, 255, 0.5)' }}>
+                <div className="w-fit h-fit md:pt-[152px] min-h-[540px] border-secondary1 border-[4px] bg-secondary5 p-[24px] rounded-[24px] mt-[128px] flex flex-col gap-[24px] items-center" style={{ boxShadow: '0 0 100px 5px rgba(100, 97, 255, 0.5)' }}>
                     
                     <div className="md:hidden flex flex-row gap-[12px] w-fit items-center justify-center">
                         <img
@@ -36,31 +45,30 @@ export default function Superiority() {
                         
                         <div className="flex flex-row gap-[12px] items-center justify-start">
                             <FaCheck className="text-secondary1 h-[24px] w-[24px]" />
-                            <p className="text-secondary1 text-2xl max-md:text-lg font-medium w-full">Meet new friends IRL, not strangers</p>
+                            <p className="text-secondary1 text-2xl max-md:text-lg font-medium w-full">Genuine discussions with real people</p>
                         </div>
                         <div className="flex flex-row gap-[12px] items-center justify-start">
                             <FaCheck className="text-secondary1 h-[24px] w-[24px]" />
-                            <p className="text-secondary1 text-2xl max-md:text-lg font-medium w-full">Voice calls feel more real than text</p>
+                            <p className="text-secondary1 text-2xl max-md:text-lg font-medium w-full">Group size limited to 5 for engaging conversations</p>
                         </div>
                         <div className="flex flex-row gap-[12px] items-center justify-start">
                             <FaCheck className="text-secondary1 h-[24px] w-[24px]" />
-                            <p className="text-secondary1 text-2xl max-md:text-lg font-medium w-full">Move from online chats to offline meetups</p>
+                            <p className="text-secondary1 text-2xl max-md:text-lg font-medium w-full">Easy to find places to meetup in real life</p>
                         </div>
                         <div className="flex flex-row gap-[12px] items-center justify-start">
                             <FaCheck className="text-secondary1 h-[24px] w-[24px]" />
-                            <p className="text-secondary1 text-2xl max-md:text-lg font-medium w-full">Create groups for IRL meetups</p>
+                            <p className="text-secondary1 text-2xl max-md:text-lg font-medium w-full">Talk with 50-100 new people in under 2 hours</p>
                         </div>
                         <div className="flex flex-row gap-[12px] items-center justify-start">
                             <IoMdRadioButtonOn className="text-text3 h-[24px] w-[24px]" />
-                            <p className="text-text3 text-2xl max-md:text-lg font-medium w-full">Exclusive access for 2hrs once a week</p>
+                            <p className="text-text3 text-2xl max-md:text-lg font-medium w-full">Exclusively available for 2hrs/week</p>
                         </div>
                         <div className="flex flex-row gap-[12px] items-center justify-start">
                             <IoMdRadioButtonOn className="text-text3 h-[24px] w-[24px]" />
-                            <p className="text-text3 text-2xl max-md:text-lg font-medium w-full">Talk genuinely w/ small group of five</p>
-                        </div>
+                            <p className="text-text3 text-2xl max-md:text-lg font-medium w-full">The next event is on {getNextEventTime()}</p>                        </div>
                         <div className="flex flex-row gap-[12px] items-center justify-start">
                             <IoMdRadioButtonOn className="text-text3 h-[24px] w-[24px]" />
-                            <p className="text-text3 text-2xl max-md:text-lg font-medium w-full">Navigate a globe instead of a list to join calls</p>
+                            <p className="text-text3 text-2xl max-md:text-lg font-medium w-full">Intuitive navigation. Just check out our demo!</p>
                         </div>
                         <div className="flex flex-row gap-[12px] mt-[24px] items-center justify-center w-full">
                             <img

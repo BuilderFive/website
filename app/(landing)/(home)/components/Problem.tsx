@@ -84,9 +84,9 @@ export default function CaseStudy() {
             </div>*/}
 
             <div id='competitors' className='w-fit bg-transparent rounded-[24px] gap-[24px]'>
-                <p className='text-text3 font-bold text-4xl max-md:text-xl flex justify-start items-center w-full pb-[24px]'>You may have tried these apps . . .</p>
+                <p className='text-text1 font-bold text-4xl max-md:text-xl flex justify-start items-center w-full pb-[24px]'>You may have tried these apps . . .</p>
                 <div className='flex flex-row justify-center max-lg:flex-col gap-[24px] max-md:items-center'>
-                    <div className='p-[24px] gap-[24px] flex flex-col justify-start items-center bg-background2 rounded-[12px] max-w-xl w-full'>
+                    <div className='p-[24px] gap-[24px] flex flex-col justify-start items-center bg-background1 shadow-md rounded-[12px] max-w-xl w-full'>
                         <img src="/static/meetup.svg" alt="Meetup" className="aspect-square max-w-[128px] max-md:max-w-[64px] rounded-full" />
                         <div className='flex flex-col justify-start items-start w-full'>
                             <p className='text-text3 text-xl max-md:text-lg font-bold'>MEETUP</p>
@@ -106,7 +106,7 @@ export default function CaseStudy() {
                             
                         </div>
                     </div>
-                    <div className='p-[24px] gap-[24px] flex flex-col justify-start items-center bg-background2 rounded-[12px] max-w-xl w-full'>
+                    <div className='p-[24px] gap-[24px] flex flex-col justify-start items-center bg-background1 shadow-md rounded-[12px] max-w-xl w-full'>
                         <img src="/static/discord.svg" alt="Discord" className="aspect-square max-w-[128px] max-md:max-w-[64px] rounded-full" />
                         <div className='flex flex-col justify-start items-start w-full'>
                             <p className='text-text3 text-xl max-md:text-lg font-bold'>DISCORD</p>
@@ -125,7 +125,7 @@ export default function CaseStudy() {
                             </div>
                         </div>
                     </div>
-                    <div className='p-[24px] gap-[24px] flex flex-col justify-start items-center bg-background2 rounded-[12px] max-w-xl w-full'>
+                    <div className='p-[24px] gap-[24px] flex flex-col justify-start items-center bg-background1 shadow-md rounded-[12px] max-w-xl w-full'>
                         <img src="/static/clubhouse.svg" alt="Clubhouse" className="aspect-square max-w-[128px] max-md:max-w-[64px] rounded-full" />
                         <div className='flex flex-col justify-start items-start w-full'>
                             <p className='text-text3 text-xl max-md:text-lg font-bold'>CLUBHOUSE</p>

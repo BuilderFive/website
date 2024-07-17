@@ -18,9 +18,10 @@ export function ThemeSwitcher() {
         <Button variant="ghost" className="w-9 px-0" onClick={()=>{ 
             setTheme(theme == "dark" ? "light" : "dark")
         }}>
+            <div className='absolute opacity-[15%] bg-text1 rounded-full p-[24px]'/>
             <SunIcon className={`h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all ${theme == "dark" && "-rotate-90 scale-0 opacity-[50%]"}`} />
-            <MoonIcon className={`absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all ${theme == "dark" && "rotate-0 scale-100"} text-white`} />
-            <div className='absolute opacity-[15%] bg-slate-400 rounded-full p-[24px]'/>
+            <MoonIcon className={`absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all ${theme == "dark" && "rotate-0 scale-100"} text-text1`} />
+            
     </Button>
     )
 }
