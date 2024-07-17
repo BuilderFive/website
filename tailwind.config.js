@@ -53,14 +53,15 @@ module.exports = {
         background: "var(--background-1)",
         foreground: "var(--background-2)",
         border: "var(--background-1)"
-    },
-    backgroundImage: {
-      "twighlight": 
-        "linear-gradient(to bottom, rgba(0, 0, 0, 0.8), rgba(255, 255, 255, 0)), url('/static/Twighlight.svg')",
-      "landscape": "url('/static/bottom-background.svg')",
-      "landscape-2": "url('/static/landscape-alien.svg')",
-      "sunset": "url('/static/Sunset.svg')",
-    },
+      },
+      backgroundImage: {
+        landing: 'var(--landing)',
+        "twighlight": 
+          "linear-gradient(to bottom, rgba(0, 0, 0, 0.8), rgba(255, 255, 255, 0)), url('/static/Twighlight.svg')",
+        "landscape": "url('/static/bottom-background.svg')",
+        "landscape-2": "url('/static/landscape-alien.svg')",
+        "sunset": "url('/static/Sunset.svg')",
+      },
       borderRadius: {
           lg: "var(--radius)",
           md: "calc(var(--radius) - 2px)",
