@@ -18,9 +18,12 @@ export default function LandingLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
-    return (<div className="relative flex min-h-screen flex-col bg-cover bg-landing"> 
-        <Header />
-        <div className="flex-1">{children}</div>
-        <Footer />
+    return (<div className="relative bg-cover bg-landing">
+        <div className='flex flex-col relative min-h-screen container'>
+            <Header />
+            <div className="flex-1">{children}</div>
+            <Footer />
+        </div>
+        
     </div>);
 }
