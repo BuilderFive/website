@@ -20,6 +20,7 @@ import Superiority from './(home)/components/SiteSuperiority';
 import HeroCollage from './(home)/components/HeroCollage';
 import Link from 'next/link';
 import { FaExternalLinkAlt } from 'react-icons/fa';
+import GroupCallDemo from './(home)/components/GroupCallDemo';
 
 export default function Home() {
     const [loaded, setLoaded] = useState(false);
@@ -37,8 +38,9 @@ export default function Home() {
         <div className="container relative">
             <Hero loaded={loaded} setLoaded={setLoaded}/>
             
-            <div className='w-full relative flex flex-col gap-[256px] my-[256px] max-md:my-[64px] max-md:gap-[64px]'>
+            <div className='w-full relative flex flex-col gap-[256px] my-[256px] max-md:my-[64px] max-md:gap-[36px]'>
                 <HeroCollage />
+                <GroupCallDemo />
                 <CaseStudy/>
                 <div id="video" className='relative w-full h-full rounded-[24px] p-[24px] bg-black'>
                     <video className="z-10 w-full h-full" controls>

@@ -17,10 +17,9 @@ export default function Superiority() {
         return '';
     };
     return (
-        <div className="relative w-full h-full">
-            <div id="builderfive" className="w-full h-full flex justify-center relative">
-                <Link href={'/demo'}
-                    className="hover:cursor-pointer max-md:hidden absolute p-[4px] w-fit rounded-full bg-gradient-to-r from-[var(--secondary-4)] to-[var(--secondary-1)] bg-[length:200%_200%] animate-gradient-x">
+        <div className="relative w-full h-fit">
+            <div id="builderfive" className="w-full h-fit flex justify-center relative">
+                <div className="hover:cursor-pointer max-md:hidden absolute p-[4px] w-fit rounded-full bg-gradient-to-r from-[var(--secondary-4)] to-[var(--secondary-1)] bg-[length:200%_200%] animate-gradient-x">
                     <img src="/static/logos/blue-logo.svg"
                         alt="BuilderFive"
                         className="aspect-square h-[256px] max-md:h-[128px] rounded-full w-full"
@@ -29,7 +28,7 @@ export default function Superiority() {
                     <div className="absolute bottom-0 w-full text-center p-[12px] bg-secondary1 rounded-[24px]">
                         <p className="text-white text-4xl max-md:text-xl font-bold">BuilderFive</p>
                     </div>
-                </Link>
+                </div>
                 <div className="w-fit h-fit md:pt-[152px] min-h-[540px] border-secondary1 border-[4px] bg-secondary5 p-[24px] rounded-[24px] mt-[128px] flex flex-col gap-[24px] items-center" style={{ boxShadow: '0 0 100px 5px rgba(100, 97, 255, 0.5)' }}>
                     
                     <div className="md:hidden flex flex-row gap-[12px] w-fit items-center justify-center">
