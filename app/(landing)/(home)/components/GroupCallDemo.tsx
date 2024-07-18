@@ -40,7 +40,8 @@ export default function GroupCallDemo() {
         </div>
     }
 
-    return <div className='w-full relative'> 
+    return <div className="flex flex-col gap-[24px] relative">
+    <div className='w-full relative'> 
         
         <div className="flex flex-col items-center relative w-full md:mt-[256px]">
             <div className=" md:absolute max-w-[720px] w-full bottom-0">
@@ -56,7 +57,7 @@ export default function GroupCallDemo() {
                     <div className="flex flex-row gap-[24px]">
                         {mics[active].names.map((name, index) => (
                             <div key={index} className="flex relative justify-center">
-                                <FaUserCircle className="md:text-6xl text-4xl" />
+                                <FaUserCircle className="md:text-6xl text-4xl" color="var(--text-3)"/>
                                 <p className="absolute bottom-[-20px] md:text-lg text-md text-text1">{name}</p>
                             </div>
                         ))}
@@ -75,5 +76,5 @@ export default function GroupCallDemo() {
             </div>
         </div>
         
-    </div>
+    </div></div>
 }
