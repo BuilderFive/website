@@ -23,14 +23,14 @@ export default function GroupCallDemo() {
     }
 
     const Globe = () => {
-        return <div className="relative w-full">
+        return <div className="relative w-full flex justify-center">
             <img src="/static/earth.svg" alt="globe" className="w-full" />
-            <div className='absolute top-[-36px] flex flex-col w-full justify-center'>
+            <div className='absolute top-[-36px] flex flex-col w-fit'>
                 <div id="earth-row-1" className="flex flex-row justify-center">
                     <RenderMic num={0} src={mics[0].src} title={mics[0].title} />
                 </div>
                 <div id="earth-row-2" className="flex flex-row px-[24px]">
-                    <div className="flex w-[128px] flex-1"/>
+                    <div className="flex w-[256px] flex-1"/>
                     <RenderMic num={1} src={mics[1].src} title={mics[1].title} />
                 </div>
                 <div id="earth-row-3" className="flex flex-row">
@@ -41,22 +41,22 @@ export default function GroupCallDemo() {
     }
 
     return <div className='w-full md:mt-[256px] mt-[312px] relative'> 
-        <div className="absolute w-full top-[-360px]">
-            <Globe/>
-        </div>
         
 
-        <div className="flex flex-col items-center gap-[12px] relative">
-            
-            <div className="flex flex-row p-[24px] bg-background1 gap-[12px] rounded-[24px] max-w-[540px] w-full">
+        <div className="flex flex-col items-center  relative w-full">
+            <div className=" w-full ">
+                <Globe/>
+            </div>
+        
+            <div className="flex flex-row p-[24px] bg-background1 gap-[12px] rounded-[24px] w-fit relative">
                 <div className="flex flex-col justify-start gap-[24px] w-full">
-                    <div className="flex flex-row w-full justify-between items-center">
+                    <div className="flex flex-row w-full gap-[24px] justify-between items-center">
                         <p className="text-text1 text-3xl font-semibold">{mics[active].title}</p>
                         <img src="/static/logos/blue-logo.svg" alt="logo" className="w-[36px] rounded-full" />
                     </div>
                     <div className="flex flex-row gap-[24px]">
                         {mics[active].names.map((name, index) => (
-                            <div className="flex relative justify-center">
+                            <div key={index} className="flex relative justify-center">
                                 <FaUserCircle className="md:text-6xl text-4xl" />
                                 <p className="absolute bottom-[-20px] md:text-lg text-md text-text1">{name}</p>
                             </div>
