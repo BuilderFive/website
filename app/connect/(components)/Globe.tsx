@@ -1,9 +1,9 @@
 "use client"
 
-import { ChangeEvent, ChangeEventHandler, KeyboardEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, ChangeEventHandler, KeyboardEvent, useCallback, useEffect, useRef, useState } from "react";
 import mapboxgl from 'mapbox-gl/dist/mapbox-gl.js'
 import './globals.css'; // Import the globals.css file
-import { useGroup } from "~/util/GroupProvider";
+import { PackagedGroup, useGroup } from "~/util/GroupProvider";
 import { Tables } from "~/util/supabase-types";
 import { Footer } from "./Footer";
 import { Sidebar } from "./Sidebar";
@@ -17,6 +17,8 @@ import { unmountComponentAtNode } from "@react-three/fiber";
 import { Button } from "~/components/ui/button";
 import { user } from "@nextui-org/theme";
 import { GeoJSONSource, Source } from "mapbox-gl";
+import { m } from "framer-motion";
+import { useSession } from "~/util/AuthProvider";
 
 export default function Globe({showUpdates}) {
     const mapbox = useRef<mapboxgl.map>(null)
@@ -24,6 +26,7 @@ export default function Globe({showUpdates}) {
     const { radius, createGroup, leaveGroup, joinGroup, setUserLocation, userLocation, packagedGroup, loadedGroups, topic } = useGroup();
     const [loading, setLoading] = useState(true)
     const markers = useRef<any>([])
+    const { event } = useSession()
     const reminderTimer = useRef<NodeJS.Timeout | null>(null)
     const circle = useRef<GeoJSONSource | null>(null)
 
@@ -117,7 +120,6 @@ export default function Globe({showUpdates}) {
                   'space-color': 'rgb(11, 11, 25)', // Background color
                   'star-intensity': 0.5 // Background star brightness (default 0.35 at low zoooms )
                 });
-                console.log('1')
                 const newCircle = createGeoJSONCircle([userLocation.longitude, userLocation.latitude], radius/1000, 64);
                 mapbox.current.addSource('circle', newCircle);
                 mapbox.current.addLayer({
@@ -163,95 +165,26 @@ export default function Globe({showUpdates}) {
     useEffect(() => {
         if (!mapbox.current || loading) return;
         if (!userLocation.longitude || !userLocation.latitude) return;
-
         updateCircle();
-       
     },[radius, loading, mapbox.current, userLocation])
-    
 
-    /**
-     * Loading the group markers
-     */
-    useEffect(()=> {
-        if (!mapbox.current || loading) return;
-        const joinProcess = async(group: Tables<'groups'>)=> {
-            if (packagedGroup) {
-                const response = await leaveGroup();
-            }
-            joinGroup(group)
-        }
+    // Function to add markers to the map
+    const addMarkers = useCallback((groups: Tables<'groups'>[], packagedGroup: PackagedGroup | null, userLocation: { longitude: number | null, latitude: number | null}) => {
+        // Remove existing markers
+        markers.current.forEach((marker) => marker.remove());
+        markers.current = [];
 
-        markers.current.forEach((marker: mapboxgl.Marker)=>marker.remove());
+        // Add new markers
+        groups.forEach((group: Tables<'groups'>) => {
+            const marker = handleMarkerCreate(group, packagedGroup);
+            markers.current.push(marker);
+        });
 
-        loadedGroups.forEach((group: Tables<'groups'>) => {
-            const isActive = (group.group_uuid == packagedGroup?.group.group_uuid)
-            const element = document.createElement('div')
-            if (group.isQueued) {
-                element.className = 'wait-audio-group-marker';
-            } else {
-                element.className = isActive ? 'your-audio-group-marker' : 'other-audio-group-marker';
-            }
-            
-            const marker = new mapboxgl.Marker(element)
-                .setLngLat([group.location[1], group.location[0]])
-                .addTo(mapbox.current);
-            
-
-            marker.getElement().addEventListener('click', async() => {
-                if (isActive && packagedGroup.group.isQueued) {
-                    leaveGroup()
-                } else {
-                    /*mapbox.current.flyTo({
-                        center: [group.location[1], group.location[0]],
-                        zoom: 10,
-                        essential: true
-                    });*/
-                    joinProcess(group)
-                }
-                
-            });
-            if (group.isQueued) {
-                const popup = new mapboxgl.Popup({
-                    closeButton: false,
-                    closeOnClick: true,
-                    offset: {
-                        'bottom' : [0, -40]
-                    }
-                });
-
-                marker.getElement().addEventListener('mouseenter', async() => {
-                    const infoBubble = document.createElement('div');
-                    const root = createRoot(infoBubble);
-                    root.render(<div className={`relative w-fit h-fit flex flex-col text-start justify-start items-start`}>
-                        <p className="text-slate-500 font-regular text-[12px]">{group.topic}</p>
-                        <p className="text-slate-800 font-semibold text-[24px]">
-                            {group.title}
-                        </p>
-                        {isActive ? <p className="text-error1 self-end text-[12px] font-bold">Press to Cancel</p>
-                         : <p className="text-secondary1 self-end text-[12px] font-bold">Press to Join</p>}
-                    </div>)
-                    popup
-                        .setLngLat([group.location[1], group.location[0]])
-                        .setDOMContent(infoBubble)
-                        .addTo(mapbox.current);
-                
-
-                });
-        
-                marker.getElement().addEventListener('mouseleave', async() => {
-                    popup.remove();
-                });
-            }
-            markers.current.push(marker)
-        })
         if (packagedGroup == null) {
             //renders the custom marker component
             const markerContainer = document.createElement('div');
             const root = createRoot(markerContainer);
-            root.render(<EmptyBubble topic={topic} 
-                createGroup={createGroup}
-                leaveGroup={leaveGroup}
-                packagedGroup={packagedGroup} />);
+            root.render(<EmptyBubble createGroup={createGroup} leaveGroup={leaveGroup} topic={topic} packagedGroup={packagedGroup} />);
             
             const marker = new mapboxgl.Marker(markerContainer) 
                 .setLngLat([userLocation.longitude, userLocation.latitude])
@@ -259,7 +192,77 @@ export default function Globe({showUpdates}) {
 
             markers.current.push(marker)
         }
-    },[loadedGroups, packagedGroup, loading, userLocation, event])
+    }, []);
+
+    const handleMarkerCreate = (group: Tables<'groups'>, packagedGroup: PackagedGroup | null) => {
+        const isActive = (group.group_uuid == packagedGroup?.group.group_uuid)
+        const element = document.createElement('div')
+        if (group.isQueued) {
+            element.className = 'wait-audio-group-marker';
+        } else {
+            element.className = isActive ? 'your-audio-group-marker' : 'other-audio-group-marker';
+        }
+        
+        const marker = new mapboxgl.Marker(element)
+            .setLngLat([group.location[1], group.location[0]])
+            .addTo(mapbox.current);
+        
+
+        marker.getElement().addEventListener('click', async() => {
+            
+            if (packagedGroup != null) {
+                leaveGroup().then((response) => {
+                    console.log(response)
+                    joinGroup(group)
+                })
+            } else {
+                /*mapbox.current.flyTo({
+                    center: [group.location[1], group.location[0]],
+                    zoom: 10,
+                    essential: true
+                });*/
+                joinGroup(group)
+            }
+            
+        });
+        const popup = new mapboxgl.Popup({
+            closeButton: false,
+            closeOnClick: true,
+            offset: {
+                'bottom' : [0, -40]
+            }
+        });
+
+        marker.getElement().addEventListener('mouseenter', async() => {
+            const infoBubble = document.createElement('div');
+            const root = createRoot(infoBubble);
+            root.render(<div className={`relative w-fit h-fit flex flex-col text-start justify-start items-start`}>
+                <p className="text-slate-500 font-regular text-[12px]">{group.topic}</p>
+                <p className="text-slate-800 font-semibold text-[24px]">
+                    {group.title}
+                </p>
+                {isActive ? <p className="text-error1 self-end text-[12px] font-bold">Press to Cancel</p>
+                    : <p className="text-secondary1 self-end text-[12px] font-bold">Press to Join</p>}
+            </div>)
+            popup
+                .setLngLat([group.location[1], group.location[0]])
+                .setDOMContent(infoBubble)
+                .addTo(mapbox.current);
+        
+
+        });
+
+        marker.getElement().addEventListener('mouseleave', async() => {
+            popup.remove();
+        });
+        return marker
+    }
+
+    useEffect(() => {
+        if (mapbox.current) {
+          addMarkers(loadedGroups, packagedGroup, userLocation);
+        }
+    }, [loadedGroups, addMarkers, packagedGroup, userLocation, loading, event]);
 
     return(<div className="w-screen h-screen relative">
         <div ref={globe} className="h-full w-full"/>
