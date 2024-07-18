@@ -20,7 +20,7 @@ interface GroupContextProps {
     joinGroup: (group: Tables<'groups'>) => void;
     joinRandomGroup: (newTopic: string) => void;
     availableTopics: string[];
-    leaveGroup: () => void;
+    leaveGroup: () => Promise<any>; 
     createGroup: (discussionPrompt: string) => void;
     setTopic: (topic: string) => void;
     loadedGroups: Tables<'groups'>[];
@@ -38,7 +38,7 @@ const GroupContext = createContext<GroupContextProps>({
     joinGroup: () => {},
     joinRandomGroup: () => {},
     availableTopics: ["startups","miscellaneous"],
-    leaveGroup: () => {},
+    leaveGroup: () => new Promise(() => {}),
     createGroup: () => {},
     setTopic: () => {},
     loadedGroups: [],
@@ -47,7 +47,7 @@ const GroupContext = createContext<GroupContextProps>({
 
 export const useGroup = () => useContext(GroupContext);
 
-type PackagedGroup = {
+export type PackagedGroup = {
     group: Tables<'groups'>,
     members: Tables<'group_members'>[]
 }
@@ -306,10 +306,12 @@ export function GroupProvider(props: React.PropsWithChildren) {
     }
 
     const createGroup = async(discussionPrompt: string) => {
+        console.log(discussionPrompt)
         if (userLocation.latitude === null || userLocation.longitude === null) {
             alert('Please enable location services to join a group.');
             return;
         }
+        console.log('1')
         setLoading(true)
         const { data: newGroup, error: newGroupError } = await supabase
             .from('groups')
@@ -320,7 +322,7 @@ export function GroupProvider(props: React.PropsWithChildren) {
                     topic: topic
                 },
             ]).select().single();
-        
+        console.log(newGroup)
         if (newGroupError) {
             setLoading(false);
             console.error('Error inserting new group:', newGroupError);
@@ -409,6 +411,7 @@ export function GroupProvider(props: React.PropsWithChildren) {
     }
 
     const leaveGroup = async() => {
+        console.log('1')
         if (!packagedGroup) return null
         setLoading(true)
 
@@ -423,19 +426,23 @@ export function GroupProvider(props: React.PropsWithChildren) {
                 group_id: group_uuid,
                 user_id: user_uuid,
             });
+            console.log('2')
             if (!error) {
+                console.log('3')
                 setLoading(false)
-                const updatedLoadedGroups = loadedGroups.filter(group => group.group_uuid !== group_uuid);
-                setLoadedGroups(updatedLoadedGroups);
                 setPackagedGroup(null)
                 return data
             } else {
+                console.log('4')
                 setLoading(false)
                 console.error('Error leaving group:', error);
+                return null
             }
         } catch (error) {
+            console.log('5')
             setLoading(false)
             console.error('Error leaving group:', error);
+            return null
         }
         
     }

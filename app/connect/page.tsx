@@ -57,14 +57,16 @@ export default function Page() {
         <div className="other-audio-group-marker"/>
       </div>
     </div>;
-  } else {
-    return !user ? <div className="min-h-screen min-w-screen">
+  } else if (!user) {
+    return <div className="min-h-screen min-w-screen">
       <Modal showModal={showModal} setShowModal={setShowModal}/>
-    </div> : <div className="flex flex-row w-screen h-screen relative">
+    </div>
+  } else {
+    return <div className="flex flex-row w-screen h-screen relative">
         {isLoaded && <>
           <Header showUpdates={showUpdates} setShowUpdates={setShowUpdates} />
           <Globe showUpdates={showUpdates}/>
         </>}
-      </div>
+    </div>
   }
 };

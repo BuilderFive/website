@@ -2,8 +2,9 @@
 
 import { useState, ChangeEvent, KeyboardEvent } from "react"
 import { useSession } from "~/util/AuthProvider"
+import { useGroup } from "~/util/GroupProvider"
 
-export default function EmptyBubble({topic, packagedGroup, createGroup, leaveGroup}) {
+export default function EmptyBubble({ createGroup, topic, packagedGroup, leaveGroup }) {
     //this bubble is shown whenever the user's packaged group is null
     const [prompt, setPrompt] = useState("")
     const [characterCount, setCharacterCount] = useState(0)
@@ -15,20 +16,21 @@ export default function EmptyBubble({topic, packagedGroup, createGroup, leaveGro
     }
 
     const handleSubmit = async(e: KeyboardEvent<HTMLTextAreaElement>) => {
-        
-        if (packagedGroup) {
-            //means user is currently in a call. Leave the group
-            const response = await leaveGroup();
+        if (packagedGroup != null) {
+            leaveGroup().then((response) => {
+                console.log(response)
+                createGroup(prompt)
+            })
+        } else {
+            createGroup(prompt)
         }
-        //check if user is already in a group, if so call leaveGroup and await for user confirmation
-        createGroup(prompt)
     }
 
     return <div className="flex flex-col w-[240px] h-[280px]">
         <div className="w-full h-[50%]">
             <div className="flex flex-col items-center w-full h-fit rounded-[12px] bg-background1 p-[12px]">
                 <form onSubmit={e => e.preventDefault()} className="w-full relative">
-                    <textarea disabled={event?.isActive ? false : true}
+                    <textarea disabled={event?.isActive ? false : false}
                         value={prompt} onClick={e => e.currentTarget.focus()}
                         minLength={5} maxLength={60} rows={2}
                         onKeyDown={e => {
@@ -40,7 +42,7 @@ export default function EmptyBubble({topic, packagedGroup, createGroup, leaveGro
                             }
                         }}
                         className="bg-background3 w-full rounded-[12px] p-[12px] resize-none"
-                        placeholder={!event?.isActive ? "You're a little early. Can't start a call just yet... please hold!" : `What about ${topic} would you like to discuss?`}
+                        placeholder={event?.isActive ? "You're a little early. Can't start a call just yet... please hold!" : `What about ${topic} would you like to discuss?`}
                         onChange={handleChange}/>
                     <div className="absolute bottom-2 right-2">
                         <p className="text-text3 font-light">{characterCount}/60</p>
