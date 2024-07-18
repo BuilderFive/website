@@ -8,14 +8,14 @@ export default function GroupCallDemo() {
     const [muted, setMuted] = useState(false);
 
     const mics = [
-        { src: "/animations/wait-mic.gif", title: "Startups", names: ["Ahmed"] },
-        { src: "/animations/other-mic.gif", title: "Networking", names: ["Tony", "Kim", "Juan"] },
-        { src: "/animations/other-mic.gif", title: "Cofounders?", names: ["Marco", "Josh", "Mee6","Sarah"] },
+        { src: "/animations/wait-mic.gif", title: "Looking to network", names: ["Ahmed"] },
+        { src: "/animations/other-mic.gif", title: "Student entrepreneurs?", names: ["Tony", "Kim", "Juan"] },
+        { src: "/animations/other-mic.gif", title: "Cofounder searching", names: ["Marco", "Josh", "Mee6","Sarah"] },
     ];
     
     const RenderMic = ({src, title, num}: {src: string, title: string, num: number}) => {
         return <div onClick={()=>setActive(num)} className='relative hover:cursor-pointer hover:text-xl text-lg'>
-            <p className='text-text1 text-inherit font-semibold absolute bottom-0 w-full text-center'>{title}</p>
+            <p className='text-gray-800 leading-4 text-inherit font-semibold absolute bottom-0 w-full text-center'>{title}</p>
             <img src={active === num ? "/animations/active-mic.gif" : src}
                 alt={title}
                 className="max-w-[128px] rounded-full"/>
@@ -42,7 +42,6 @@ export default function GroupCallDemo() {
 
     return <div className='w-full relative'> 
         
-
         <div className="flex flex-col items-center relative w-full md:mt-[256px]">
             <div className=" md:absolute max-w-[720px] w-full bottom-0">
                 <Globe/>
