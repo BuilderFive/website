@@ -25,26 +25,26 @@ export default function GroupCallDemo() {
     const Globe = () => {
         return <div className="relative w-full flex justify-center">
             <img src="/static/earth.svg" alt="globe" className="w-full" />
-            <div className='absolute top-[-36px] flex flex-col w-fit'>
+            <div className='absolute top-[-36px] flex flex-col w-full'>
                 <div id="earth-row-1" className="flex flex-row justify-center">
                     <RenderMic num={0} src={mics[0].src} title={mics[0].title} />
                 </div>
-                <div id="earth-row-2" className="flex flex-row px-[24px]">
+                <div id="earth-row-2" className="flex flex-row px-[25%] py-[5%]">
                     <div className="flex w-[256px] flex-1"/>
                     <RenderMic num={1} src={mics[1].src} title={mics[1].title} />
                 </div>
-                <div id="earth-row-3" className="flex flex-row">
+                <div id="earth-row-3" className="flex flex-row px-[10%]">
                     <RenderMic num={2} src={mics[2].src} title={mics[2].title} />
                 </div>
             </div>
         </div>
     }
 
-    return <div className='w-full md:mt-[256px] mt-[312px] relative'> 
+    return <div className='w-full relative'> 
         
 
-        <div className="flex flex-col items-center  relative w-full">
-            <div className=" w-full ">
+        <div className="flex flex-col items-center relative w-full md:mt-[256px]">
+            <div className=" md:absolute max-w-[720px] w-full bottom-0">
                 <Globe/>
             </div>
         
