@@ -7,6 +7,7 @@ import Lottie from 'react-lottie-player';
 import animationData from  './../../../../public/animations/hammer.json';
 import { IoMdRadioButtonOn } from 'react-icons/io';
 import Superiority from './SiteSuperiority';
+import GroupCallDemo from './GroupCallDemo';
 //create a scenario
 export default function CaseStudy() {
 
@@ -82,6 +83,7 @@ export default function CaseStudy() {
                     </div>
                 </div>
             </div>*/}
+           
 
             <div id='competitors' className='w-fit bg-transparent rounded-[24px] gap-[24px]'>
                 <p className='text-text1 font-bold text-4xl max-md:text-xl flex justify-start items-center w-full pb-[24px]'>You may have tried these apps . . .</p>
@@ -146,6 +148,8 @@ export default function CaseStudy() {
                     </div>
                 </div>
             </div>
+
+            
             <Superiority/>
         </div>
         
