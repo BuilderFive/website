@@ -137,48 +137,54 @@ export function GroupProvider(props: React.PropsWithChildren) {
     //updates to get realtime updates from select topic space
     useEffect(()=> {
         if (!user) return
+
+        const handleUpdate = (payload) => {
+            const updatedGroup = payload.new as Tables<'groups'>;
+            setLoadedGroups((prevGroups) => {
+                return prevGroups.map(group =>
+                    group.group_uuid === updatedGroup.group_uuid ? updatedGroup : group
+                );
+            });
+        };
         
         const channel = supabase.channel('realtime groups')
             .on('postgres_changes', {
                 event: 'INSERT', schema: 'public', table: 'groups'
             }, (payload)=> {
                 const newGroup = {payload}.payload.new as Tables<'groups'>;
-                setLoadedGroups([...loadedGroups, newGroup])
+                handleNewGroup(newGroup);
             })
             .on('postgres_changes', {
                 event: 'UPDATE', schema: 'public', table: 'groups'
-            }, (payload)=> {
-                const updatedGroup = {payload}.payload.new as Tables<'groups'>;
-
-                const updatedGroups = loadedGroups.map(group => {
-                    if (group.group_uuid === updatedGroup.group_uuid) {
-                        return updatedGroup;
-                    }
-                    return group;
-                });
-
-                if (!updatedGroups.some(group => group.group_uuid === updatedGroup.group_uuid)) {
-                    updatedGroups.push(updatedGroup);
-                }
-
-                if (updatedGroup.group_uuid === packagedGroup?.group.group_uuid) {
-                    setPackagedGroup({group: updatedGroup, members: packagedGroup.members });
-                }
-
-                setLoadedGroups(updatedGroups);
-            })
+            }, handleUpdate)
             .on('postgres_changes', {
                 event: 'DELETE', schema: 'public', table: 'groups'
             }, (payload)=> {
                 const oldGroup = {payload}.payload.old as Tables<'groups'>;
-                const newGroups = loadedGroups.filter(group => group.group_uuid !== oldGroup.group_uuid);
-                setLoadedGroups(newGroups);
+                setLoadedGroups((prevGroups) => {
+                    const newGroups = prevGroups.filter(group => group.group_uuid !== oldGroup.group_uuid);
+                    return newGroups;                });
             }).subscribe()
         return () => {
             if (channel) supabase.removeChannel(channel)
         }
     },[user])
 
+    const handleNewGroup = (newGroup: Tables<'groups'>) => {
+        setLoadedGroups((prevGroups) => {
+            // Check if the new group already exists in the current state
+            const groupExists = prevGroups.some(group => group.group_uuid === newGroup.group_uuid);
+            console.log(groupExists)
+            // If the group already exists, return the previous state unchanged
+            if (groupExists) {
+                console.log(prevGroups)
+                return prevGroups;
+            }
+            console.log([...prevGroups, newGroup])
+            // Otherwise, append the new group to the existing groups
+            return [...prevGroups, newGroup];
+        });
+      };
 
     //update group members when a new member joins/leaves
     useEffect(() => {
@@ -248,7 +254,6 @@ export function GroupProvider(props: React.PropsWithChildren) {
 
     //to join a random group
     const joinGroup = async(group: Tables<'groups'>) => { 
-
         if (group.group_uuid === packagedGroup?.group.group_uuid) return;
         if (userLocation.latitude == null || userLocation.longitude == null) {
             alert('Please enable location services to join a group.');
@@ -257,19 +262,7 @@ export function GroupProvider(props: React.PropsWithChildren) {
 
         const insertMember = async(foundGroup: Tables<'groups'>) => {
             setLoading(true)
-
-            //set the isQueued field of group to false
-            const { data: updatedGroup, error: updatedGroupError } = await supabase
-                .from('groups')
-                .update({ isQueued: false })
-                .eq('group_uuid', foundGroup.group_uuid).select().single();
-            const newGroup = updatedGroup as Tables<'groups'>
             
-            if (updatedGroupError) {
-                setLoading(false);
-                console.error('Error updating group:', updatedGroupError);
-                return;
-            }
             // Insert the user as a new group member
             const { data: newMemberData, error: newMemberError } = await supabase
                 .from('group_members')
@@ -289,9 +282,10 @@ export function GroupProvider(props: React.PropsWithChildren) {
             const membersData = await fetchMembers(foundGroup.group_uuid)
 
             const newPackagedGroup = {
-                group: newGroup,
+                group: group,
                 members: membersData,
             };
+
             setPackagedGroup(newPackagedGroup);
             setLoading(false);
             return foundGroup.group_uuid;
