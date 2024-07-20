@@ -103,17 +103,17 @@ export function ControlBar({
   return (
     <div {...htmlProps}>
       {visibleControls.microphone && (
-        <div className={`aspect-square h-[64px] w-[64px] rounded-full text-secondary1 flex items-center justify-center ${theme == "light" ? "bg-background1" : "bg-transparent"} hover:bg-background2 hover:cursor-pointer`}>
+        <div className={`aspect-square md:h-[64px] md:w-[64px] w-[36px] h-[36px] rounded-full text-secondary1 flex items-center justify-center ${theme == "light" ? "bg-background1" : "bg-transparent"} hover:bg-background2 hover:cursor-pointer`}>
           <TrackToggle className='flex flex-col items-center justify-center'
             source={Track.Source.Microphone}
             showIcon={showIcon}
             onChange={microphoneOnChange}>
-            {showText && <p className='text-md'>{userChoices.audioEnabled ? "Mute" : "Unmute"}</p>}
+            {showText && <p className='md:text-md text-xs'>{userChoices.audioEnabled ? "Mute" : "Unmute"}</p>}
           </TrackToggle>
         </div>
       )}
       {visibleControls.camera && (
-        <div className={`aspect-square h-[64px] w-[64px] rounded-full text-secondary1 flex items-center justify-center ${theme == "light" ? "bg-background1" : "bg-transparent"} hover:bg-background2 hover:cursor-pointer`}>
+        <div className={`aspect-square md:h-[64px] md:w-[64px] w-[36px] h-[36px] rounded-full text-secondary1 flex items-center justify-center ${theme == "light" ? "bg-background1" : "bg-transparent"} hover:bg-background2 hover:cursor-pointer`}>
           <TrackToggle source={Track.Source.Camera} showIcon={showIcon} onChange={cameraOnChange}>
             {showText && 'Camera'}
           </TrackToggle>
@@ -126,11 +126,11 @@ export function ControlBar({
         </div>
       )}
       {visibleControls.leave && (
-        <div className={`aspect-square h-[64px] w-[64px] rounded-full text-error1 flex items-center justify-center ${theme == "light" ? "bg-background1" : "bg-transparent"} hover:bg-background2 hover:cursor-pointer`}>
+        <div className={`aspect-square md:h-[64px] md:w-[64px] w-[36px] h-[36px] rounded-full text-error1 flex items-center justify-center ${theme == "light" ? "bg-background1" : "bg-transparent"} hover:bg-background2 hover:cursor-pointer`}>
           <DisconnectButton onClick={() => leaveGroup()}
             className='flex flex-col items-center justify-center'>
             {showIcon && <LeaveIcon />}
-            {showText && <p className='text-md'>Leave</p>}
+            {showText && <p className='md:text-md text-xs'>Leave</p>}
           </DisconnectButton>
         </div>
       )}

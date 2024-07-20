@@ -19,10 +19,10 @@ const Avatars = ({ ...props }: RoomParticipantsProps) => {
           <TrackRefContext.Provider key={trackReference.participant.identity} value={trackReference}>
             <AudioTrack trackRef={trackReference} />
             <div id="audio-participant" className={`relative flex flex-col items-center justify-center`}>
-              <div className={`flex items-center justify-center h-[64px] w-[64px] aspect-square rounded-full bg-background3 ${trackReference.participant.audioLevel && "border-[2px] border-success1"}`}>
+              <div className={`flex items-center justify-center md:h-[64px] md:w-[64px] w-[48px] h-[48px] aspect-square rounded-full bg-background3 ${trackReference.participant.audioLevel && "border-[2px] border-success1"}`}>
                 <TrackMutedIndicator trackRef={trackReference}/>
               </div>
-              <ParticipantName className="absolute text-text1 text-xs bottom-0 truncate" />
+              <ParticipantName className="absolute text-text1 md:text-xs text-[12px] bottom-0 truncate" />
             </div>
             
           </TrackRefContext.Provider>

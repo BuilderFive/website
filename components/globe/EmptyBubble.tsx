@@ -25,7 +25,7 @@ export default function EmptyBubble({ createGroup, topic, packagedGroup, leaveGr
         }
     }
 
-    return <div className="flex flex-col w-[240px] h-[280px]">
+    return <div className="flex flex-col w-[240px] h-[280px] z-[-1]">
         <div className="w-full h-[50%]">
             <div className="flex flex-col items-center w-full h-fit rounded-[12px] bg-background1 p-[12px]">
                 <form onSubmit={e => e.preventDefault()} className="w-full relative">
@@ -41,7 +41,7 @@ export default function EmptyBubble({ createGroup, topic, packagedGroup, leaveGr
                             }
                         }}
                         className="bg-background3 w-full rounded-[12px] p-[12px] resize-none"
-                        placeholder={event?.isActive ? "You're a little early. Can't start a call just yet... please hold!" : `What about ${topic} would you like to discuss?`}
+                        placeholder={event?.isActive ? "You're a little early. Can't start a call just yet... please hold!" : `Who are you looking to meet in ${topic}?`}
                         onChange={handleChange}/>
                     <div className="absolute bottom-2 right-2">
                         <p className="text-text3 font-light">{characterCount}/60</p>

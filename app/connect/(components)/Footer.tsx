@@ -61,8 +61,8 @@ export const Footer = () => {
             data-lk-theme="default">
             
             <AudioConference className='flex flex-row text-text1 w-full justify-between items-center'/>
-            <div id="details" className="flex flex-col text-text1 text-sm">
-                <p className='font-semibold text-text1 text-lg truncate'>{formatNumberWithCommas(radius)}</p>
+            <div id="details" className="max-md:hidden flex flex-col text-text1 text-lg">
+                <p className='font-semibold text-text1 truncate'>{formatNumberWithCommas(radius)}</p>
             </div>
         </LiveKitRoom>
     </footer>

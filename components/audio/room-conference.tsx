@@ -33,8 +33,8 @@ export function AudioConference({ ...props }: AudioConferenceProps) {
   return (
     <LayoutContextProvider onWidgetChange={setWidgetState}>
      {audioTracks && <div {...props}>
-        <Avatars className='flex flex-row gap-[24px] jusify-start items-center'/>
-        <ControlBar controls={{ leave: true, microphone: true, settings: false, camera: false, screenShare: false }} className='w-fit h-fit flex flex-row gap-[24px] text-text1'/>
+        <Avatars className='flex flex-row md:gap-[24px] gap-[12px] jusify-start items-center'/>
+        <ControlBar controls={{ leave: true, microphone: true, settings: false, camera: false, screenShare: false }} className='w-fit h-fit flex flex-row gap-[12px] text-text1'/>
       </div>}
     </LayoutContextProvider>
   );
