@@ -28,12 +28,10 @@ export default function Globe({showUpdates}) {
     const markers = useRef<any>([])
     const { event } = useSession()
 
-    if (!mapbox) return null;
-
     useEffect(() => {
         mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAP_BOX_TOKEN;
 
-        if (globe.current) {
+        if (globe.current && mapbox != null) {
             mapbox.current = new mapboxgl.Map({
               container: globe.current,
               style: "mapbox://styles/wrys/cly3upq5700fr01qr6d12d26s",
@@ -80,6 +78,8 @@ export default function Globe({showUpdates}) {
 
     // Function to add markers to the map
     const addMarkers = (groups: Tables<'groups'>[], pGroup: PackagedGroup | null, location: { longitude: number, latitude: number}, inputTopic: string, rad:number) => {
+        if (!mapbox) return null;
+
         // Remove existing markers
         markers.current.forEach((marker) => marker.remove());
         markers.current = [];
@@ -104,6 +104,8 @@ export default function Globe({showUpdates}) {
     };
 
     const handleMarkerCreate = (group: Tables<'groups'>, pGroup: PackagedGroup | null, location: { latitude: number, longitude: number }, rad: number) => {
+        if (!mapbox) return null;
+
         const isActive = (group.group_uuid == pGroup?.group.group_uuid)
         const element = document.createElement('div')
         if (group.isQueued) {
@@ -167,7 +169,7 @@ export default function Globe({showUpdates}) {
         const latitude = userLocation.latitude;
         const longitude = userLocation.longitude;
 
-        if (mapbox.current && (latitude != null && longitude != null)) {
+        if (mapbox && (latitude != null && longitude != null)) {
             addMarkers(loadedGroups, packagedGroup, {latitude, longitude}, topic, radius);
         }
     }, [loadedGroups, addMarkers, packagedGroup, userLocation, loading, event, topic, radius]);
