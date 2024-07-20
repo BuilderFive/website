@@ -4,7 +4,7 @@ import { useState, ChangeEvent, KeyboardEvent } from "react"
 import { useSession } from "~/util/AuthProvider"
 import { useGroup } from "~/util/GroupProvider"
 
-export default function EmptyBubble({ createGroup, topic, packagedGroup, leaveGroup }) {
+export default function EmptyBubble({ createGroup, topic, packagedGroup, leaveGroup, userLocation }) {
     //this bubble is shown whenever the user's packaged group is null
     const [prompt, setPrompt] = useState("")
     const [characterCount, setCharacterCount] = useState(0)
@@ -18,11 +18,10 @@ export default function EmptyBubble({ createGroup, topic, packagedGroup, leaveGr
     const handleSubmit = async(e: KeyboardEvent<HTMLTextAreaElement>) => {
         if (packagedGroup != null) {
             leaveGroup().then((response) => {
-                console.log(response)
-                createGroup(prompt)
+                createGroup(prompt, userLocation.latitude, userLocation.longitude)
             })
         } else {
-            createGroup(prompt)
+            createGroup(prompt, userLocation.latitude, userLocation.longitude)
         }
     }
 

@@ -16,9 +16,11 @@ import { useJsApiLoader } from "@react-google-maps/api";
 import Globe from "./(components)/Globe";
 import { FaSpinner } from "react-icons/fa";
 import "./(components)/globals.css"
+import { useGlobe } from "~/util/GlobeProvider";
 
 export default function Page() {
   const { packagedGroup, setUserLocation } = useGroup();
+  const { mapbox } = useGlobe();
   const { user, event } = useSession();
   const [showModal, setShowModal] = useState(false);
   const [showUpdates, setShowUpdates] = useState(false);

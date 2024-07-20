@@ -21,7 +21,7 @@ interface GroupContextProps {
     joinRandomGroup: (newTopic: string) => void;
     availableTopics: string[];
     leaveGroup: () => Promise<any>; 
-    createGroup: (discussionPrompt: string) => void;
+    createGroup: (discussionPrompt: string, latitude: number, longitude: number) => void;
     setTopic: (topic: string) => void;
     loadedGroups: Tables<'groups'>[];
     setLoading: (loading: boolean) => void;
@@ -39,7 +39,7 @@ const GroupContext = createContext<GroupContextProps>({
     joinRandomGroup: () => {},
     availableTopics: ["startups","miscellaneous"],
     leaveGroup: () => new Promise(() => {}),
-    createGroup: () => {},
+    createGroup: (discussionPrompt: string, latitude: number, longitude: number) => {},
     setTopic: () => {},
     loadedGroups: [],
     setLoading: () => {}
@@ -146,6 +146,28 @@ export function GroupProvider(props: React.PropsWithChildren) {
                 setLoadedGroups([...loadedGroups, newGroup])
             })
             .on('postgres_changes', {
+                event: 'UPDATE', schema: 'public', table: 'groups'
+            }, (payload)=> {
+                const updatedGroup = {payload}.payload.new as Tables<'groups'>;
+
+                const updatedGroups = loadedGroups.map(group => {
+                    if (group.group_uuid === updatedGroup.group_uuid) {
+                        return updatedGroup;
+                    }
+                    return group;
+                });
+
+                if (!updatedGroups.some(group => group.group_uuid === updatedGroup.group_uuid)) {
+                    updatedGroups.push(updatedGroup);
+                }
+
+                if (updatedGroup.group_uuid === packagedGroup?.group.group_uuid) {
+                    setPackagedGroup({group: updatedGroup, members: packagedGroup.members });
+                }
+
+                setLoadedGroups(updatedGroups);
+            })
+            .on('postgres_changes', {
                 event: 'DELETE', schema: 'public', table: 'groups'
             }, (payload)=> {
                 const oldGroup = {payload}.payload.old as Tables<'groups'>;
@@ -226,6 +248,7 @@ export function GroupProvider(props: React.PropsWithChildren) {
 
     //to join a random group
     const joinGroup = async(group: Tables<'groups'>) => { 
+
         if (group.group_uuid === packagedGroup?.group.group_uuid) return;
         if (userLocation.latitude == null || userLocation.longitude == null) {
             alert('Please enable location services to join a group.');
@@ -239,7 +262,8 @@ export function GroupProvider(props: React.PropsWithChildren) {
             const { data: updatedGroup, error: updatedGroupError } = await supabase
                 .from('groups')
                 .update({ isQueued: false })
-                .eq('group_uuid', foundGroup.group_uuid);
+                .eq('group_uuid', foundGroup.group_uuid).select().single();
+            const newGroup = updatedGroup as Tables<'groups'>
             
             if (updatedGroupError) {
                 setLoading(false);
@@ -265,10 +289,9 @@ export function GroupProvider(props: React.PropsWithChildren) {
             const membersData = await fetchMembers(foundGroup.group_uuid)
 
             const newPackagedGroup = {
-                group: foundGroup,
+                group: newGroup,
                 members: membersData,
             };
-
             setPackagedGroup(newPackagedGroup);
             setLoading(false);
             return foundGroup.group_uuid;
@@ -305,24 +328,21 @@ export function GroupProvider(props: React.PropsWithChildren) {
         }
     }
 
-    const createGroup = async(discussionPrompt: string) => {
-        console.log(discussionPrompt)
-        if (userLocation.latitude === null || userLocation.longitude === null) {
+    const createGroup = async(discussionPrompt: string, latitude: number, longitude: number) => {
+        if (latitude === null || longitude === null) {
             alert('Please enable location services to join a group.');
             return;
         }
-        console.log('1')
         setLoading(true)
         const { data: newGroup, error: newGroupError } = await supabase
             .from('groups')
             .insert([
                 {
                     title: discussionPrompt,
-                    location: [userLocation.latitude, userLocation.longitude],
+                    location: [latitude, longitude],
                     topic: topic
                 },
             ]).select().single();
-        console.log(newGroup)
         if (newGroupError) {
             setLoading(false);
             console.error('Error inserting new group:', newGroupError);
@@ -339,7 +359,7 @@ export function GroupProvider(props: React.PropsWithChildren) {
                 {
                     group_uuid: group_uuid,
                     user_uuid: user?.id,
-                    location: [userLocation.latitude, userLocation.longitude],
+                    location: [latitude, longitude],
                 },
             ]).select().single();
         
@@ -356,7 +376,6 @@ export function GroupProvider(props: React.PropsWithChildren) {
             group: group,
             members: membersData,
         };
-
         setPackagedGroup(newPackagedGroup);
         setLoading(false)
         return group_uuid;
@@ -411,7 +430,6 @@ export function GroupProvider(props: React.PropsWithChildren) {
     }
 
     const leaveGroup = async() => {
-        console.log('1')
         if (!packagedGroup) return null
         setLoading(true)
 
@@ -425,21 +443,18 @@ export function GroupProvider(props: React.PropsWithChildren) {
             const { data, error } = await supabase.rpc('leave_group', {
                 group_id: group_uuid,
                 user_id: user_uuid,
-            });
-            console.log('2')
+            }).select();
             if (!error) {
-                console.log('3')
                 setLoading(false)
                 setPackagedGroup(null)
+
                 return data
             } else {
-                console.log('4')
                 setLoading(false)
                 console.error('Error leaving group:', error);
                 return null
             }
         } catch (error) {
-            console.log('5')
             setLoading(false)
             console.error('Error leaving group:', error);
             return null
