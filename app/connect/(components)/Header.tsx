@@ -28,6 +28,10 @@ export const Header = ({showUpdates, setShowUpdates}) => {
     }
     const timeLeft = calculateTimeRemaining(currentTime, event);
 
+    const isTimerUp = () => {
+        return timeLeft.days <= 0 && timeLeft.hours <= 0 && timeLeft.minutes <= 0 && timeLeft.seconds <= 0;
+    }
+
     const CurrentlySearching = () => (
         <div className="p-[12px] flex flex-row gap-[8px] bg-background3 items-center rounded-[8px]">
             <FaSearchLocation color={"var(--text-2)" } size={20} />
@@ -79,7 +83,7 @@ export const Header = ({showUpdates, setShowUpdates}) => {
     return (<header className="fixed top-0 right-0 z-10 w-full">
         <div className="flex flex-row w-full justify-end max-md:h-16 py-[24px] px-[24px] items-start text-white">
             <div className="absolute w-full flex items-center justify-center">
-                {event?.isActive ? <ActiveEvent/> : <ComingEvent/>}
+                {event?.isActive && isTimerUp() ? <ActiveEvent/> : <ComingEvent/>}
             </div>
             
             <div className="flex md:justify-end w-fit items-center space-x-[24px]">
