@@ -10,6 +10,7 @@ import Script from 'next/script';
 import { SessionProvider, useSession } from '~/util/AuthProvider';
 import { Header } from './(components)/Header';
 import { Footer } from './(components)/Footer';
+import { GlobeProvider } from '~/util/GlobeProvider';
 
 export default function LandingLayout({
     children,
@@ -17,7 +18,9 @@ export default function LandingLayout({
     children: React.ReactNode;
 }>) {
     return <div className="relative flex min-h-screen flex-col bg-cover bg-twighlight">
-        <div className="flex-1">{children}</div>
+        <GlobeProvider>
+            <div className="flex-1">{children}</div>
+        </GlobeProvider>
     </div>;
 }
 

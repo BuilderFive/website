@@ -19,90 +19,19 @@ import { user } from "@nextui-org/theme";
 import { GeoJSONSource, Source } from "mapbox-gl";
 import { m } from "framer-motion";
 import { useSession } from "~/util/AuthProvider";
+import { useGlobe } from "~/util/GlobeProvider";
 
 export default function Globe({showUpdates}) {
-    const mapbox = useRef<mapboxgl.map>(null)
+    const { createGeoJSONCircle, mapbox, setLoading, loading, isWithinRadius } = useGlobe();
     const globe = useRef<HTMLDivElement>(null)
     const { radius, createGroup, leaveGroup, joinGroup, setUserLocation, userLocation, packagedGroup, loadedGroups, topic } = useGroup();
-    const [loading, setLoading] = useState(true)
     const markers = useRef<any>([])
     const { event } = useSession()
-    const reminderTimer = useRef<NodeJS.Timeout | null>(null)
-    const circle = useRef<GeoJSONSource | null>(null)
-
-    function getLocation() {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(getCoordinates, handleLocationError);
-        reminderTimer.current = null
-      } else {
-          alert("Geolocation is not supported by this browser.");
-      }
-    }
-    
-    function getCoordinates(position) {
-        setUserLocation({latitude: position.coords.latitude, longitude: position.coords.longitude})
-    }
-    
-    function handleLocationError(error) {
-        switch (error.code) {
-            case error.PERMISSION_DENIED:
-                console.log("User denied the request for Geolocation.");
-                break;
-            case error.POSITION_UNAVAILABLE:
-                console.log("Location information is unavailable.");
-                break;
-            case error.TIMEOUT:
-                console.log("The request to get user location timed out.");
-                break;
-            case error.UNKNOWN_ERROR:
-                console.log("An unknown error occurred.");
-                break;
-            default:
-                console.log("An unknown error occurred.");
-                break;
-        }
-    }
-
-    function updateCircle() {
-        const newCircle = createGeoJSONCircle([userLocation.longitude, userLocation.latitude], radius/1000, 64)
-        if (circle.current == undefined || circle.current == null) {
-            mapbox.current.addSource('circle', newCircle);
-            mapbox.current.addLayer({
-                id: 'circle-fill',
-                type: 'fill',
-                source: 'circle',
-                layout: {},
-                paint: {
-                    'fill-color': 'rgb(97, 171, 255)',
-                    'fill-opacity': 0.5
-                }
-            });
-            return;
-        } else {
-            circle.current.setData({
-                "type": "FeatureCollection",
-                "features": [{
-                    "type": "Feature",
-                    "geometry": {
-                        "type": "Polygon",
-                        "coordinates": newCircle.data.features[0].geometry.coordinates
-                    },
-                    "properties": {} // Add the 'properties' property here
-                }]
-            })
-        }
-    }
-
-    useEffect(() => {
-        if (userLocation.longitude == null || userLocation.latitude == null) {
-            getLocation();
-        }
-    }, [userLocation.latitude, userLocation.longitude]);
 
     useEffect(() => {
         mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAP_BOX_TOKEN;
 
-        if (globe.current) {
+        if (globe.current && mapbox != null) {
             mapbox.current = new mapboxgl.Map({
               container: globe.current,
               style: "mapbox://styles/wrys/cly3upq5700fr01qr6d12d26s",
@@ -120,19 +49,7 @@ export default function Globe({showUpdates}) {
                   'space-color': 'rgb(11, 11, 25)', // Background color
                   'star-intensity': 0.5 // Background star brightness (default 0.35 at low zoooms )
                 });
-                const newCircle = createGeoJSONCircle([userLocation.longitude, userLocation.latitude], radius/1000, 64);
-                mapbox.current.addSource('circle', newCircle);
-                mapbox.current.addLayer({
-                    id: 'circle-fill',
-                    type: 'fill',
-                    source: 'circle',
-                    layout: {},
-                    paint: {
-                        'fill-color': 'rgb(97, 171, 255)',
-                        'fill-opacity': 0.5
-                    }
-                });
-                circle.current = mapbox.current.getSource('circle') as GeoJSONSource;
+
                 setLoading(false)
             });
 
@@ -159,43 +76,37 @@ export default function Globe({showUpdates}) {
         }
     },[])
 
-    /**
-     * Loading the user's circle and changing it's radius
-     */
-    useEffect(() => {
-        if (!mapbox.current || loading) return;
-        if (!userLocation.longitude || !userLocation.latitude) return;
-        updateCircle();
-    },[radius, loading, mapbox.current, userLocation])
-
     // Function to add markers to the map
-    const addMarkers = useCallback((groups: Tables<'groups'>[], packagedGroup: PackagedGroup | null, userLocation: { longitude: number | null, latitude: number | null}) => {
+    const addMarkers = (groups: Tables<'groups'>[], pGroup: PackagedGroup | null, location: { longitude: number, latitude: number}, inputTopic: string, rad:number) => {
+        if (!mapbox) return null;
+
         // Remove existing markers
         markers.current.forEach((marker) => marker.remove());
         markers.current = [];
 
         // Add new markers
         groups.forEach((group: Tables<'groups'>) => {
-            const marker = handleMarkerCreate(group, packagedGroup);
+            const marker = handleMarkerCreate(group, pGroup, location, rad);
             markers.current.push(marker);
         });
 
-        if (packagedGroup == null) {
+        if (pGroup == null) {
             //renders the custom marker component
             const markerContainer = document.createElement('div');
             const root = createRoot(markerContainer);
-            root.render(<EmptyBubble createGroup={createGroup} leaveGroup={leaveGroup} topic={topic} packagedGroup={packagedGroup} />);
+            root.render(<EmptyBubble createGroup={createGroup} leaveGroup={leaveGroup} topic={inputTopic} packagedGroup={pGroup} userLocation={location} />);
             
             const marker = new mapboxgl.Marker(markerContainer) 
-                .setLngLat([userLocation.longitude, userLocation.latitude])
+                .setLngLat([location.longitude, location.latitude])
                 .addTo(mapbox.current);
-
             markers.current.push(marker)
         }
-    }, []);
+    };
 
-    const handleMarkerCreate = (group: Tables<'groups'>, packagedGroup: PackagedGroup | null) => {
-        const isActive = (group.group_uuid == packagedGroup?.group.group_uuid)
+    const handleMarkerCreate = (group: Tables<'groups'>, pGroup: PackagedGroup | null, location: { latitude: number, longitude: number }, rad: number) => {
+        if (!mapbox) return null;
+
+        const isActive = (group.group_uuid == pGroup?.group.group_uuid)
         const element = document.createElement('div')
         if (group.isQueued) {
             element.className = 'wait-audio-group-marker';
@@ -206,15 +117,11 @@ export default function Globe({showUpdates}) {
         const marker = new mapboxgl.Marker(element)
             .setLngLat([group.location[1], group.location[0]])
             .addTo(mapbox.current);
-        
 
         marker.getElement().addEventListener('click', async() => {
-            
-            if (packagedGroup != null) {
-                leaveGroup().then((response) => {
-                    console.log(response)
-                    joinGroup(group)
-                })
+            if (!isWithinRadius({ latitude: group.location[0], longitude: group.location[1]})) return
+            if (pGroup != null) {
+                leaveGroup()
             } else {
                 /*mapbox.current.flyTo({
                     center: [group.location[1], group.location[0]],
@@ -259,10 +166,13 @@ export default function Globe({showUpdates}) {
     }
 
     useEffect(() => {
-        if (mapbox.current) {
-          addMarkers(loadedGroups, packagedGroup, userLocation);
+        const latitude = userLocation.latitude;
+        const longitude = userLocation.longitude;
+
+        if (mapbox && (latitude != null && longitude != null)) {
+            addMarkers(loadedGroups, packagedGroup, {latitude, longitude}, topic, radius);
         }
-    }, [loadedGroups, addMarkers, packagedGroup, userLocation, loading, event]);
+    }, [loadedGroups, addMarkers, packagedGroup, userLocation, loading, event, topic, radius]);
 
     return(<div className="w-screen h-screen relative">
         <div ref={globe} className="h-full w-full"/>
@@ -277,43 +187,3 @@ export default function Globe({showUpdates}) {
         </div>
     </div>)
 }
-
-var createGeoJSONCircle = function(center, radiusInKm, points) {
-    if(!points) points = 64;
-
-    var coords = {
-        latitude: center[1],
-        longitude: center[0]
-    };
-
-    var km = radiusInKm;
-
-    var distanceX = km/(111.320*Math.cos(coords.latitude*Math.PI/180));
-    var distanceY = km/110.574;
-
-    var theta, x, y;
-    const ret: number[][] = [];
-
-    for(var i=0; i<points; i++) {
-        theta = (i/points)*(2*Math.PI);
-        x = distanceX*Math.cos(theta);
-        y = distanceY*Math.sin(theta);
-
-        ret.push([coords.longitude+x, coords.latitude+y]);
-    }
-    ret.push(ret[0]);
-
-    return {
-        "type": "geojson",
-        "data": {
-            "type": "FeatureCollection",
-            "features": [{
-                "type": "Feature",
-                "geometry": {
-                    "type": "Polygon",
-                    "coordinates": [ret]
-                }
-            }]
-        }
-    };
-};

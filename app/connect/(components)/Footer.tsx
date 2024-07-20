@@ -54,7 +54,7 @@ export const Footer = () => {
     return <footer className={`w-full ${theme == "light" ? "bg-background1" : "bg-background3"} text-text1`}>
         <LiveKitRoom audio={true}
             onDisconnected={() => {
-                leaveGroup();
+                leaveGroup();//in future could start timer for 30 seconds and run leave group after
             }}
             token={token} className="w-full h-[80px] flex flex-row justify-between py-[12px] px-[12px] gap-[24px] items-center justify-center"
             serverUrl={serverUrl}
