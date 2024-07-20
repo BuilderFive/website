@@ -62,7 +62,7 @@ export const Sidebar = () => {
             </div>
         }
 
-        return <div className='relative flex flex-row gap-[12px] pt-[12px] pb-[24px] justify-start items-center w-full h-fit'>
+        return <div className='relative flex flex-row gap-[12px] pt-[12px] justify-start items-center w-full h-fit'>
             <img src="/static/logos/blue-logo.svg" alt="BuilderFive" className="aspect-square h-[64px] rounded-full" />
             <div id="sidebar-title" className='flex flex-col h-fit w-full'>
                 <p className='font-bold text-2xl text-secondary1'>BuilderFive</p>

@@ -175,7 +175,7 @@ export default function Globe({showUpdates}) {
         }
     }, [loadedGroups, addMarkers, packagedGroup, userLocation, loading, event, topic, radius]);
 
-    return(<div className="w-screen h-screen relative">
+    return(<div className="w-full h-full relative">
         <div ref={globe} className="h-full w-full"/>
         <div className='relative z-20'>
             <div className="fixed z-20 left-2 top-2 max-md:hidden">
