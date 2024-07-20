@@ -16,6 +16,7 @@ import { useProfile } from "~/util/ProfileProvider";
 import { Input } from "~/components/ui/input";
 import { FaC } from "react-icons/fa6";
 import { IoMdClose, IoMdEye, IoMdEyeOff } from "react-icons/io";
+import MobileSidebar from "./MobileSidebar";
 
 export const Header = ({showUpdates, setShowUpdates}) => {
     const { event } = useSession();
@@ -27,6 +28,10 @@ export const Header = ({showUpdates, setShowUpdates}) => {
         return Math.abs(time) < 10 ? `0${Math.abs(time)}` : Math.abs(time);
     }
     const timeLeft = calculateTimeRemaining(currentTime, event);
+
+    const isTimerUp = () => {
+        return timeLeft.days <= 0 && timeLeft.hours <= 0 && timeLeft.minutes <= 0 && timeLeft.seconds <= 0;
+    }
 
     const CurrentlySearching = () => (
         <div className="p-[12px] flex flex-row gap-[8px] bg-background3 items-center rounded-[8px]">
@@ -46,10 +51,10 @@ export const Header = ({showUpdates, setShowUpdates}) => {
     const ActiveEvent = () => {
         return (<div className="flex flex-col items-center">
             <div className="flex flex-row justify-center w-full items-center">
-                <p className="text-secondary1 text-[36px] font-bold">ACTIVE</p> 
+                <p className="text-secondary1 md:text-3xl text-xl font-bold">ACTIVE</p> 
 
             </div>
-            <p className="text-error1 font-regular text-[24px]">
+            <p className="text-error1 font-regular md:text-xl text-lg">
                 {timeLeft.days > 0 && `${formatTime(timeLeft.days)} days `}
                 {timeLeft.hours > 0 && `${formatTime(timeLeft.hours)} hours `}
                 {timeLeft.minutes > 0 && `${formatTime(timeLeft.minutes)} minutes `}
@@ -63,26 +68,29 @@ export const Header = ({showUpdates, setShowUpdates}) => {
     const ComingEvent = () => {
         return (<div className="flex flex-col items-center">
             <div className="flex flex-row justify-center w-full items-center">
-                <p className="text-secondary1 text-[36px] font-bold">STARTING SOON</p> 
+                <p className="text-secondary1 md:text-3xl text-xl font-bold">STARTING SOON</p> 
 
             </div>
-            <p className="text-white font-regular text-[24px]">
-                {timeLeft.days > 0 && `${formatTime(timeLeft.days)} days `}
-                {timeLeft.hours > 0 && `${formatTime(timeLeft.hours)} hours `}
-                {timeLeft.minutes > 0 && `${formatTime(timeLeft.minutes)} minutes `}
-                {timeLeft.seconds > 0 && `${formatTime(timeLeft.seconds)} seconds`}
+            <p className="text-white font-regular md:text-xl text-lg">
+                {timeLeft.days > 0 && `${formatTime(timeLeft.days)}d `}
+                {timeLeft.hours > 0 && `${formatTime(timeLeft.hours)}hrs `}
+                {timeLeft.minutes > 0 && `${formatTime(timeLeft.minutes)}m `}
+                {timeLeft.seconds > 0 && `${formatTime(timeLeft.seconds)}s`}
             </p>
         </div>
         );
     }
 
     return (<header className="fixed top-0 right-0 z-10 w-full">
-        <div className="flex flex-row w-full justify-end max-md:h-16 py-[24px] px-[24px] items-start text-white">
-            <div className="absolute w-full flex items-center justify-center">
-                {event?.isActive ? <ActiveEvent/> : <ComingEvent/>}
+        <div className="flex flex-row w-full justify-end max-md:h-16 md:p-[24px] p-[12px] items-start text-white">
+            <div className="fixed w-full flex items-center justify-center">
+                {event?.isActive && isTimerUp() ? <ActiveEvent/> : <ComingEvent/>}
             </div>
             
-            <div className="flex md:justify-end w-fit items-center space-x-[24px]">
+            <div className="flex max-md:justify-between md:justify-end w-full items-center space-x-[24px] relative">
+                <div className="md:hidden">
+                    {!showUpdates && <MobileSidebar/>}
+                </div>
                 {/*<nav className="flex items-center max-md:hidden">
                     <CurrentlySearching/>
                 </nav>
@@ -145,9 +153,9 @@ const AccountDrawer = ({ showUpdates, setShowUpdates}) => {
         </div>
     }
 
-    return (<div className="flex flex-row gap-[24px] relative items-center justify-end">
-        <div id="updates" onClick={()=>setShowUpdates(!showUpdates)} className="relative aspect-square rounded-full hover:cursor-pointer">
-            <FaBell size={"36px"}/>
+    return (<div className="flex flex-row md:gap-[24px] gap-[12px] relative items-center justify-end">
+        <div id="updates" onClick={()=>setShowUpdates(!showUpdates)} className="relative hover:cursor-pointer">
+            <FaBell className="aspect-square md:h-[32px] md:w-[32px] h-[24px] w-[24px] h-full rounded-full"/>
         </div>
 
         <div onClick={()=> {
@@ -157,8 +165,8 @@ const AccountDrawer = ({ showUpdates, setShowUpdates}) => {
                 setOpen(!open)
             }
         }} className="relative flex items-center space-x-[12px] hover:cursor-pointer">
-            {user ? <img src="/static/logos/blue-logo.svg" alt="Your account" className="aspect-square h-[64px] rounded-full" />
-             : <img src="/static/logos/black-logo-transparent.svg" alt="Your account" className="aspect-square h-[64px] rounded-full bg-text8" />}
+            {user ? <img src="/static/logos/blue-logo.svg" alt="Your account" className="aspect-square md:h-[64px] h-[48px] rounded-full" />
+             : <img src="/static/logos/black-logo-transparent.svg" alt="Your account" className="aspect-square md:h-[64px] h-[48px] rounded-full bg-text8" />}
             {open && user &&
         <div className="absolute top-[84px] shadow-md rounded-[12px] right-0 w-fit bg-background1 p-[12px] flex flex-col min-w-[128px]">
             <ProfileRow/>

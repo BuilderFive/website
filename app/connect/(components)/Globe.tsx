@@ -20,6 +20,7 @@ import { GeoJSONSource, Source } from "mapbox-gl";
 import { m } from "framer-motion";
 import { useSession } from "~/util/AuthProvider";
 import { useGlobe } from "~/util/GlobeProvider";
+import MobileSidebar from "./MobileSidebar";
 
 export default function Globe({showUpdates}) {
     const { createGeoJSONCircle, mapbox, setLoading, loading, isWithinRadius } = useGlobe();
@@ -177,7 +178,7 @@ export default function Globe({showUpdates}) {
     return(<div className="w-screen h-screen relative">
         <div ref={globe} className="h-full w-full"/>
         <div className='relative z-20'>
-            <div className="fixed z-20 left-2 top-2">
+            <div className="fixed z-20 left-2 top-2 max-md:hidden">
                 {!showUpdates && <Sidebar/>}
             </div>
             <div className="fixed z-20 bottom-0 w-full">
