@@ -14,11 +14,11 @@ export default function GroupCallDemo() {
     ];
     
     const RenderMic = ({src, title, num}: {src: string, title: string, num: number}) => {
-        return <div onClick={()=>setActive(num)} className='relative hover:cursor-pointer hover:text-xl text-lg'>
+        return <div onClick={()=>setActive(num)} className='relative hover:cursor-pointer hover:text-xl text-lg max-w-[128px] w-full'>
             <p className='text-gray-800 leading-4 text-inherit font-semibold absolute bottom-0 w-full text-center'>{title}</p>
             <img src={active === num ? "/animations/active-mic.gif" : src}
                 alt={title}
-                className="max-w-[128px] rounded-full"/>
+                className="w-full rounded-full"/>
         </div>
     }
 

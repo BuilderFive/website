@@ -22,7 +22,7 @@ export const Footer: React.FC = () => (
                     <LinkedInLogoIcon className="h-6 w-6 group-hover:text-blue-400" />
                 </a>
                 <a
-                    href="https://www.instagram.com/builderfive.community/"
+                    href="https://www.instagram.com/builderfive/"
                     rel="noopener noreferrer"
                     target="_blank"
                     className={css('group', buttonVariants({ variant: 'ghost' }))}

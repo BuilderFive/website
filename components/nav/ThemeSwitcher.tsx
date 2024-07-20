@@ -19,7 +19,7 @@ export function ThemeSwitcher() {
             setTheme(theme == "dark" ? "light" : "dark")
         }}>
             <div className='absolute opacity-[15%] bg-text1 rounded-full p-[24px]'/>
-            <SunIcon color="var(--text-1)" className={`h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all ${theme == "dark" && "-rotate-90 scale-0 opacity-[50%]"}`} />
+            <SunIcon color="var(--text-1)" className={`h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all ${theme == "dark" && "-rotate-90 scale-0 opacity-[0%]"}`} />
             <MoonIcon className={`absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all ${theme == "dark" && "rotate-0 scale-100"}`} />
             
     </Button>
