@@ -37,7 +37,7 @@ const GroupContext = createContext<GroupContextProps>({
     topic: "startups",
     joinGroup: () => {},
     joinRandomGroup: () => {},
-    availableTopics: ["startups","miscellaneous"],
+    availableTopics: ["startups","other","other 2","music"],
     leaveGroup: () => new Promise(() => {}),
     createGroup: (discussionPrompt: string, latitude: number, longitude: number) => {},
     setTopic: () => {},
@@ -65,7 +65,7 @@ export function GroupProvider(props: React.PropsWithChildren) {
     const [packagedGroup, setPackagedGroup] = useState<PackagedGroup| null>(null) //current group that the user is in
     const [topic, setTopic] = useState("startups")
     const [isLoading, setLoading] = useState<boolean>(false);
-    const availableTopics = ["startups","miscellaneous"]
+    const availableTopics = ["startups","other","other 2","music"]
     const [loadedGroups, setLoadedGroups] = useState<Tables<'groups'>[]>([]);
 
     /**
