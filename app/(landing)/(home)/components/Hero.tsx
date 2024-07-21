@@ -36,7 +36,7 @@ export default function Hero({loaded, setLoaded}) {
     <div id="Hero" className="w-full h-full flex flex-row max-md:flex-col flex-wrap flex-grow py-[48px] justify-center max-md:items-center space-y-[48px]">
         <section id="Column 1" className="max-w-[800px] md:min-w-[500px] flex flex-col max-md:items-center justify-between items-start w-fit max-md:w-full flex-1 space-y-[24px]">
             <div id="title" className="h-full space-y-[4px] max-md:text-center flex flex-col justify-center max-md:items-center">
-                <h1 className="text-7xl max-md:text-5xl text-text1 font-bold">Helping new entrepreneurs in <a className="text-secondary1">Austin</a> meet in person</h1>
+                <h1 className="text-7xl max-md:text-5xl text-text1 font-bold">Helping GenZ introverts in <a className="text-secondary1">Austin</a> meet in person</h1>
                 <h2 className="text-4xl max-md:text-xl text-text1 font-regular max-md:w-full">Drop into group calls with local strangers and leave with plans to meetup at a local coffee shop</h2>
             </div>
             <div id="join" className="flex flex-col space-y-[12px] w-full max-md:w-[90%] gap-[12px]">
